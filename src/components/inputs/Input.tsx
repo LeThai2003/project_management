@@ -11,7 +11,7 @@ const Input = ({label, value, onChange, placeholder, type, id}) => {
 
   return (
     <div className='mt-3'>
-      <label htmlFor={id} className='text-slate-800 text-[14px] pl-1 font-medium'>{label}</label>
+      <label htmlFor={id} className='text-slate-800 text-[14px] pl-1 font-medium dark:text-white'>{label}</label>
       <div className='input-box'>
         <input 
           id={id} 
@@ -19,7 +19,7 @@ const Input = ({label, value, onChange, placeholder, type, id}) => {
           placeholder={placeholder} 
           type={type == "password" ? showPassword ? "text" : 'password' : type}
           onChange={onChange}
-          className='w-full outline-none'
+          className='w-full outline-none dark:bg-dark-tertiary'
         />
         {type == "password" && 
           <>

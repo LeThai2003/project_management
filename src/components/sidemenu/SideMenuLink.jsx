@@ -7,7 +7,7 @@ const SideMenuLink = ({href, icon : Icon, label}) => {
   const isActive = pathname === href || (pathname === "/" && label === "Home");
 
   return (
-    <Link className='w-full' href={href}>
+    <Link className='w-full' to={href}>
       <div className={`relative px-6 py-3 flex items-center justify-start gap-2 hover:bg-gray-50 dark:bg-black dark:hover:bg-gray-700 ${isActive ? "bg-blue-50 dark:bg-gray-600" : ""}`}>
         {isActive && <div className='absolute top-0 left-0 h-full w-[5px] bg-blue-200'></div>}
         {Icon && <Icon className={`size-5 font-medium ${isActive ? "text-blue-500" : "text-gray-800"} dark:text-gray-100`} />}

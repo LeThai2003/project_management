@@ -18,8 +18,8 @@ const Navbar = () => {
       <div className='flex items-center'>
         
         {isSiderMenuCollapsed ?
-          <button className='btn-icon'>
-            <IoIosMenu onClick={() => dispatch(setIsSiderMenuCollapsed(false))}/>
+          <button className='btn-icon' onClick={() => dispatch(setIsSiderMenuCollapsed(false))}>
+            <IoIosMenu />
           </button>
           : 
           null

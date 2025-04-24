@@ -69,7 +69,7 @@ const Signup = () => {
           <button className='btn-primary'>Sign up</button>
         </form>
 
-        <p className='text-center mt-2 text-sm tracking-[0.25px]'>Already have an account?{" "}? <Link to="/login" className='text-[#705cf5] font-medium cursor-pointer hover:underline'>Log In</Link></p>
+        <p className='text-center mt-2 text-sm tracking-[0.25px]'>Already have an account?{" "} <Link to="/login" className='text-[#705cf5] font-medium cursor-pointer hover:underline'>Log In</Link></p>
         
       </div>
       

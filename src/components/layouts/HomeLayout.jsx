@@ -29,7 +29,7 @@ const HomeLayout = ({children}) => {
 
         <Navbar/>
 
-        <div className='px-6 py-4 '>
+        <div className='px-3 py-4 '>
           {children}
         </div>
 

@@ -23,60 +23,40 @@ const SideMenu = () => {
 
   const dataProjects = [
     {
-      title: "Task 1",
-      description: "Revise application deployment strategies",
-      status: "Completed",
-      prioriry: "High",
-      tags: "Deployment",
-      startDate: "20/02/2023",
-      dueDate: "20/06/2023",
-      Author: "BobSmith",
-      Assignee: "DaveBrown"
+      "id": 1,
+      "name": "Apollo",
+      "description": "A space exploration project.",
+      "startDate": "2023-01-01T00:00:00Z",
+      "endDate": "2023-12-31T00:00:00Z"
     },
     {
-      title: "Task 2",
-      description: "Design user onboarding flow",
-      status: "In Progress",
-      prioriry: "Medium",
-      tags: "UI/UX",
-      startDate: "01/04/2024",
-      dueDate: "01/05/2024",
-      Author: "AliceWong",
-      Assignee: "TomJones"
+      "id": 2,
+      "name": "Beacon",
+      "description": "Developing advanced navigation systems.",
+      "startDate": "2023-02-01T00:00:00Z",
+      "endDate": "2023-10-15T00:00:00Z"
     },
     {
-      title: "Task 3",
-      description: "Fix authentication bugs",
-      status: "To Do",
-      prioriry: "High",
-      tags: "Backend",
-      startDate: "15/03/2024",
-      dueDate: "25/03/2024",
-      Author: "EveTaylor",
-      Assignee: "JakeLong"
+      "id": 3,
+      "name": "Catalyst",
+      "description": "A project to boost renewable energy use.",
+      "startDate": "2023-03-05T00:00:00Z",
+      "endDate": "2024-03-05T00:00:00Z"
     },
     {
-      title: "Task 4",
-      description: "Implement payment gateway",
-      status: "In Progress",
-      prioriry: "Urgent",
-      tags: "Payments",
-      startDate: "01/02/2024",
-      dueDate: "20/04/2024",
-      Author: "SaraNguyen",
-      Assignee: "MaxLee"
+      "id": 4,
+      "name": "Delta",
+      "description": "Delta project for new software development techniques.",
+      "startDate": "2023-01-20T00:00:00Z",
+      "endDate": "2023-09-20T00:00:00Z"
     },
     {
-      title: "Task 5",
-      description: "Write unit tests for dashboard",
-      status: "Completed",
-      prioriry: "Low",
-      tags: "Testing",
-      startDate: "10/01/2024",
-      dueDate: "15/01/2024",
-      Author: "DavidKim",
-      Assignee: "LilyTran"
-    }
+      "id": 5,
+      "name": "Echo",
+      "description": "Echo project focused on AI advancements.",
+      "startDate": "2023-04-15T00:00:00Z",
+      "endDate": "2023-11-30T00:00:00Z"
+    },
   ];
   
 
@@ -114,7 +94,7 @@ const SideMenu = () => {
         {showProjects ? <FaChevronUp className='size-3'/> : <FaChevronDown className='size-3'/> }
       </button>
       {showProjects && dataProjects?.map((project, index) => (
-        <SideMenuLink key={index} label={project?.title} href="#" icon={FiBriefcase}/>
+        <SideMenuLink key={index} label={project?.name} href={`/project/${index}`} icon={FiBriefcase}/>
       ))}
 
       <button onClick={() => setShowPriority(!showPriority)} className='w-full flex items-center justify-between text-gray-500 dark:bg-dark-bg px-6 py-3'>

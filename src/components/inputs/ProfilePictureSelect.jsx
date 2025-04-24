@@ -38,7 +38,7 @@ const ProfilePictureSelect = ({image, setImage}) => {
       {!image ? (
           <div className='relative size-20 flex items-center justify-center rounded-full bg-purple-100'>
             <LuUser className='text-4xl text-primary'/>
-            <button type='button' className='absolute -right-1 -bottom-1 bg-primary hover:bg-purple-700 text-white size-8 flex items-center justify-center rounded-full cursor-pointer' onClick={handleChooseFile}>
+            <button type='button' className='absolute -right-1 -bottom-1 bg-purple-600 hover:bg-purple-700 text-white size-8 flex items-center justify-center rounded-full cursor-pointer' onClick={handleChooseFile}>
               <LuUpload/>
             </button>
           </div>
