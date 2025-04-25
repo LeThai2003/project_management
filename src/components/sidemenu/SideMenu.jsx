@@ -3,7 +3,7 @@ import { MdOutlineClose } from "react-icons/md";
 import { CiLock } from "react-icons/ci";
 import SideMenuLink from './SideMenuLink';
 import { IoHomeOutline, IoSearchOutline, IoSettingsOutline, IoAlert } from "react-icons/io5";
-import { MdViewTimeline } from "react-icons/md";
+import { MdOutlineViewTimeline } from "react-icons/md";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
 import { FiBriefcase } from "react-icons/fi";
 import { AiOutlineAlert } from "react-icons/ai";
@@ -84,7 +84,7 @@ const SideMenu = () => {
 
       <div className='w-full'>
         <SideMenuLink label="Home" href="/home" icon={IoHomeOutline}/>
-        <SideMenuLink label="Timeline" href="/timeline" icon={MdViewTimeline}/>
+        <SideMenuLink label="Timeline" href="/timeline" icon={MdOutlineViewTimeline}/>
         <SideMenuLink label="Search" href="/search" icon={IoSearchOutline}/>
         <SideMenuLink label="Settings" href="/settings" icon={IoSettingsOutline}/>
       </div>

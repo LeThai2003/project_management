@@ -4,10 +4,13 @@ import { FaRegPlusSquare } from "react-icons/fa";
 import { IoSearchOutline} from "react-icons/io5";
 import { LuGrid3X3, LuList, LuClock, LuTable } from "react-icons/lu";
 import ModalNewProject from './ModalNewProject';
+import TeamMember from './TeamMember';
+import ModalAllTeamInProject from './AllTeamInProject';
 
 const ProjectHeader = ({activeTab, setActiveTab, name}) => {
 
   const [isModalNewProjectOpen, setIsModalNewProjectOpen] = useState(false);
+
 
   return (
     <div className=''>
@@ -17,7 +20,7 @@ const ProjectHeader = ({activeTab, setActiveTab, name}) => {
         onClose={() => setIsModalNewProjectOpen(false)}
       />
 
-      <div className='py-2 px-3'>
+      <div className='pb-2 px-3'>
         <Header
           name={name}
           buttonComponet={
@@ -29,6 +32,9 @@ const ProjectHeader = ({activeTab, setActiveTab, name}) => {
           }
         />
       </div>
+
+     
+      <TeamMember/>
 
       <div className='flex flex-wrap-reverse gap-2 border-y border-gray-200 dark:border-stroke-dark md:items-center px-3 py-2'>
         <div className='flex flex-1 gap-2 md:gap-4 items-center'>
@@ -44,7 +50,7 @@ const ProjectHeader = ({activeTab, setActiveTab, name}) => {
             className='outline-none border bg-gray-100 dark:border-gray-600 dark:bg-dark-tertiary dark:text-white pl-8 pr-4 py-1 rounded-lg text-sm'
             placeholder='Search Tasks'
           />
-          <IoSearchOutline className='absolute left-2 top-[6px] size-4 dark:text-white'/>
+          <IoSearchOutline className='absolute left-2 top-[7px] size-4 dark:text-white'/>
         </div>
       </div>
 
