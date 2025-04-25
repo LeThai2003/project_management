@@ -38,7 +38,7 @@ const dataTeams = [
   },
 ]
 
-const TeamMember = () => {
+const TeamMember = ({name}) => {
 
   const [isModalAllTeamInProjectOpen, setIsModalAllTeamInProjectOpen] = useState(false); 
   const [isModalAddMemberOpen, setIsModalAddMemberOpen] = useState(false); 
@@ -58,7 +58,10 @@ const TeamMember = () => {
         dataMemeber={dataTeams}
       />
 
-      <div className='flex w-full justify-end px-3 pt-1 pb-3'>
+      <div className='flex w-full items-start justify-between px-3 pt-1 pb-3'>
+     
+        <h2 className={`text-2xl font-semibold dark:text-white`}>{name}</h2>
+   
         <div className='flex flex-col bg-white px-4 py-2 border border-gray-100 rounded-md dark:bg-dark-secondary dark:border-gray-600 dark:text-white'>
           <div className={`${dataTeams?.length >= 6 ? "w-96" : "w-64"} flex items-center justify-between mb-2`}>
             <h3 className='font-medium text-sm'>Team Members</h3>

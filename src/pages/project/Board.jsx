@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {DndProvider, useDrag, useDrop} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import { FaEllipsisVertical, FaPlus } from 'react-icons/fa6';
 import moment from "moment";
 import { LuMessageSquare } from 'react-icons/lu';
+import Dropdown from '../../components/projects/Dropdown';
 
 
 const dataTasks = [
@@ -146,27 +147,31 @@ const dataTasks = [
 
 const ViewBoardProject = ({setIsModalNewTaskOpen}) => {
 
+
+  // const [datas, setDatas] = useState(dataTasks);
+  const [datas, setDatas] = useState(() => dataTasks.map(task => ({ ...task })));
+
+
   const taskStatus = ["To Do", "Work In Progress", "Under Review", "Completed"];
 
   const updateTaskStatus = (taskId, toStatus) => {
-
-    // const task = dataTasks.find(item => item.id == taskId);
-    // task.status = status;
-
-    for (const item of dataTasks) {
-      if(item.id == taskId)
-      {
-        item.status = toStatus;
-        return;
-      }
-    }
   }
 
   const moveTask = (taskId, toStatus) => {
     // updateTaskStatus({taskId, status: toStatus})
-    const task = dataTasks.find(item => item.id == taskId);
-    task.status = toStatus;
+    console.log(taskId, toStatus);
+    // const updateDatas = datas?.map(item => item.id === taskId ? {...item, status: toStatus} : item);
+    const updateDatas = datas.map(item => {
+      if (item.id == taskId) {
+        console.log("Before:", item.status, " After:", toStatus);
+        return { ...item, status: toStatus };
+      }
+      return item;
+    });
+    console.log(updateDatas);
+    setDatas(updateDatas);
   }
+
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -175,7 +180,7 @@ const ViewBoardProject = ({setIsModalNewTaskOpen}) => {
           <TaskColumn 
             key={status}
             status={status}
-            tasks={dataTasks || []}
+            tasks={datas || []}
             moveTask={moveTask}
             setIsModalNewTaskOpen={setIsModalNewTaskOpen}
           />
@@ -232,7 +237,7 @@ const TaskColumn = ({status, tasks, moveTask, setIsModalNewTaskOpen}) => {
           </div>
         </div>
       </div>
-      {dataTasks.filter(task => task.status == status).map(task => (<Task key={task.id} task={task}/>))}
+      {tasks.filter(task => task.status == status).map(task => (<Task key={task.id} task={task}/>))}
     </div>
   )
 }
@@ -270,6 +275,18 @@ const Task = ({task}) => {
     return <div className={tagClassName}>{priority}</div>;
   }
 
+  const [openDropdownTaskId, setOpenDropdownTaskId] = useState(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest('.dropdown-task')) {
+        setOpenDropdownTaskId(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   return(
     <div 
       ref={(instance) => {drag(instance)}}
@@ -298,9 +315,21 @@ const Task = ({task}) => {
                 ))}
               </div>
           </div>
-          <button className='flex size-6 items-center justify-center dark:text-neutral-500'>
-            <FaEllipsisVertical size={16}/>
-          </button>
+
+          <div className='relative dropdown-task'>
+            <button 
+              className='flex size-6 items-center justify-center dark:text-neutral-500'
+              onClick={() => setOpenDropdownTaskId(openDropdownTaskId == task.id ? null : task.id)}
+            >
+              <FaEllipsisVertical size={16}/>
+            </button>
+
+            {openDropdownTaskId == task.id && 
+              <div className='absolute top-6 right-1'>
+                <Dropdown taskId={task.id} userId={1} authorId={task.authorUserId} assignId={task.assignedUserId}/>
+              </div>
+            }
+          </div>
         </div>
         
         <div className='my-2'>

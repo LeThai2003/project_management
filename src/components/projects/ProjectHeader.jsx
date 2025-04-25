@@ -22,7 +22,7 @@ const ProjectHeader = ({activeTab, setActiveTab, name}) => {
 
       <div className='pb-2 px-3'>
         <Header
-          name={name}
+          name={""}
           buttonComponet={
             <button className='flex items-center gap-2 rounded-lg bg-blue-primary hover:bg-blue-600 text-white px-3 py-2'
               onClick={() => setIsModalNewProjectOpen(true)}
@@ -34,7 +34,7 @@ const ProjectHeader = ({activeTab, setActiveTab, name}) => {
       </div>
 
      
-      <TeamMember/>
+      <TeamMember name="Apollo"/>
 
       <div className='flex flex-wrap-reverse gap-2 border-y border-gray-200 dark:border-stroke-dark md:items-center px-3 py-2'>
         <div className='flex flex-1 gap-2 md:gap-4 items-center'>
