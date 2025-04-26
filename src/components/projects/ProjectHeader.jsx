@@ -6,6 +6,7 @@ import { LuGrid3X3, LuList, LuClock, LuTable } from "react-icons/lu";
 import ModalNewProject from './ModalNewProject';
 import TeamMember from './TeamMember';
 import ModalAllTeamInProject from './AllTeamInProject';
+import TabButton from '../tabButtons/TabButton';
 
 const ProjectHeader = ({activeTab, setActiveTab, name}) => {
 
@@ -62,21 +63,4 @@ const ProjectHeader = ({activeTab, setActiveTab, name}) => {
 export default ProjectHeader
 
 
-
-
-const TabButton = ({name, icon : Icon, activeTab, setActiveTab}) => {
-
-  const isActive = activeTab === name;
-
-  return (
-    <button 
-      className={`relative flex items-center gap-2 px-1 py-2 before:absolute before:w-full before:h-[1px] before:left-0 before:-bottom-[9px] hover:text-blue-600 dark:hover:text-white ${isActive ? "text-blue-600 before:bg-blue-600" : "text-gray-500"}`}
-      onClick={() => setActiveTab(name)}
-    >
-      {Icon}
-      {name}
-    </button>
-  )
-
-}
 

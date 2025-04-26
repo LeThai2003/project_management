@@ -5,13 +5,15 @@ import { FaEllipsisVertical, FaPlus } from 'react-icons/fa6';
 import moment from "moment";
 import { LuMessageSquare } from 'react-icons/lu';
 import Dropdown from '../../components/projects/Dropdown';
+import { useParams } from 'react-router-dom';
+import PriorityTag from '../../components/tasks/PriorityTag';
 
 
 const dataTasks = [
   {
     "id": 1,
     "title": "Task 1",
-    "description": "Design the main module.",
+    "description": "I've made a huge tiny mistake. Don't worry, these young beauties have been nowhere near the bananas. You don't want a hungry dove down your pants. Caw ca caw, caw ca caw, caw ca caw, caw ca caw. I'm in Vegas this week and would like to point out the Blue Man Group is *actually* hiring. The support group? Oh, like when they say 'poofter' to mean 'tourist', yes.",
     "status": "Work In Progress",
     "priority": "Urgent",
     "tags": "Design",
@@ -107,7 +109,7 @@ const dataTasks = [
     "id": 8,
     "title": "Task 8",
     "description": "Overhaul of the database for hotel management.",
-    "status": "To Do",
+    "status": "Under Review",
     "priority": "High",
     "tags": "Database",
     "startDate": "2023-04-01T00:00:00Z",
@@ -134,7 +136,7 @@ const dataTasks = [
     "id": 10,
     "title": "Task 10",
     "description": "Enhance security protocols.",
-    "status": "To Do",
+    "status": "Completed",
     "priority": "Urgent",
     "tags": "Security",
     "startDate": "2023-07-05T00:00:00Z",
@@ -245,6 +247,7 @@ const TaskColumn = ({status, tasks, moveTask, setIsModalNewTaskOpen}) => {
 
 const Task = ({task}) => {
 
+
   const [{isDragging}, drag] = useDrag(() => ({
     type: "task",
     item: {id: task.id},
@@ -260,20 +263,6 @@ const Task = ({task}) => {
 
   const numberOfComments = task?.comments || 0;
 
-  const PriorityTag = ({ priority }) => {
-    const tagClassName = `rounded-full px-2 py-1 text-xs font-semibold ${
-      priority === "Urgent"
-        ? "bg-red-200 text-red-700"
-          : priority === "High"
-            ? "bg-yellow-200 text-yellow-700"
-              : priority === "Medium"
-                ? "bg-green-200 text-green-700"
-                  : priority === "Low"
-                    ? "bg-blue-200 text-blue-700"
-                      : "bg-gray-200 text-gray-700"
-    }`;
-    return <div className={tagClassName}>{priority}</div>;
-  }
 
   const [openDropdownTaskId, setOpenDropdownTaskId] = useState(null);
 
@@ -318,7 +307,7 @@ const Task = ({task}) => {
 
           <div className='relative dropdown-task'>
             <button 
-              className='flex size-6 items-center justify-center dark:text-neutral-500'
+              className='flex size-6 items-center justify-center dark:text-neutral-300'
               onClick={() => setOpenDropdownTaskId(openDropdownTaskId == task.id ? null : task.id)}
             >
               <FaEllipsisVertical size={16}/>
@@ -336,7 +325,7 @@ const Task = ({task}) => {
           <h4 className='text-sm font-semibold dark:text-white'>{task.title}</h4>
         </div>
 
-        <p className='font-medium text-xs text-gray-700 dark:text-neutral-500'>
+        <p className='font-medium text-xs text-gray-700 dark:text-neutral-500 line-clamp-3'>
           {task.description}
         </p>
         

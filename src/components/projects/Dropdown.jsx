@@ -2,16 +2,21 @@ import React from 'react'
 import { IoEyeOutline } from "react-icons/io5";
 import { CiEdit } from "react-icons/ci";
 import { FiTrash } from "react-icons/fi";
+import { Link } from 'react-router-dom';
 
 const Dropdown = ({taskId, userId, authorId, assignId}) => {
   return (
     <div className='w-[110px] px-2 py-2 text-xs font-medium text-slate-600 bg-white dark:bg-slate-800 dark:text-gray-200 border border-gray-200 rounded dark:border-gray-600 shadow-2xl z-10'>
       
       {/* sau nay link sang trang chi tiet */}
-      <div className='flex gap-2 items-center justify-start cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-700 px-3 py-1'>
+      <Link to={`/task/${taskId}`} className='flex gap-2 items-center justify-start cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-700 px-3 py-1'>
         <IoEyeOutline className='-mb-[1px]' size={16}/>
         <p>View</p>
-      </div>
+      </Link>
+      {/* <div className='flex gap-2 items-center justify-start cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-700 px-3 py-1'>
+        <IoEyeOutline className='-mb-[1px]' size={16}/>
+        <p>View</p>
+      </div> */}
 
       
       {userId == assignId || userId == authorId ?  // sau nay onClick thi link sang trang chinh sua 

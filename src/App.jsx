@@ -5,6 +5,7 @@ import Home from "./pages/home/Home"
 
 import {BrowserRouter, Routes, Route} from "react-router-dom"
 import Project from "./pages/project"
+import TaskDetail from "./pages/Task/TaskDetail"
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <Route path="/signup" element={<Signup/>}/>
           <Route path="/home" element={<Home/>}/>
           <Route path="/project/:id" element={<Project/>}/>
+          <Route path="/task/:id" element={<TaskDetail/>}/>
         </Routes>
       </BrowserRouter>
     </>
