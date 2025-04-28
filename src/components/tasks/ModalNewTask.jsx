@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Modal from '../Modal';
 import Input from '../inputs/Input';
+import InputSubTask from '../inputs/InputSubTask';
 
 const ModalNewTask = ({isOpen, onClose}) => {
 
@@ -14,6 +15,26 @@ const ModalNewTask = ({isOpen, onClose}) => {
   const [authorUserId, setAuthorUserId] = useState("");
   const [assigneeUserId, setAssigneeUserId] = useState("");
   const [projectId, setProjectId] = useState("");
+  const [listSubTask, setListSubTask] = useState([]);
+  
+  const [openSubTask, setOpenSubTask] = useState(false);
+
+  const closeAddSubTask = () => {
+    setOpenSubTask(false);
+    setListSubTask([]);
+  }
+
+
+  const handleChangeAddSubTask = (e) => {
+    if(e.target.checked)
+    {
+      setOpenSubTask(true);
+    }
+    else
+    {
+      closeAddSubTask();
+    }
+  }
 
   const isFormValid = () => {
     return title && authorUserId
@@ -25,7 +46,7 @@ const ModalNewTask = ({isOpen, onClose}) => {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Create New Task">
-      <form className='mt-4 space-y-6' >
+      <form className='mt-4' >
         <Input
           type="text"
           placeholder="Title"
@@ -46,7 +67,7 @@ const ModalNewTask = ({isOpen, onClose}) => {
           />
         </div>
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-2 mb-0">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-2 mt-3">
           <select
             className={selectStyles}
             value={status}
@@ -100,23 +121,36 @@ const ModalNewTask = ({isOpen, onClose}) => {
           />
         </div>
 
-        <Input
-          type="text"
-          placeholder="Author User ID"
-          value={authorUserId}
-          onChange={(e) => setAuthorUserId(e.target.value)}
-          id="author"
-          label="Author"
-        />
+        <div className={`mt-5 mb-2 p-2 rounded-md ${openSubTask && "border"} border-dashed border-gray-300 dark:border-slate-500`}>
+          <div class="flex items-center 0">
+            <input onChange={handleChangeAddSubTask} id="checked-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-blue-800 rounded-sm focus:none dark:bg-gray-700 dark:border-gray-600"/>
+            <label htmlFor="checked-checkbox" className=' text-gray-900 text-[14px] pl-1 font-medium dark:text-white'>List Sub Tasks</label>
+          </div>
 
-        <Input
-          type="text"
-          placeholder="Assigned User ID"
-          value={assigneeUserId}
-          onChange={(e) => setAssigneeUserId(e.target.value)}
-          id="assignee"
-          label="Assignee"
-        />
+          {openSubTask && <InputSubTask listSubTask={listSubTask} setListSubTask={setListSubTask}/>}
+        </div>
+        
+
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-2">
+          <Input
+            type="text"
+            placeholder="Author User ID"
+            value={authorUserId}
+            onChange={(e) => setAuthorUserId(e.target.value)}
+            id="author"
+            label="Author"
+          />
+
+          <Input
+            type="text"
+            placeholder="Assigned User ID"
+            value={assigneeUserId}
+            onChange={(e) => setAssigneeUserId(e.target.value)}
+            id="assignee"
+            label="Assignee"
+          />
+        </div>
+
 
         {1 === null && (
           <input

@@ -71,7 +71,7 @@ const TaskDetail = () => {
 
   return (
     <HomeLayout>
-      <div className='relative mb-2'>
+      <div className='relative'>
         <div 
           onClick={() => navigate(`/project/${taskDetail.projectId}`)}
           className='absolute top-0 left-1 flex items-center justify-center gap-2 px-3 py-1 rounded text-sm font-medium text-blue-600 dark:text-white hover:bg-blue-50 dark:hover:bg-dark-tertiary cursor-pointer transition-all duration-200'
@@ -80,9 +80,9 @@ const TaskDetail = () => {
           <p>Back To Project: <span className='font-bold'>Apollo</span></p>
         </div>
 
-        <div className='flex flex-col md:flex-row gap-3'>
+        <div className='flex flex-col md:flex-row gap-3 mb-5 h-auto'>
 
-          <div className='flex-1 md:flex-[2] bg-white dark:bg-dark-secondary dark:text-gray-200 relative top-[40px] min-h-[calc(100vh-140px)] mx-2 px-4 py-4 rounded-md shadow-sm'>
+          <div className='flex-1 md:flex-[2] mb-4 bg-white dark:bg-dark-secondary dark:text-gray-200 relative top-[40px] min-h-[calc(100vh-140px)] mx-2 px-4 pt-4 pb-0 rounded-md shadow-sm'>
 
             <div className='flex justify-between items-center'>
               <div className='flex items-center justify-start gap-3'>
@@ -146,8 +146,8 @@ const TaskDetail = () => {
                   
           </div>
 
-          <div className='flex-1 md:flex-1 bg-white dark:bg-dark-secondary dark:text-gray-200 relative top-[40px] min-h-[calc(100vh-140px)] mx-2 py-4 rounded-md shadow-sm'>
-            <h2 className="text-lg font-semibold mb-6 px-4">Activities</h2>
+          <div className='flex-1 md:flex-1 mb-4 bg-white dark:bg-dark-secondary dark:text-gray-200 relative top-[40px] min-h-[calc(100vh-140px)] mx-2 py-0 rounded-md shadow-sm'>
+            <h2 className="text-lg font-semibold mb-6 px-4 ">Activities</h2>
 
             <div className='w-full h-[0.5px] bg-gray-200 dark:bg-gray-600'></div>
             

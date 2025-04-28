@@ -2,7 +2,7 @@ import React from 'react'
 
 const ListSubTask = ({listSubTasks}) => {
   return (
-    <div className='px-1 py-4'>
+    <div className='px-1 pt-4 pb-2'>
       {listSubTasks?.length > 0 ? 
         <div className=''>
           <div name="tasksChecked">
