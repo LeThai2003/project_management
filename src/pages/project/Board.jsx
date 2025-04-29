@@ -22,7 +22,34 @@ const dataTasks = [
     "imageTask": "https://www.studytienganh.vn/upload/2021/06/105234.jpg",
     "projectId": 1,
     "authorUserId": 1,
-    "assignedUserId": 2
+    "assignedUserId": 2,
+    "sub_tasks": [
+      {
+        "sub_task_id": "1-1",
+        "sub_title": "Irish skinny, grinder affogato",
+        "isChecked": false
+      },
+      {
+        "sub_task_id": "1-2",
+        "sub_title": "Let us wax poetic about the beauty of the cheeseburger",
+        "isChecked": false
+      },
+      {
+        "sub_task_id": "1-3",
+        "sub_title": "Efficiently unleash cross-media information",
+        "isChecked": false
+      },
+      {
+        "sub_task_id": "1-4",
+        "sub_title": "Here's the story of a man named Brady",
+        "isChecked": false
+      },
+      {
+        "sub_task_id": "1-5",
+        "sub_title": "Bugger bag egg's old boy willy jolly",
+        "isChecked": false
+      },
+    ]
   },
   {
     "id": 2,
@@ -315,7 +342,7 @@ const Task = ({task}) => {
 
             {openDropdownTaskId == task.id && 
               <div className='absolute top-6 right-1'>
-                <Dropdown taskId={task.id} userId={1} authorId={task.authorUserId} assignId={task.assignedUserId}/>
+                <Dropdown userId={1} data={task}/>
               </div>
             }
           </div>

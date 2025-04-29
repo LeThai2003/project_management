@@ -3,11 +3,9 @@ import {LuUser, LuUpload, LuTrash} from "react-icons/lu";
 
 const ProfilePictureSelect = ({image, setImage}) => {
 
-  console.log("component rendered");
-
   const inputRef = useRef(null);
 
-  const [previewPictureUrl, setPreviewPictureUrl] = useState(null);
+  const [previewPictureUrl, setPreviewPictureUrl] = useState(image || null);
 
   const handleChangeImage = (e) => {
     const file = e.target.files[0];

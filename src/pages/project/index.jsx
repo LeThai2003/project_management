@@ -14,6 +14,7 @@ const Project = () => {
       <ModalNewTask
         isOpen={isModalNewTaskOpen}
         onClose={() => setIsModalNewTaskOpen(false)}
+        type="create"
       />
 
       <ProjectHeader activeTab={activeTab} setActiveTab={setActiveTab} name="Apollo"/>

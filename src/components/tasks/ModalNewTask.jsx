@@ -2,21 +2,24 @@ import React, { useState } from 'react'
 import Modal from '../Modal';
 import Input from '../inputs/Input';
 import InputSubTask from '../inputs/InputSubTask';
+import ProfilePictureSelect from '../inputs/ProfilePictureSelect';
 
-const ModalNewTask = ({isOpen, onClose}) => {
+const ModalNewTask = ({isOpen, onClose, type, data}) => {
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [status, setStatus] = useState("");
-  const [priority, setPriority] = useState("");
-  const [tags, setTags] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [dueDate, setDueDate] = useState("");
-  const [authorUserId, setAuthorUserId] = useState("");
-  const [assigneeUserId, setAssigneeUserId] = useState("");
-  const [projectId, setProjectId] = useState("");
-  const [listSubTask, setListSubTask] = useState([]);
+  const [title, setTitle] = useState(data?.title || "");
+  const [description, setDescription] = useState(data?.description || "");
+  const [status, setStatus] = useState(data?.status || "");
+  const [priority, setPriority] = useState(data?.priority || "");
+  const [tags, setTags] = useState(data?.tags || "");
+  const [startDate, setStartDate] = useState(data?.startDate.split("T")[0] || "");
+  const [dueDate, setDueDate] = useState(data?.dueDate.split("T")[0] || "");
+  const [authorUserId, setAuthorUserId] = useState(data?.authorUserId || "");
+  const [assigneeUserId, setAssigneeUserId] = useState(data?.assigneeUserId || []);
+  const [projectId, setProjectId] = useState(data?.projectId || "");
+  const [listSubTask, setListSubTask] = useState(data?.sub_tasks || []);
   
+  const [profilePic, setProfilePic] = useState(data?.imageTask || null);
+
   const [openSubTask, setOpenSubTask] = useState(false);
 
   const closeAddSubTask = () => {
@@ -43,10 +46,21 @@ const ModalNewTask = ({isOpen, onClose}) => {
   const selectStyles = "block w-full rounded border border-gray-100 px-3 py-2 dark:border-gray-600 dark:bg-dark-tertiary dark:text-white dark:focus:outline-none";
 
 
+  const handleFormKeyDown = (e) => {
+    if(e.key == "Enter")
+    {
+      e.preventDefault();
+    }
+  }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Create New Task">
-      <form className='mt-4' >
+    <Modal isOpen={isOpen} onClose={onClose} title={type == "create" ? "Create New Task" : `Edit Task ${data.title.toUpperCase()}`}>
+      <form className='mt-4' onKeyDown={handleFormKeyDown} >
+
+        <div className='mt-3'>
+          <ProfilePictureSelect image={profilePic} setImage={setProfilePic}/>
+        </div>
+
         <Input
           type="text"
           placeholder="Title"
@@ -59,11 +73,12 @@ const ModalNewTask = ({isOpen, onClose}) => {
         <div className='mt-3 flex flex-col'>
           <label htmlFor='description' className='text-slate-800 text-[14px] pl-1 font-medium dark:text-white'>Description</label>
           <textarea
+            rows={3}
             placeholder="Description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             id='description'
-            className='w-full px-4 pt-3 outline-none rounded-lg text-gray-900 text-sm mt-1 border dark:bg-dark-tertiary dark:text-white border-gray-100 dark:border-gray-600'
+            className='w-full px-4 pt-3 outline-none rounded-lg text-gray-900 text-sm mt-1 border dark:bg-dark-tertiary dark:text-white border-gray-100 dark:border-gray-600 overflow-y-auto custom-scrollbar'
           />
         </div>
 
@@ -121,13 +136,9 @@ const ModalNewTask = ({isOpen, onClose}) => {
           />
         </div>
 
-        <div className={`mt-5 mb-2 p-2 rounded-md ${openSubTask && "border"} border-dashed border-gray-300 dark:border-slate-500`}>
-          <div class="flex items-center 0">
-            <input onChange={handleChangeAddSubTask} id="checked-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-blue-800 rounded-sm focus:none dark:bg-gray-700 dark:border-gray-600"/>
-            <label htmlFor="checked-checkbox" className=' text-gray-900 text-[14px] pl-1 font-medium dark:text-white'>List Sub Tasks</label>
-          </div>
-
-          {openSubTask && <InputSubTask listSubTask={listSubTask} setListSubTask={setListSubTask}/>}
+        <div className={`mt-5 mb-2 p-2 rounded-md border border-dashed border-gray-300 dark:border-slate-500`}>
+          <p className=' text-gray-900 text-[14px] pl-1 font-medium dark:text-white'>List Sub Tasks</p>
+          <InputSubTask listSubTask={listSubTask} setListSubTask={setListSubTask}/>
         </div>
         
 
@@ -169,7 +180,7 @@ const ModalNewTask = ({isOpen, onClose}) => {
             !isFormValid()? "cursor-not-allowed opacity-50" : ""}`}
           disabled={!isFormValid()}
         >
-          Create Task
+          {type == "create" ? "Create Task" : "Update"}
         </button>
       </form>
     </Modal>
