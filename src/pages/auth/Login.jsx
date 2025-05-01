@@ -50,7 +50,7 @@ const Login = () => {
           <Input label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Your email" id="email"/>
           <Input label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder={"Your password"} id="password"/>
 
-          <Link to="#" className='flex justify-end text-sm font-medium text-[#705cf5] hover:text-primary mt-3 pl-2 tracking-[0.25px]'>Forgot password?</Link>
+          <Link to="/forgot-password" className='flex justify-end text-sm font-medium text-[#705cf5] hover:text-primary mt-3 pl-2 tracking-[0.25px]'>Forgot password?</Link>
 
           {error && <p className='text-sm text-red-500 mt-2 mb-4 pl-1'>{error}</p>}
 
