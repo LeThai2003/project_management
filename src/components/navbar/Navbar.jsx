@@ -153,15 +153,15 @@ const Navbar = () => {
 
             <div className='text-sm py-2'>
               <div className='px-4 py-3 flex justify-start items-center gap-3 text-gray-600 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 dark:bg-slate-800'>
-                <FaRegUser size-4/>
+                <FaRegUser className='size-4'/>
                 <p className=''>Edit Profile</p>
               </div>
               <div className='px-4 py-3 flex justify-start items-center gap-3 text-gray-600 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 dark:bg-slate-800'>
-                <MdOutlineLock size-4/>
+                <MdOutlineLock className='size-4'/>
                 <p className=''>Account Setting</p>
               </div>
               <div className='px-4 py-3 flex justify-start items-center gap-3 hover:bg-red-50 text-red-600 dark:text-slate-400 dark:hover:text-slate-200 dark:font-bold dark:hover:bg-slate-900'>
-                <AiOutlineLogout size-4/>
+                <AiOutlineLogout className='size-4'/>
                 <p className=''>Logout</p>
               </div>
             
