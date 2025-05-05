@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { IoReloadOutline } from "react-icons/io5";
 
-const CoundownTime = ({time}) => {
+const CoundownTime = ({time, onLoadAgain}) => {
 
   const [timeLeft, setTimeLeft] = useState(time);
   const [isTimeEnd, setIsTimeEnd] = useState(false);
@@ -30,7 +30,7 @@ const CoundownTime = ({time}) => {
   }
   
   const handleGenerateAgain = () => {
-    // onLoadAgain();
+    onLoadAgain();
     setTimeLeft(time);
     setIsTimeEnd(false);
   }

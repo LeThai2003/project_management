@@ -1,24 +1,76 @@
 import React, { useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { validateOTP } from '../../utils/helper';
-import Navbar from '../../components/Navbar/Navbar';
 import { IoIosArrowBack, IoMdArrowBack } from "react-icons/io";
 import CoundownTime from '../../components/CoundownTime/CoundownTime';
 import Input from '../../components/inputs/Input';
+import axiosInstance from '../../utils/axiosInstance';
+import { API_PATHS } from '../../utils/apiPath';
 
 
 const OtpPassword = () => {
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const email = queryParams.get("email");
+
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
+
+  const [isLoading, setIsLoading] = useState(false);
   
   const navigate = useNavigate();
-  const params = useParams();
-
-  const {email} = params;
 
   const handleBack = () => {
     navigate(-1);
   }
+
+  const onLoadAgain = async () => {
+    try {
+
+      setOtp("");
+
+      const response = await axiosInstance.post(API_PATHS.AUTH.PASSWORD_FORGOT, {email});
+
+      console.log(response.data);
+     
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+      setError(error.response.data.message); 
+    }
+  }
+
+  const handlePasswordOtp =async (e) => {
+    e.preventDefault();
+
+    if(!otp.trim())
+    {
+      setError("The OTP code not empty");
+      return;
+    }
+
+    setError("");
+
+    // API
+    try {
+      setIsLoading(true);
+
+      const response = await axiosInstance.post(API_PATHS.AUTH.PASSWORD_OTP, {otp, email});
+
+      if(response.data)
+      {
+        localStorage.setItem("token", response.data.accessToken);
+        navigate("/reset-password");
+      }
+
+      setIsLoading(false);
+
+    } catch (error) {
+      setIsLoading(false);
+      setError(error.response.data.message); 
+    }
+  } 
 
 
   return (
@@ -35,7 +87,7 @@ const OtpPassword = () => {
       <div className='w-full h-lvh flex justify-center items-center'>
         
         <div className='w-96 border border-gray-300 rounded-lg bg-white px-7 py-10'>
-          <form >
+          <form onSubmit={handlePasswordOtp}>
             <h4 className='text-2xl mb-7'>Enter OTP Code</h4>
 
             {/* <input 
@@ -55,11 +107,11 @@ const OtpPassword = () => {
               label="OTP code"
             />
 
-            {error && <p className='text-sm text-red-500 pb-1'>{error}</p>}
+            {error && <p className='text-sm text-red-500 pl-1 mt-2'>{error}</p>}
 
-            <button type='submit' className="btn-primary mt-2 mb-3" disabled={!otp}>Send</button>
+            <button type='submit' className="btn-primary mt-2 mb-3" disabled={isLoading}>{isLoading ? "Loading..." : "Send"}</button>
 
-            <CoundownTime time={300} />
+            <CoundownTime onLoadAgain={onLoadAgain} time={300} />
           </form>
         </div>
       </div>

@@ -1,13 +1,16 @@
 import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { validateOTP } from '../../utils/helper';
-import Navbar from '../../components/Navbar/Navbar';
 import { IoIosArrowBack, IoMdArrowBack } from "react-icons/io";
 import Input from '../../components/inputs/Input';
+import axiosInstance from '../../utils/axiosInstance';
+import { API_PATHS } from '../../utils/apiPath';
 
 const ResetPassword = () => {
   const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
   const params = useParams();
@@ -21,7 +24,19 @@ const ResetPassword = () => {
 
     if(!newPassword)
     {
-      setError("Vui lòng nhập mật khẩu mới.");
+      setError("Please enter new password");
+      return;
+    }
+
+    if(!confirmNewPassword)
+    {
+      setError("Please enter confirm new password");
+      return;
+    }
+
+    if(newPassword != confirmNewPassword)
+    {
+      setError("Confirm password not compare");
       return;
     }
 
@@ -30,6 +45,19 @@ const ResetPassword = () => {
     const accessToken = localStorage.getItem("token");
 
     // fetch API
+    try {
+      setIsLoading(true);
+      
+      const response = await axiosInstance.post(API_PATHS.AUTH.PASSWORD_RESET, {newPassword, accessToken});
+
+      navigate("/login");
+
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+      setError(error.response.data.message); 
+    }
 
   }
 
@@ -59,7 +87,16 @@ const ResetPassword = () => {
               onChange={(e) => setNewPassword(e.target.value)}
             />
 
-            {error && <p className='text-sm text-red-500 pb-1'>{error}</p>}
+            <Input
+              value={confirmNewPassword}
+              id="confirm_newpassword"
+              label="Confirm New Password"
+              placeholder="Password"
+              type="password"
+              onChange={(e) => setConfirmNewPassword(e.target.value)}
+            />
+
+            {error && <p className='text-sm text-red-500 pl-1 mt-2'>{error}</p>}
 
             <button type='submit' className='btn-primary mt-4'>SEND</button>
           </form>

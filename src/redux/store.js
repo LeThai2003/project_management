@@ -1,10 +1,12 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import globalReducer from "./globals/index";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import globalReducer from "./globals/index";
+import userReducer from "./users/userSlice";
 
 const rootReducer = combineReducers({
-  globals: globalReducer
+  globals: globalReducer,
+  users: userReducer,
 });
 
 const persistConfig = {

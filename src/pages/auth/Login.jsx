@@ -1,17 +1,25 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Input from '../../components/inputs/Input'
 import GoogleAuth from '../../components/oauths/GoogleAuth';
 import { validateEmail } from '../../utils/helper';
-
+import { API_PATHS } from '../../utils/apiPath';
+import axiosInstance from '../../utils/axiosInstance';
+import {useDispatch, useSelector} from "react-redux";
+import { signInFailed, signInStart, signInSuccess } from '../../redux/users/userSlice';
 
 const Login = () => {
+
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+  const {currentUser, loading} = useSelector((state) => state.users);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     if(!email)
@@ -33,6 +41,29 @@ const Login = () => {
     }
 
     setError(null);
+
+    // api ready
+    try {
+
+      dispatch(signInStart());
+
+      const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
+        email, password
+      });
+
+      console.log(response.data);
+      if(response.data)
+      {
+        dispatch(signInSuccess(response.data.user));
+        localStorage.setItem("token", response.data.accessToken)
+      }
+
+      navigate("/home")
+    } catch (error) {
+      console.log(error);
+      dispatch(signInFailed(error.response.data.message));
+      setError(error.response.data.message); 
+    }
   }
 
   return (
@@ -54,7 +85,7 @@ const Login = () => {
 
           {error && <p className='text-sm text-red-500 mt-2 mb-4 pl-1'>{error}</p>}
 
-          <button className='btn-primary'>Login</button>
+          <button className='btn-primary' disabled={loading}>{loading ? "Loading..." : "login"}</button>
         </form>
 
         <p className='text-center mt-2 text-sm tracking-[0.25px]'>Don't have an account? <Link to="/signup" className='text-[#705cf5] font-medium cursor-pointer hover:underline'>Sign Up</Link></p>

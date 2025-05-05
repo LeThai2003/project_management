@@ -3,12 +3,15 @@ import { IoIosArrowBack, IoMdArrowBack } from "react-icons/io";
 import { useNavigate } from 'react-router-dom';
 import { validateEmail } from '../../utils/helper';
 import Input from '../../components/inputs/Input';
+import axiosInstance from '../../utils/axiosInstance';
+import { API_PATHS } from '../../utils/apiPath';
 
 
 const ForgotPassword = () => {
 
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -21,14 +24,27 @@ const ForgotPassword = () => {
 
     if(!validateEmail(email))
     {
-      setError("Vui lòng nhập đúng định dạng email.");
+      setError("Please enter valid email.");
       return;
     }
 
     setError("");
 
     // fetch API
-    
+    try {
+      
+      setIsLoading(true);
+
+      const response = await axiosInstance.post(API_PATHS.AUTH.PASSWORD_FORGOT, {email});
+
+      navigate(`/otp-password?email=${email}`);
+
+      setIsLoading(false);
+
+    } catch (error) {
+      setIsLoading(false);
+      setError(error.response.data.message); 
+    }
   }
 
   return (
@@ -65,9 +81,9 @@ const ForgotPassword = () => {
               label="Email"
             />
 
-            {error && <p className='text-sm text-red-500 pb-1'>{error}</p>}
+            {error && <p className='text-sm text-red-500 mt-2 pl-1'>{error}</p>}
 
-            <button type='submit' className='btn-primary mt-4'>Get OTP</button>
+            <button type='submit' className='btn-primary mt-4' disabled={isLoading}>{isLoading ? "Loading..." : "Get OTP"}</button>
 
             <p className='text-center mt-2 text-sm'><i><b>Note: </b> The OTP code will be sent by your email!</i></p>
           </form>
