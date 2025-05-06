@@ -3,10 +3,12 @@ import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import globalReducer from "./globals/index";
 import userReducer from "./users/userSlice";
+import taskReducer from "./tasks/taskSlice"
 
 const rootReducer = combineReducers({
   globals: globalReducer,
   users: userReducer,
+  tasks: taskReducer
 });
 
 const persistConfig = {

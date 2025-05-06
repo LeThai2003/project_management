@@ -9,7 +9,9 @@ import { useParams } from 'react-router-dom';
 import PriorityTag from '../../components/tasks/PriorityTag';
 import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPath';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getNameInitials } from '../../utils/helper';
+import {updateStatus} from "../../redux/tasks/taskSlice.js"
 
 
 // const dataTasks = [
@@ -178,44 +180,23 @@ import { useSelector } from 'react-redux';
 // ]
 
 
-const ViewBoardProject = ({setIsModalNewTaskOpen, projectId}) => {
+const ViewBoardProject = ({setIsModalNewTaskOpen}) => {
 
-  const [dataTasks, setDataTasks] = useState([]);
+  const dataTasks = useSelector(state => state.tasks.tasks);
+  const dispatch = useDispatch();
 
-  const getDataTasks = async () => {
-    try {
-      const response = await axiosInstance.get(API_PATHS.TASK.GET_ALL, {
-        params: {
-          projectId: projectId
-        }
-      });
-      // console.log(response.data);
-      setDataTasks(response.data.tasks);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  const updateStatus = async (taskId, toStatus) => {
+  const moveTask = async (taskId, toStatus) => {
     try {
       const response = await axiosInstance.patch(API_PATHS.TASK.UPDATE_STATUS, {taskId, toStatus});
-      getDataTasks();
+      console.log(response.data);
+      dispatch(updateStatus(response.data.task));
+      // getDataTasks();
     } catch (error) {
       console.log(error);
     }
   }
 
-  useEffect(() => {
-    getDataTasks();
-  }, []);
-
   const taskStatus = ["To Do", "Work In Progress", "Under Review", "Completed"];
-
-  const moveTask = (taskId, toStatus) => {
-    console.log(taskId);
-    console.log(toStatus);
-    updateStatus(taskId, toStatus);
-  }
 
 
   return (
@@ -386,14 +367,18 @@ const Task = ({task}) => {
 
         <div className='flex items-center justify-between mt-3 '>
           <div className='flex -space-x-[7px] overflow-hidden'>
-            {task.authorUserId && (
+            {task.authorUserId?.profilePicture ? (
               <img
-                src='https://enlink.themenate.net/assets/images/avatars/thumb-3.jpg'
+                src={task.authorUserId?.profilePicture}
                 alt='image author'
                 width={30}
                 height={30}
                 className='size-8 rounded-full border-2 border-white object-cover dark:border-dark-secondary'
               />
+            ) : (
+              <div className='size-8 text-sm font-medium text-green-800 dark:text-gray-200 bg-green-50 dark:bg-slate-700 rounded-full flex items-center justify-center border border-green-200 dark:border-gray-200'>
+                {getNameInitials(task.authorUserId?.fullname)}  
+              </div>
             )}
             {task.assignedUserId && (
               <img

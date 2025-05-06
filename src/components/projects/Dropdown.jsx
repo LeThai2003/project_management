@@ -6,11 +6,27 @@ import { Link } from 'react-router-dom';
 import ModalNewTask from '../tasks/ModalNewTask';
 import Modal from '../Modal';
 import DeleteAlert from '../DeleteAlert';
+import axiosInstance from '../../utils/axiosInstance';
+import { API_PATHS } from '../../utils/apiPath';
+import { useDispatch } from 'react-redux';
+import { removeTask } from '../../redux/tasks/taskSlice';
 
 const Dropdown = ({userId, data}) => {
 
   const [isModalNewTaskOpen, setIsModalNewTaskOpen] = useState(false);
   const [isOpenDeleteAlert, setIsOpenDeleteAlert] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const handleDelete = async () => {
+    try {
+      const response = await axiosInstance.delete(API_PATHS.TASK.DELETE_TASK(data._id));
+      dispatch(removeTask(data._id));
+    } catch (error) {
+      console.log(error);
+    }
+    setIsOpenDeleteAlert(false);
+  }
 
   return (
     <div>
@@ -28,7 +44,7 @@ const Dropdown = ({userId, data}) => {
       >
         <DeleteAlert 
           content={<>Are you sure you want to delete the task <strong>"{data?.title}"</strong>?</>}
-          onDelete={() => setIsOpenDeleteAlert(false)}
+          onDelete={handleDelete}
         />
       </Modal>
 

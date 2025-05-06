@@ -3,8 +3,15 @@ import Modal from '../Modal';
 import Input from '../inputs/Input';
 import InputSubTask from '../inputs/InputSubTask';
 import ProfilePictureSelect from '../inputs/ProfilePictureSelect';
+import axiosInstance from '../../utils/axiosInstance';
+import { API_PATHS } from '../../utils/apiPath';
+import { useDispatch, useSelector } from 'react-redux';
+import { addTask, updateTask } from '../../redux/tasks/taskSlice';
 
-const ModalNewTask = ({isOpen, onClose, type, data}) => {
+const ModalNewTask = ({isOpen, onClose, type, data, projectId}) => {
+
+  const dataTasks = useSelector(state => state.tasks.tasks);
+  const dispatch = useDispatch();
 
   const [title, setTitle] = useState(data?.title || "");
   const [description, setDescription] = useState(data?.description || "");
@@ -13,34 +20,13 @@ const ModalNewTask = ({isOpen, onClose, type, data}) => {
   const [tags, setTags] = useState(data?.tags || "");
   const [startDate, setStartDate] = useState(data?.startDate.split("T")[0] || "");
   const [dueDate, setDueDate] = useState(data?.dueDate.split("T")[0] || "");
-  const [authorUserId, setAuthorUserId] = useState(data?.authorUserId || "");
   const [assigneeUserId, setAssigneeUserId] = useState(data?.assigneeUserId || []);
-  const [projectId, setProjectId] = useState(data?.projectId || "");
   const [listSubTask, setListSubTask] = useState(data?.sub_tasks || []);
   
   const [profilePic, setProfilePic] = useState(data?.imageTask || null);
 
-  const [openSubTask, setOpenSubTask] = useState(false);
-
-  const closeAddSubTask = () => {
-    setOpenSubTask(false);
-    setListSubTask([]);
-  }
-
-
-  const handleChangeAddSubTask = (e) => {
-    if(e.target.checked)
-    {
-      setOpenSubTask(true);
-    }
-    else
-    {
-      closeAddSubTask();
-    }
-  }
-
   const isFormValid = () => {
-    return title && authorUserId
+    return title
   }
 
   const selectStyles = "block w-full rounded border border-gray-100 px-3 py-2 dark:border-gray-600 dark:bg-dark-tertiary dark:text-white dark:focus:outline-none";
@@ -53,9 +39,54 @@ const ModalNewTask = ({isOpen, onClose, type, data}) => {
     }
   }
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if(type == "create")
+    {
+      try {
+        const response = await axiosInstance.post(API_PATHS.TASK.CREATE, {
+          title, description, status, priority, tags, startDate, sub_tasks: listSubTask, dueDate, projectId
+        });
+
+        onClose();
+
+        dispatch(addTask(response.data.task))
+
+        setTitle("");
+        setDescription("");
+        setStatus("");
+        setPriority("");
+        setTags("");
+        setStartDate("");
+        setDueDate("");
+        setAssigneeUserId("");
+        setListSubTask([]);
+        setProfilePic(null);
+
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    else
+    {
+      try {
+        const response = await axiosInstance.patch(API_PATHS.TASK.UPDATE_TASK(data?._id), {
+          title, description, status, priority, tags, startDate, sub_tasks: listSubTask, dueDate, projectId
+        });
+  
+        onClose();
+  
+        dispatch(updateTask(response.data.task));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+  }
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={type == "create" ? "Create New Task" : `Edit Task ${data.title.toUpperCase()}`}>
-      <form className='mt-4' onKeyDown={handleFormKeyDown} >
+      <form className='mt-4' onKeyDown={handleFormKeyDown} onSubmit={handleSubmit}>
 
         <div className='mt-3'>
           <ProfilePictureSelect image={profilePic} setImage={setProfilePic}/>
@@ -98,7 +129,7 @@ const ModalNewTask = ({isOpen, onClose, type, data}) => {
           <select
             className={selectStyles}
             value={priority}
-            onChange={(e) => setStatus(e.target.value)}
+            onChange={(e) => setPriority(e.target.value)}
           >
             <option value="" disabled>Select Priority</option>
             <option value={"Urgent"}>Urgent</option>
@@ -142,37 +173,15 @@ const ModalNewTask = ({isOpen, onClose, type, data}) => {
         </div>
         
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-2">
-          <Input
-            type="text"
-            placeholder="Author User ID"
-            value={authorUserId}
-            onChange={(e) => setAuthorUserId(e.target.value)}
-            id="author"
-            label="Author"
-          />
+        <Input
+          type="text"
+          placeholder="Assigned User ID"
+          value={assigneeUserId}
+          onChange={(e) => setAssigneeUserId(e.target.value)}
+          id="assignee"
+          label="Assignee"
+        />
 
-          <Input
-            type="text"
-            placeholder="Assigned User ID"
-            value={assigneeUserId}
-            onChange={(e) => setAssigneeUserId(e.target.value)}
-            id="assignee"
-            label="Assignee"
-          />
-        </div>
-
-
-        {1 === null && (
-          <input
-            type="text"
-            placeholder="ProjectId"
-            value={projectId}
-            onChange={(e) => setProjectId(e.target.value)}
-            id="projectID"
-            label="Project"
-          />
-        )}
         <button
           type="submit"
           className={`focus-offset-2 mt-4 flex w-full justify-center rounded-md border border-transparent 

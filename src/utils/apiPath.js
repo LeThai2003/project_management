@@ -23,5 +23,7 @@ export const API_PATHS = {
     CREATE: `/${base_path.task}/create`,
     GET_ALL: `/${base_path.task}/get-all`,
     UPDATE_STATUS: `/${base_path.task}/update-status`,
+    UPDATE_TASK: (id) => `/${base_path.task}/update/${id}`,
+    DELETE_TASK: (id) => `/${base_path.task}/delete/${id}`,
   },
 }

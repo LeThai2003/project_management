@@ -16,9 +16,7 @@ const InputSubTask = ({listSubTask, setListSubTask}) => {
       setListSubTask([
         ...listSubTask,
         {
-          // "sub_task_id": `${id}-${Date.now()}`,   // sau nay se doi thanh id cua task khi tao moi (cap nhat)
           "sub_title": inputValue,
-          "isChecked": false
         }
       ]);
       setInputValue("");
@@ -36,7 +34,7 @@ const InputSubTask = ({listSubTask, setListSubTask}) => {
     setListSubTask(listSubTask?.filter(item => item["sub_title"] != sub_title));
   }
 
-  console.log(listSubTask);
+  // console.log(listSubTask);
 
   return (
     <div className='mt-2 mb-4'>
