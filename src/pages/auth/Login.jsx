@@ -51,7 +51,7 @@ const Login = () => {
         email, password
       });
 
-      console.log(response.data);
+      // console.log(response.data);
       if(response.data)
       {
         dispatch(signInSuccess(response.data.user));

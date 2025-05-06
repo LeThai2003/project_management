@@ -9,6 +9,7 @@ import TaskDetail from "./pages/Task/TaskDetail"
 import ForgotPassword from "./pages/auth/ForgotPassword"
 import OtpPassword from "./pages/auth/OtpPassword"
 import ResetPassword from "./pages/auth/ResetPassword"
+import PrivateRoute from "./components/privateRoute"
 
 
 function App() {
@@ -23,10 +24,11 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword/>}/>
           <Route path="/otp-password" element={<OtpPassword/>}/>
           <Route path="/reset-password" element={<ResetPassword/>}/>
-
-          <Route path="/home" element={<Home/>}/>
-          <Route path="/project/:id" element={<Project/>}/>
-          <Route path="/task/:id" element={<TaskDetail/>}/>
+          <Route element={<PrivateRoute/>}>
+            <Route path="/home" element={<Home/>}/>
+            <Route path="/project/:id" element={<Project/>}/>
+            <Route path="/task/:id" element={<TaskDetail/>}/>
+          </Route>
         </Routes>
       </BrowserRouter>
     </>

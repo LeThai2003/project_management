@@ -35,7 +35,7 @@ const Dropdown = ({userId, data}) => {
       <div className='w-[110px] px-2 py-2 text-xs font-medium text-slate-600 bg-white dark:bg-slate-800 dark:text-gray-200 border border-gray-200 rounded dark:border-gray-600 shadow-2xl z-10'>
         
         {/* sau nay link sang trang chi tiet */}
-        <Link to={`/task/${data.taskId}`} className='flex gap-2 items-center justify-start cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-700 px-3 py-1'>
+        <Link to={`/task/${data._id}`} className='flex gap-2 items-center justify-start cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-700 px-3 py-1'>
           <IoEyeOutline className='-mb-[1px]' size={16}/>
           <p>View</p>
         </Link>
@@ -45,7 +45,7 @@ const Dropdown = ({userId, data}) => {
         </div> */}
 
         
-        {userId == data.authorUserId || userId == data.assignedUserId ?  // sau nay onClick thi link sang trang chinh sua 
+        {userId == data.authorUserId._id || userId == data.assignedUserId._id ?  // sau nay onClick thi link sang trang chinh sua 
           <div 
             onClick={() => setIsModalNewTaskOpen(true)}
             className='flex gap-2 items-center justify-start cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-700 px-3 py-1 mt-3'
@@ -56,7 +56,7 @@ const Dropdown = ({userId, data}) => {
         }
 
         
-        {userId == data.authorUserId ? 
+        {userId == data.authorUserId._id ? 
           <div className='mt-2'>
             <div className='w-full h-[0.5px] dark:bg-gray-600  bg-gray-200'></div>
             <div 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { MdOutlineClose } from "react-icons/md";
 import { CiLock } from "react-icons/ci";
 import SideMenuLink from './SideMenuLink';
@@ -12,6 +12,8 @@ import { LuCircleAlert } from "react-icons/lu";
 import { BiLayer } from "react-icons/bi";
 import { useDispatch, useSelector } from 'react-redux';
 import { setIsSiderMenuCollapsed } from '../../redux/globals';
+import axiosInstance from '../../utils/axiosInstance';
+import { API_PATHS } from '../../utils/apiPath';
 
 const SideMenu = () => {
 
@@ -21,45 +23,24 @@ const SideMenu = () => {
   const dispatch = useDispatch();
   const {isSiderMenuCollapsed} = useSelector(state => state.globals);
 
-  const dataProjects = [
-    {
-      "id": 1,
-      "name": "Apollo",
-      "description": "A space exploration project.",
-      "startDate": "2023-01-01T00:00:00Z",
-      "endDate": "2023-12-31T00:00:00Z"
-    },
-    {
-      "id": 2,
-      "name": "Beacon",
-      "description": "Developing advanced navigation systems.",
-      "startDate": "2023-02-01T00:00:00Z",
-      "endDate": "2023-10-15T00:00:00Z"
-    },
-    {
-      "id": 3,
-      "name": "Catalyst",
-      "description": "A project to boost renewable energy use.",
-      "startDate": "2023-03-05T00:00:00Z",
-      "endDate": "2024-03-05T00:00:00Z"
-    },
-    {
-      "id": 4,
-      "name": "Delta",
-      "description": "Delta project for new software development techniques.",
-      "startDate": "2023-01-20T00:00:00Z",
-      "endDate": "2023-09-20T00:00:00Z"
-    },
-    {
-      "id": 5,
-      "name": "Echo",
-      "description": "Echo project focused on AI advancements.",
-      "startDate": "2023-04-15T00:00:00Z",
-      "endDate": "2023-11-30T00:00:00Z"
-    },
-  ];
-  
+  const [dataProjects, setDataProjects] = useState([]);
 
+  useEffect(() => {
+
+    const getProject = async () => {
+      try {
+        const response = await axiosInstance.get(API_PATHS.PROJECT.GET_ALL);
+        // console.log(response.data);
+        setDataProjects(response.data.projects);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    getProject();
+
+  }, [])
+  
 
   return (
     <div className={`flex flex-col fixed h-full shadow-xl transition-all duration-300 bg-white dark:bg-dark-bg ${isSiderMenuCollapsed ? "w-0 hidden" : "w-[250px]"}  z-50 overflow-y-auto custom-scrollbar`}>
@@ -94,7 +75,7 @@ const SideMenu = () => {
         {showProjects ? <FaChevronUp className='size-3'/> : <FaChevronDown className='size-3'/> }
       </button>
       {showProjects && dataProjects?.map((project, index) => (
-        <SideMenuLink key={index} label={project?.name} href={`/project/${index}`} icon={FiBriefcase}/>
+        <SideMenuLink key={project._id} label={project?.name} href={`/project/${project._id}`} icon={FiBriefcase}/>
       ))}
 
       <button onClick={() => setShowPriority(!showPriority)} className='w-full flex items-center justify-between text-gray-500 dark:bg-dark-bg px-6 py-3'>

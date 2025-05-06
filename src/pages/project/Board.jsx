@@ -7,198 +7,214 @@ import { LuMessageSquare } from 'react-icons/lu';
 import Dropdown from '../../components/projects/Dropdown';
 import { useParams } from 'react-router-dom';
 import PriorityTag from '../../components/tasks/PriorityTag';
+import axiosInstance from '../../utils/axiosInstance';
+import { API_PATHS } from '../../utils/apiPath';
+import { useSelector } from 'react-redux';
 
 
-const dataTasks = [
-  {
-    "id": 1,
-    "title": "Task 1",
-    "description": "I've made a huge tiny mistake. Don't worry, these young beauties have been nowhere near the bananas. You don't want a hungry dove down your pants. Caw ca caw, caw ca caw, caw ca caw, caw ca caw. I'm in Vegas this week and would like to point out the Blue Man Group is *actually* hiring. The support group? Oh, like when they say 'poofter' to mean 'tourist', yes.",
-    "status": "Work In Progress",
-    "priority": "Urgent",
-    "tags": "Design",
-    "startDate": "2023-01-10T00:00:00Z",
-    "dueDate": "2023-04-10T00:00:00Z",
-    "imageTask": "https://www.studytienganh.vn/upload/2021/06/105234.jpg",
-    "projectId": 1,
-    "authorUserId": 1,
-    "assignedUserId": 2,
-    "sub_tasks": [
-      {
-        "sub_task_id": "1-1",
-        "sub_title": "Irish skinny, grinder affogato",
-        "isChecked": false
-      },
-      {
-        "sub_task_id": "1-2",
-        "sub_title": "Let us wax poetic about the beauty of the cheeseburger",
-        "isChecked": false
-      },
-      {
-        "sub_task_id": "1-3",
-        "sub_title": "Efficiently unleash cross-media information",
-        "isChecked": false
-      },
-      {
-        "sub_task_id": "1-4",
-        "sub_title": "Here's the story of a man named Brady",
-        "isChecked": false
-      },
-      {
-        "sub_task_id": "1-5",
-        "sub_title": "Bugger bag egg's old boy willy jolly",
-        "isChecked": false
-      },
-    ]
-  },
-  {
-    "id": 2,
-    "title": "Task 2",
-    "description": "Implement the navigation algorithm.",
-    "status": "To Do",
-    "priority": "High",
-    "tags": "Coding",
-    "startDate": "2023-01-15T00:00:00Z",
-    "dueDate": "2023-05-15T00:00:00Z",
-    "projectId": 1,
-    "authorUserId": 3,
-    "assignedUserId": 4
-  },
-  {
-    "id": 3,
-    "title": "Task 3",
-    "description": "Develop renewable energy solutions.",
-    "status": "Work In Progress",
-    "priority": "Urgent",
-    "tags": "Development",
-    "startDate": "2023-03-20T00:00:00Z",
-    "dueDate": "2023-09-20T00:00:00Z",
-    "imageTask": "https://www.cflowapps.com/wp-content/uploads/2021/12/diffnce_job_task_process.jpeg",
-    "projectId": 1,
-    "authorUserId": 5,
-    "assignedUserId": 6
-  },
-  {
-    "id": 4,
-    "title": "Task 4",
-    "description": "Outline new software development workflows.",
-    "status": "To Do",
-    "priority": "High",
-    "tags": "Planning",
-    "startDate": "2023-01-25T00:00:00Z",
-    "dueDate": "2023-06-25T00:00:00Z",
-    "projectId": 1,
-    "authorUserId": 7,
-    "assignedUserId": 8
-  },
-  {
-    "id": 5,
-    "title": "Task 5",
-    "description": "Research AI models for prediction.",
-    "status": "Work In Progress",
-    "priority": "Urgent",
-    "tags": "Research",
-    "startDate": "2023-04-20T00:00:00Z",
-    "dueDate": "2023-10-20T00:00:00Z",
-    "projectId": 1,
-    "comments": 2,
-    "authorUserId": 9,
-    "assignedUserId": 10
-  },
-  {
-    "id": 6,
-    "title": "Task 6",
-    "description": "Biotech product testing.",
-    "status": "To Do",
-    "priority": "Backlog",
-    "tags": "Testing",
-    "startDate": "2023-03-01T00:00:00Z",
-    "dueDate": "2023-08-01T00:00:00Z",
-    "projectId": 1,
-    "authorUserId": 11,
-    "assignedUserId": 12
-  },
-  {
-    "id": 7,
-    "title": "Task 7",
-    "description": "AI optimization for golf equipment.",
-    "status": "Work In Progress",
-    "priority": "Urgent",
-    "tags": "Optimization",
-    "startDate": "2023-05-15T00:00:00Z",
-    "dueDate": "2023-11-15T00:00:00Z",
-    "projectId": 1,
-    "comments": 1,
-    "authorUserId": 13,
-    "assignedUserId": 14
-  },
-  {
-    "id": 8,
-    "title": "Task 8",
-    "description": "Overhaul of the database for hotel management.",
-    "status": "Under Review",
-    "priority": "High",
-    "tags": "Database",
-    "startDate": "2023-04-01T00:00:00Z",
-    "dueDate": "2023-10-01T00:00:00Z",
-    "projectId": 1,
-    "authorUserId": 15,
-    "assignedUserId": 16
-  },
-  {
-    "id": 9,
-    "title": "Task 9",
-    "description": "Upgrade telecom infrastructure.",
-    "status": "Work In Progress",
-    "priority": "Urgent",
-    "tags": "Infrastructure",
-    "startDate": "2023-06-10T00:00:00Z",
-    "dueDate": "2023-12-10T00:00:00Z",
-    "projectId": 1,
-    "comments": 3,
-    "authorUserId": 17,
-    "assignedUserId": 18
-  },
-  {
-    "id": 10,
-    "title": "Task 10",
-    "description": "Enhance security protocols.",
-    "status": "Completed",
-    "priority": "Urgent",
-    "tags": "Security",
-    "startDate": "2023-07-05T00:00:00Z",
-    "dueDate": "2024-01-05T00:00:00Z",
-    "projectId": 1,
-    "authorUserId": 19,
-    "assignedUserId": 20
-  },
-]
-
-const ViewBoardProject = ({setIsModalNewTaskOpen}) => {
+// const dataTasks = [
+//   {
+//     "id": 1,
+//     "title": "Task 1",
+//     "description": "I've made a huge tiny mistake. Don't worry, these young beauties have been nowhere near the bananas. You don't want a hungry dove down your pants. Caw ca caw, caw ca caw, caw ca caw, caw ca caw. I'm in Vegas this week and would like to point out the Blue Man Group is *actually* hiring. The support group? Oh, like when they say 'poofter' to mean 'tourist', yes.",
+//     "status": "Work In Progress",
+//     "priority": "Urgent",
+//     "tags": "Design",
+//     "startDate": "2023-01-10T00:00:00Z",
+//     "dueDate": "2023-04-10T00:00:00Z",
+//     "imageTask": "https://www.studytienganh.vn/upload/2021/06/105234.jpg",
+//     "projectId": 1,
+//     "authorUserId": 1,
+//     "assignedUserId": 2,
+//     "sub_tasks": [
+//       {
+//         "sub_task_id": "1-1",
+//         "sub_title": "Irish skinny, grinder affogato",
+//         "isChecked": false
+//       },
+//       {
+//         "sub_task_id": "1-2",
+//         "sub_title": "Let us wax poetic about the beauty of the cheeseburger",
+//         "isChecked": false
+//       },
+//       {
+//         "sub_task_id": "1-3",
+//         "sub_title": "Efficiently unleash cross-media information",
+//         "isChecked": false
+//       },
+//       {
+//         "sub_task_id": "1-4",
+//         "sub_title": "Here's the story of a man named Brady",
+//         "isChecked": false
+//       },
+//       {
+//         "sub_task_id": "1-5",
+//         "sub_title": "Bugger bag egg's old boy willy jolly",
+//         "isChecked": false
+//       },
+//     ]
+//   },
+//   {
+//     "id": 2,
+//     "title": "Task 2",
+//     "description": "Implement the navigation algorithm.",
+//     "status": "To Do",
+//     "priority": "High",
+//     "tags": "Coding",
+//     "startDate": "2023-01-15T00:00:00Z",
+//     "dueDate": "2023-05-15T00:00:00Z",
+//     "projectId": 1,
+//     "authorUserId": 3,
+//     "assignedUserId": 4
+//   },
+//   {
+//     "id": 3,
+//     "title": "Task 3",
+//     "description": "Develop renewable energy solutions.",
+//     "status": "Work In Progress",
+//     "priority": "Urgent",
+//     "tags": "Development",
+//     "startDate": "2023-03-20T00:00:00Z",
+//     "dueDate": "2023-09-20T00:00:00Z",
+//     "imageTask": "https://www.cflowapps.com/wp-content/uploads/2021/12/diffnce_job_task_process.jpeg",
+//     "projectId": 1,
+//     "authorUserId": 5,
+//     "assignedUserId": 6
+//   },
+//   {
+//     "id": 4,
+//     "title": "Task 4",
+//     "description": "Outline new software development workflows.",
+//     "status": "To Do",
+//     "priority": "High",
+//     "tags": "Planning",
+//     "startDate": "2023-01-25T00:00:00Z",
+//     "dueDate": "2023-06-25T00:00:00Z",
+//     "projectId": 1,
+//     "authorUserId": 7,
+//     "assignedUserId": 8
+//   },
+//   {
+//     "id": 5,
+//     "title": "Task 5",
+//     "description": "Research AI models for prediction.",
+//     "status": "Work In Progress",
+//     "priority": "Urgent",
+//     "tags": "Research",
+//     "startDate": "2023-04-20T00:00:00Z",
+//     "dueDate": "2023-10-20T00:00:00Z",
+//     "projectId": 1,
+//     "comments": 2,
+//     "authorUserId": 9,
+//     "assignedUserId": 10
+//   },
+//   {
+//     "id": 6,
+//     "title": "Task 6",
+//     "description": "Biotech product testing.",
+//     "status": "To Do",
+//     "priority": "Backlog",
+//     "tags": "Testing",
+//     "startDate": "2023-03-01T00:00:00Z",
+//     "dueDate": "2023-08-01T00:00:00Z",
+//     "projectId": 1,
+//     "authorUserId": 11,
+//     "assignedUserId": 12
+//   },
+//   {
+//     "id": 7,
+//     "title": "Task 7",
+//     "description": "AI optimization for golf equipment.",
+//     "status": "Work In Progress",
+//     "priority": "Urgent",
+//     "tags": "Optimization",
+//     "startDate": "2023-05-15T00:00:00Z",
+//     "dueDate": "2023-11-15T00:00:00Z",
+//     "projectId": 1,
+//     "comments": 1,
+//     "authorUserId": 13,
+//     "assignedUserId": 14
+//   },
+//   {
+//     "id": 8,
+//     "title": "Task 8",
+//     "description": "Overhaul of the database for hotel management.",
+//     "status": "Under Review",
+//     "priority": "High",
+//     "tags": "Database",
+//     "startDate": "2023-04-01T00:00:00Z",
+//     "dueDate": "2023-10-01T00:00:00Z",
+//     "projectId": 1,
+//     "authorUserId": 15,
+//     "assignedUserId": 16
+//   },
+//   {
+//     "id": 9,
+//     "title": "Task 9",
+//     "description": "Upgrade telecom infrastructure.",
+//     "status": "Work In Progress",
+//     "priority": "Urgent",
+//     "tags": "Infrastructure",
+//     "startDate": "2023-06-10T00:00:00Z",
+//     "dueDate": "2023-12-10T00:00:00Z",
+//     "projectId": 1,
+//     "comments": 3,
+//     "authorUserId": 17,
+//     "assignedUserId": 18
+//   },
+//   {
+//     "id": 10,
+//     "title": "Task 10",
+//     "description": "Enhance security protocols.",
+//     "status": "Completed",
+//     "priority": "Urgent",
+//     "tags": "Security",
+//     "startDate": "2023-07-05T00:00:00Z",
+//     "dueDate": "2024-01-05T00:00:00Z",
+//     "projectId": 1,
+//     "authorUserId": 19,
+//     "assignedUserId": 20
+//   },
+// ]
 
 
-  // const [datas, setDatas] = useState(dataTasks);
-  const [datas, setDatas] = useState(() => dataTasks.map(task => ({ ...task })));
+const ViewBoardProject = ({setIsModalNewTaskOpen, projectId}) => {
 
+  const [dataTasks, setDataTasks] = useState([]);
+
+  const getDataTasks = async () => {
+    try {
+      const response = await axiosInstance.get(API_PATHS.TASK.GET_ALL, {
+        params: {
+          projectId: projectId
+        }
+      });
+      // console.log(response.data);
+      setDataTasks(response.data.tasks);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const updateStatus = async (taskId, toStatus) => {
+    try {
+      const response = await axiosInstance.patch(API_PATHS.TASK.UPDATE_STATUS, {taskId, toStatus});
+      getDataTasks();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getDataTasks();
+  }, []);
 
   const taskStatus = ["To Do", "Work In Progress", "Under Review", "Completed"];
 
-  const updateTaskStatus = (taskId, toStatus) => {
-  }
-
   const moveTask = (taskId, toStatus) => {
-    // updateTaskStatus({taskId, status: toStatus})
-    console.log(taskId, toStatus);
-    // const updateDatas = datas?.map(item => item.id === taskId ? {...item, status: toStatus} : item);
-    const updateDatas = datas.map(item => {
-      if (item.id == taskId) {
-        console.log("Before:", item.status, " After:", toStatus);
-        return { ...item, status: toStatus };
-      }
-      return item;
-    });
-    console.log(updateDatas);
-    setDatas(updateDatas);
+    console.log(taskId);
+    console.log(toStatus);
+    updateStatus(taskId, toStatus);
   }
 
 
@@ -209,7 +225,7 @@ const ViewBoardProject = ({setIsModalNewTaskOpen}) => {
           <TaskColumn 
             key={status}
             status={status}
-            tasks={datas || []}
+            tasks={dataTasks || []}
             moveTask={moveTask}
             setIsModalNewTaskOpen={setIsModalNewTaskOpen}
           />
@@ -266,7 +282,7 @@ const TaskColumn = ({status, tasks, moveTask, setIsModalNewTaskOpen}) => {
           </div>
         </div>
       </div>
-      {tasks.filter(task => task.status == status).map(task => (<Task key={task.id} task={task}/>))}
+      {tasks.filter(task => task.status == status).map(task => (<Task key={task._id} task={task}/>))}
     </div>
   )
 }
@@ -274,14 +290,18 @@ const TaskColumn = ({status, tasks, moveTask, setIsModalNewTaskOpen}) => {
 
 const Task = ({task}) => {
 
-
   const [{isDragging}, drag] = useDrag(() => ({
     type: "task",
-    item: {id: task.id},
+    item: {id: task._id},
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging()
     })
   }))
+
+  const {currentUser} = useSelector(state => state.users);
+
+  // console.log(task);
+  // console.log(currentUser);
 
   const taskTagsSplit =task.tags ? task.tags?.split(",") : [];
 
@@ -335,14 +355,14 @@ const Task = ({task}) => {
           <div className='relative dropdown-task'>
             <button 
               className='flex size-6 items-center justify-center dark:text-neutral-300'
-              onClick={() => setOpenDropdownTaskId(openDropdownTaskId == task.id ? null : task.id)}
+              onClick={() => setOpenDropdownTaskId(openDropdownTaskId == task._id ? null : task._id)}
             >
               <FaEllipsisVertical size={16}/>
             </button>
 
-            {openDropdownTaskId == task.id && 
+            {openDropdownTaskId == task._id && 
               <div className='absolute top-6 right-1'>
-                <Dropdown userId={1} data={task}/>
+                <Dropdown userId={currentUser._id} data={task}/>
               </div>
             }
           </div>
