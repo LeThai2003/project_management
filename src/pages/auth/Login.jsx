@@ -58,7 +58,7 @@ const Login = () => {
         localStorage.setItem("token", response.data.accessToken)
       }
 
-      navigate("/home")
+      navigate("/")
     } catch (error) {
       console.log(error);
       dispatch(signInFailed(error.response.data.message));

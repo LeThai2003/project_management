@@ -1,8 +1,23 @@
 import React, { useState } from 'react'
+import axiosInstance from '../../utils/axiosInstance';
+import { API_PATHS } from '../../utils/apiPath';
+import { useDispatch } from 'react-redux';
+import { updateTask } from '../../redux/tasks/taskSlice';
 
-const ListSubTask = ({listSubTasks}) => {
+const ListSubTask = ({status, taskId, listSubTasks}) => {
 
-  const [listCheck, setListCheck] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const [listCheck, setListCheck] = useState(
+    listSubTasks.length > 0 ? 
+      listSubTasks?.filter(item => item.isChecked).map(item => item._id) 
+      : 
+      status !== "To Do" ? ["completed"] : []
+  );
+
+  console.log(status, listCheck);
 
   const handleChange = (e) => {
     if(e.target.checked)
@@ -19,8 +34,16 @@ const ListSubTask = ({listSubTasks}) => {
     }
   }
 
-  const handleUpdate = () => {
-    console.log(listCheck);
+  const handleUpdate = async () => {
+    setIsLoading(true);
+    try {
+        const response = await axiosInstance.patch(API_PATHS.TASK.LIST_SUB_TASKS(taskId), {listCheck});
+        dispatch(updateTask(response.data.task));
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+        console.log(error);
+      }
   }
 
   return (
@@ -29,9 +52,21 @@ const ListSubTask = ({listSubTasks}) => {
         <div className=''>
           <div name="tasksChecked">
             {listSubTasks?.map(item => (
-              <div key={item.sub_task_id} class="flex items-center mt-4">
-                <input id={item.sub_task_id} onChange={handleChange} type="checkbox" value={item.sub_task_id} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                <label htmlFor={item.sub_task_id} className="ms-2 text-sm tracking-[0.2px] text-gray-700 dark:text-gray-300">{item.sub_title}</label>
+              <div key={item._id} className="flex items-center mt-4">
+                <input 
+                  id={item._id} 
+                  onChange={handleChange} 
+                  type="checkbox" 
+                  value={item._id} 
+                  checked={listCheck.includes(item._id.toString())}
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                />
+                <label 
+                  htmlFor={item._id} 
+                  className="ms-2 text-sm tracking-[0.2px] text-gray-700 dark:text-gray-300"
+                >
+                  {item.sub_title}
+                </label>
               </div>
             ))}
           </div>
@@ -40,7 +75,7 @@ const ListSubTask = ({listSubTasks}) => {
             className='mt-5 w-full px-4 py-2 cursor-pointer bg-violet-500 hover:bg-purple-600 uppercase rounded-lg flex items-center justify-center text-white font-medium my-3 dark:text-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700'
             onClick={handleUpdate}
           >
-            UPDATE TASK COMPLETE
+            {isLoading ? "UPDATING..." : "UPDATE TASK COMPLETE"}
           </button>
         </div> 
           : 
@@ -48,15 +83,27 @@ const ListSubTask = ({listSubTasks}) => {
           <p className='text-sm italic text-blue-500 dark:text-gray-200'>No list sub tasks</p>
 
           <div class="flex items-center mt-4" name="tasksChecked">
-            <input id="completed" type="checkbox" onChange={handleChange} value="completed" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-            <label htmlFor="completed" className="ms-2 text-sm tracking-[0.2px] text-gray-700 dark:text-gray-300">Compeleted Task</label>
+            <input 
+              id="completed" 
+              type="checkbox" 
+              onChange={handleChange} 
+              value="completed" 
+              checked={listCheck.includes("completed")}
+              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+            />
+            <label 
+              htmlFor="completed" 
+              className="ms-2 text-sm tracking-[0.2px] text-gray-700 dark:text-gray-300"
+            >
+              Compeleted Task
+            </label>
           </div>
 
           <button 
             className='mt-4 w-full px-4 py-2 cursor-pointer bg-violet-500 hover:bg-purple-600 uppercase rounded-lg flex items-center justify-center text-white font-medium my-3 dark:text-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700'
             onClick={handleUpdate}
           >
-            Cập nhật công việc
+            {isLoading ? "UPDATING..." : "UPDATE TASK COMPLETE"}
           </button>
         </div>
       }

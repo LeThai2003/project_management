@@ -25,7 +25,7 @@ function App() {
           <Route path="/otp-password" element={<OtpPassword/>}/>
           <Route path="/reset-password" element={<ResetPassword/>}/>
           <Route element={<PrivateRoute/>}>
-            <Route path="/home" element={<Home/>}/>
+            <Route path="/" element={<Home/>}/>
             <Route path="/project/:id" element={<Project/>}/>
             <Route path="/task/:id" element={<TaskDetail/>}/>
           </Route>

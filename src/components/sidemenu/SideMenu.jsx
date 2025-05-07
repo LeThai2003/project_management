@@ -64,7 +64,7 @@ const SideMenu = () => {
       </div>
 
       <div className='w-full'>
-        <SideMenuLink label="Home" href="/home" icon={IoHomeOutline}/>
+        <SideMenuLink label="Home" href="/" icon={IoHomeOutline}/>
         <SideMenuLink label="Timeline" href="/timeline" icon={MdOutlineViewTimeline}/>
         <SideMenuLink label="Search" href="/search" icon={IoSearchOutline}/>
         <SideMenuLink label="Settings" href="/settings" icon={IoSettingsOutline}/>

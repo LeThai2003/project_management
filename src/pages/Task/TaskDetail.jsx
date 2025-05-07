@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import HomeLayout from '../../components/Layouts/HomeLayout'
 import { useNavigate, useParams } from 'react-router-dom'
 import { IoIosArrowBack } from "react-icons/io";
@@ -12,57 +12,35 @@ import { AiOutlineMessage } from "react-icons/ai";
 import TabButton from '../../components/tabButtons/TabButton';
 import ListSubTask from '../../components/tasks/ListSubTask';
 import Comment from '../../components/tasks/Comment';
+import axiosInstance from '../../utils/axiosInstance';
+import { API_PATHS } from '../../utils/apiPath';
 
 const TaskDetail = () => {
 
   const {id} = useParams();
-  // console.log(id); 
+ 
+  const [taskDetail, setTaskDetail] = useState({});
+  const [activeTab, setActiveTab] = useState(`Tasks (0)`);
 
+  useEffect(() => {
+    const getTaskDetail = async () => {
+      try {
+        const response = await axiosInstance.get(API_PATHS.TASK.TASK_DETAIL(id));
+        console.log(response.data);
+        setTaskDetail(response.data.task);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-  // gia su query ra co ket qua sau
-  const taskDetail = {
-    "id": 1,
-    "title": "Task 1",
-    "description": "I've made a huge tiny mistake. Don't worry, these young beauties have been nowhere near the bananas. You don't want a hungry dove down your pants. Caw ca caw, caw ca caw, caw ca caw, caw ca caw. I'm in Vegas this week and would like to point out the Blue Man Group is *actually* hiring. The support group? Oh, like when they say 'poofter' to mean 'tourist', yes.",
-    "status": "Work In Progress",
-    "priority": "Urgent",
-    "tags": "Design",
-    "startDate": "2023-01-10T00:00:00Z",
-    "dueDate": "2023-04-10T00:00:00Z",
-    "imageTask": "https://www.studytienganh.vn/upload/2021/06/105234.jpg",
-    "projectId": 1,  // lay them ten du an 
-    "authorUserId": 1,   // sau nay phai co thong tin: anh, ten,... 
-    "assignedUserId": 2,  // tuong tu: anh, ten,...
-    "sub_tasks": [
-      {
-        "sub_task_id": "1-1",
-        "sub_title": "Irish skinny, grinder affogato",
-        "isChecked": false
-      },
-      {
-        "sub_task_id": "1-2",
-        "sub_title": "Let us wax poetic about the beauty of the cheeseburger",
-        "isChecked": false
-      },
-      {
-        "sub_task_id": "1-3",
-        "sub_title": "Efficiently unleash cross-media information",
-        "isChecked": false
-      },
-      {
-        "sub_task_id": "1-4",
-        "sub_title": "Here's the story of a man named Brady",
-        "isChecked": false
-      },
-      {
-        "sub_task_id": "1-5",
-        "sub_title": "Bugger bag egg's old boy willy jolly",
-        "isChecked": false
-      },
-    ]
-  }
+    getTaskDetail()  
+  }, []);
 
-  const [activeTab, setActiveTab] = useState(`Tasks (${taskDetail.sub_tasks.length})`);
+  useEffect(() => {
+    if (taskDetail?.sub_tasks?.length !== undefined) {
+      setActiveTab(`Tasks (${taskDetail.sub_tasks.length})`);
+    }
+  }, [taskDetail]);
 
   const navigate = useNavigate();
 
@@ -73,11 +51,11 @@ const TaskDetail = () => {
     <HomeLayout>
       <div className='relative'>
         <div 
-          onClick={() => navigate(`/project/${taskDetail.projectId}`)}
+          onClick={() => navigate(`/project/${taskDetail?.projectId?._id}`)}
           className='absolute top-0 left-1 flex items-center justify-center gap-2 px-3 py-1 rounded text-sm font-medium text-blue-600 dark:text-white hover:bg-blue-50 dark:hover:bg-dark-tertiary cursor-pointer transition-all duration-200'
         >
           <IoIosArrowBack className='size-4'/>
-          <p>Back To Project: <span className='font-bold'>Apollo</span></p>
+          <p>Back To Project: <span className='font-bold'>{taskDetail?.projectId?.name}</span></p>
         </div>
 
         <div className='flex flex-col md:flex-row gap-3 mb-5 h-auto'>
@@ -116,31 +94,56 @@ const TaskDetail = () => {
             <div className='mt-5 flex items-center justify-between'>
               <div className='flex items-center justify-start gap-2'>
                 <p className='font-medium text-gray-700 dark:text-gray-200 tracking-[0.2px] text-sm'>Creator: <span className='text-slate-600 dark:text-slate-400'>Nguyễn Văn An</span></p>
-                <div className='border border-gray-200 rounded-full'>
-                  <img
-                    src='https://enlink.themenate.net/assets/images/avatars/thumb-4.jpg'
-                    alt='image assignee'
-                    width={30}
-                    height={30}
-                    className='size-8 rounded-full object-cover dark:border-dark-secondary'
-                  />
-                </div>
+                {
+                  taskDetail?.authorUserId?.profilePicture ? 
+                    <div className='border border-gray-200 rounded-full'>
+                      <img
+                        src={taskDetail?.authorUserId.profilePicture}
+                        alt='image assignee'
+                        width={30}
+                        height={30}
+                        className='size-8 rounded-full object-cover dark:border-dark-secondary'
+                      />
+                    </div>
+                    :
+                    <div className='size-8 text-sm font-medium text-green-800 dark:text-gray-200 bg-green-50 dark:bg-slate-700 rounded-full flex items-center justify-center border border-green-200 dark:border-gray-200'>
+                      {getNameInitials(taskDetail?.authorUserId?.fullname)}  
+                    </div>
+                }  
               </div>
-              <div className='flex items-center justify-start gap-2'>
-                <p className='font-medium text-gray-700 dark:text-gray-200 tracking-[0.2px] text-sm'>Assignee: <span className='text-slate-600 dark:text-slate-400'>Phạm Thị Lý</span></p>
-                <div className='size-8 text-sm font-medium text-green-800 dark:text-gray-200 bg-green-50 dark:bg-slate-700 rounded-full flex items-center justify-center border border-green-200 dark:border-gray-200'>
-                  {getNameInitials("Phạm Thị Lý")}  
+
+              {
+                taskDetail?.assignedUserId && 
+                <div className='flex items-center justify-start gap-2'>
+                  <p className='font-medium text-gray-700 dark:text-gray-200 tracking-[0.2px] text-sm'>Assignee: <span className='text-slate-600 dark:text-slate-400'>Nguyễn Văn An</span></p>
+                  {
+                    taskDetail?.authorUserId?.profilePicture ? 
+                      <div className='border border-gray-200 rounded-full'>
+                        <img
+                          src={taskDetail?.authorUserId.profilePicture}
+                          alt='image assignee'
+                          width={30}
+                          height={30}
+                          className='size-8 rounded-full object-cover dark:border-dark-secondary'
+                        />
+                      </div>
+                      :
+                      <div className='size-8 text-sm font-medium text-green-800 dark:text-gray-200 bg-green-50 dark:bg-slate-700 rounded-full flex items-center justify-center border border-green-200 dark:border-gray-200'>
+                        {getNameInitials(taskDetail?.authorUserId?.fullname)}  
+                      </div>
+                  }  
                 </div>
-              </div>
+              }
+            
             </div>
 
             {/* tab */}
             <div className='mt-5 flex items-center justify-start gap-4 border-b border-gray-200 dark:border-gray-600 pb-2'>
-              <TabButton name={`Tasks (${taskDetail.sub_tasks.length})`} activeTab={activeTab} setActiveTab={setActiveTab}/>
+              <TabButton name={`Tasks (${taskDetail?.sub_tasks?.length})`} activeTab={activeTab} setActiveTab={setActiveTab}/>
               <TabButton name={`Comments`} activeTab={activeTab} setActiveTab={setActiveTab}/>
             </div>
 
-            {activeTab == `Tasks (${taskDetail.sub_tasks.length})` && <ListSubTask listSubTasks={taskDetail.sub_tasks}/>}
+            {activeTab == `Tasks (${taskDetail?.sub_tasks?.length})` && <ListSubTask status={taskDetail?.status} taskId={id} listSubTasks={taskDetail.sub_tasks}/>}
             {activeTab == `Comments` && <Comment/>}
 
                   

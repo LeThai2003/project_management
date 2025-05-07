@@ -25,5 +25,7 @@ export const API_PATHS = {
     UPDATE_STATUS: `/${base_path.task}/update-status`,
     UPDATE_TASK: (id) => `/${base_path.task}/update/${id}`,
     DELETE_TASK: (id) => `/${base_path.task}/delete/${id}`,
+    TASK_DETAIL: (id) => `/${base_path.task}/${id}`,
+    LIST_SUB_TASKS: (id) => `/${base_path.task}/update-completed/${id}`,
   },
 }
