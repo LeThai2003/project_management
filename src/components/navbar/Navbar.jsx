@@ -139,13 +139,13 @@ const Navbar = () => {
           {
             currentUser?.profilePicture ?
             <div 
-              className='size-9 rounded-full overflow-hidden border border-gray-200 dark:border-slate-800 ml-2 cursor-pointer'
+              className='size-10 rounded-full overflow-hidden border border-gray-200 dark:border-slate-800 ml-2 cursor-pointer'
               onClick={() => setIsOpenDropdownAvatar(!isOpenDropdownAvatar)}  
             >
               <img 
                 src={currentUser.profilePicture}
                 alt="image profile" 
-                className='size-9 object-cover'  
+                className='size-10 object-cover'  
               />
             </div>
             :

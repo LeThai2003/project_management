@@ -6,6 +6,7 @@ import ProfilePictureSelect from '../../components/inputs/ProfilePictureSelect';
 import { validateEmail } from '../../utils/helper';
 import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPath';
+import { uploadSingleImage } from '../../utils/uploads/uploadimage';
 
 const Signup = () => {
 
@@ -56,8 +57,14 @@ const Signup = () => {
 
       setIsLoading(true);
 
+      if(profilePic)
+      {
+        const uploadImageResult = await uploadSingleImage(profilePic);
+        profileImageUrl = uploadImageResult.imageUrl || ""; 
+      }
+
       const response = await axiosInstance.post(API_PATHS.AUTH.SIGNUP, {
-        fullname, email, password
+        fullname, email, password, profileImageUrl
       });
 
       navigate("/login")
