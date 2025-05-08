@@ -24,11 +24,17 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword/>}/>
           <Route path="/otp-password" element={<OtpPassword/>}/>
           <Route path="/reset-password" element={<ResetPassword/>}/>
+       
+          {/* <Route path="/" element={<Home/>}/>
+          <Route path="/project/:id" element={<Project/>}/>
+          <Route path="/task/:id" element={<TaskDetail/>}/> */}
+ 
           <Route element={<PrivateRoute/>}>
             <Route path="/" element={<Home/>}/>
             <Route path="/project/:id" element={<Project/>}/>
             <Route path="/task/:id" element={<TaskDetail/>}/>
           </Route>
+          
         </Routes>
       </BrowserRouter>
     </>

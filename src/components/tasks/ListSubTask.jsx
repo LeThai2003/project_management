@@ -14,7 +14,7 @@ const ListSubTask = ({status, taskId, listSubTasks}) => {
     listSubTasks.length > 0 ? 
       listSubTasks?.filter(item => item.isChecked).map(item => item._id) 
       : 
-      status !== "To Do" ? ["completed"] : []
+      (status !== "To Do" && status !== "Work In Progress") ? ["completed"] : []
   );
 
   console.log(status, listCheck);

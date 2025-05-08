@@ -20,19 +20,6 @@ const Project = () => {
 
   const [dataProject, setDataProject] = useState(null);
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await axiosInstance.get(API_PATHS.PROJECT.GET_DETAIL(id));
-        setDataProject(response.data.project);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    getData();
-  }, []);
-
   const getDataTasks = async () => {
     try {
       const response = await axiosInstance.get(API_PATHS.TASK.GET_ALL, {
@@ -45,6 +32,21 @@ const Project = () => {
       console.log(error);
     }
   }
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await axiosInstance.get(API_PATHS.PROJECT.GET_DETAIL(id));
+        setDataProject(response.data.project);
+        getDataTasks();
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    getData();
+  }, []);
+
 
   return (
     <HomeLayout>

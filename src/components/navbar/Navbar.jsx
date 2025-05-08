@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { IoMenu, IoSearchOutline, IoMoonOutline, IoSettingsOutline, IoSunnyOutline, IoPersonAddOutline   } from "react-icons/io5";
 import { IoIosMenu } from "react-icons/io";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {useDispatch, useSelector} from "react-redux";
 import { setIsDarkMode, setIsSiderMenuCollapsed } from '../../redux/globals';
 import { GoBell } from "react-icons/go";
@@ -10,12 +10,19 @@ import Notify from './Notify';
 import { FaRegUser } from "react-icons/fa6";
 import { MdOutlineLock } from "react-icons/md";
 import { AiOutlineLogout } from "react-icons/ai";
+import { getNameInitials } from '../../utils/helper';
 
 const Navbar = () => {
 
   const dispatch = useDispatch();
   const {isDarkMode} = useSelector(state => state.globals);
   const {isSiderMenuCollapsed} = useSelector(state => state.globals);
+
+  const {currentUser} = useSelector(state => state.users);
+
+  // console.log(currentUser);
+
+  const navigate = useNavigate();
 
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [isOpenDropdownAvatar, setIsOpenDropdownAvatar] = useState(false);
@@ -58,6 +65,12 @@ const Navbar = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isOpenDropdownAvatar]);
+
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login");
+  }
 
   return (
     <div className='flex justify-between px-4 py-3 bg-white dark:bg-dark-bg dark:border-b dark:border-gray-700'>
@@ -123,44 +136,68 @@ const Navbar = () => {
         </div>
         
         <div ref={avatarDropdown} className='relative'>
-          <div 
-            className='w-10 h-10 rounded-full overflow-hidden border border-gray-500 ml-2 cursor-pointer'
-            onClick={() => setIsOpenDropdownAvatar(!isOpenDropdownAvatar)}  
-          >
-            <img 
-              src="https://enlink.themenate.net/assets/images/avatars/thumb-3.jpg" 
-              alt="image profile" 
-              className='w-10 h-10 object-cover'  
-            />
-          </div>
+          {
+            currentUser?.profilePicture ?
+            <div 
+              className='size-9 rounded-full overflow-hidden border border-gray-200 dark:border-slate-800 ml-2 cursor-pointer'
+              onClick={() => setIsOpenDropdownAvatar(!isOpenDropdownAvatar)}  
+            >
+              <img 
+                src={currentUser.profilePicture}
+                alt="image profile" 
+                className='size-9 object-cover'  
+              />
+            </div>
+            :
+            <div 
+              className='size-10 text-sm font-medium text-green-800 dark:text-gray-200 bg-green-50 dark:bg-slate-700 rounded-full flex items-center justify-center border border-green-200 dark:border-gray-200 ml-2 cursor-pointer'
+              onClick={() => setIsOpenDropdownAvatar(!isOpenDropdownAvatar)}  
+            >
+              {getNameInitials(currentUser?.fullname)}  
+            </div>
+
+          }
 
           <div className={`absolute top-10 bg-white right-0 dark:bg-slate-800 dark:text-gray-200 dark:border-gray-600 w-[265px] h-fit rounded border border-gray-100 z-10 shadow-2xl transition-all duration-200 ease-out ${isOpenDropdownAvatar ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}>
             <div className='flex justify-start items-center py-4 px-4 gap-3'>
-              <div className='border border-gray-500 size-11 rounded-full'>
-                <img 
-                  src="https://enlink.themenate.net/assets/images/avatars/thumb-3.jpg" 
-                  alt="image profile" 
-                  className='w-11 h-11 object-cover rounded-full'  
-                />
-              </div>
+              {
+                currentUser?.profilePicture ?
+                <div 
+                  className='size-11 rounded-full overflow-hidden border border-gray-200 dark:border-slate-800 ml-2 cursor-pointer'
+                  onClick={() => setIsOpenDropdownAvatar(!isOpenDropdownAvatar)}  
+                >
+                  <img 
+                    src={currentUser.profilePicture}
+                    alt="image profile" 
+                    className='size-11 object-cover'  
+                  />
+                </div>
+                :
+                <div 
+                  className='size-11 text-sm font-medium text-green-800 dark:text-gray-200 bg-green-50 dark:bg-slate-700 rounded-full flex items-center justify-center border border-green-200 dark:border-gray-200 ml-2 cursor-pointer'
+                  onClick={() => setIsOpenDropdownAvatar(!isOpenDropdownAvatar)}  
+                >
+                  {getNameInitials(currentUser?.fullname)}  
+                </div>
+              }
               <div className='flex flex-col'>
-                <h3 className='text-sm font-medium text-gray-800 dark:text-gray-200'>Marshall Nichols</h3>
-                <p className='mt-1 text-slate-400 text-sm dark:text-gray-300 tracking-[0.15px]'>UI/UX Desinger</p>
+                <h3 className='text-sm font-medium text-gray-800 dark:text-gray-200'>{currentUser?.fullname}</h3>
+                {currentUser?.major && <p className='mt-1 text-slate-400 text-sm dark:text-gray-300 tracking-[0.15px]'>{currentUser.major}</p>}
               </div>
             </div>
 
             <div className='border-b border-gray-100 dark:border-gray-600'></div>
 
             <div className='text-sm py-2'>
-              <div className='px-4 py-3 flex justify-start items-center gap-3 text-gray-600 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 dark:bg-slate-800'>
+              <div className='cursor-pointer px-4 py-3 flex justify-start items-center gap-3 text-gray-600 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 dark:bg-slate-800'>
                 <FaRegUser className='size-4'/>
                 <p className=''>Edit Profile</p>
               </div>
-              <div className='px-4 py-3 flex justify-start items-center gap-3 text-gray-600 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 dark:bg-slate-800'>
+              <div className='cursor-pointer px-4 py-3 flex justify-start items-center gap-3 text-gray-600 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 dark:bg-slate-800'>
                 <MdOutlineLock className='size-4'/>
                 <p className=''>Account Setting</p>
               </div>
-              <div className='px-4 py-3 flex justify-start items-center gap-3 hover:bg-red-50 text-red-600 dark:text-slate-400 dark:hover:text-slate-200 dark:font-bold dark:hover:bg-slate-900'>
+              <div onClick={handleLogout} className='cursor-pointer px-4 py-3 flex justify-start items-center gap-3 hover:bg-red-50 text-red-600 dark:text-slate-400 dark:hover:text-slate-200 dark:font-bold dark:hover:bg-slate-900'>
                 <AiOutlineLogout className='size-4'/>
                 <p className=''>Logout</p>
               </div>

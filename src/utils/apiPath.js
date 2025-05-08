@@ -10,6 +10,7 @@ export const API_PATHS = {
   AUTH: {
     LOGIN: `/${base_path.auth}/login`,
     SIGNUP: `/${base_path.auth}/sign-up`,
+    GOOGLE: `/${base_path.auth}/google`,
     PASSWORD_FORGOT: `/${base_path.auth}/password-forgot`,
     PASSWORD_OTP: `/${base_path.auth}/password-otp`,
     PASSWORD_RESET: `/${base_path.auth}/password-reset`,
