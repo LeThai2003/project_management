@@ -180,15 +180,15 @@ import {updateStatus} from "../../redux/tasks/taskSlice.js"
 // ]
 
 
-const ViewBoardProject = ({setIsModalNewTaskOpen}) => {
+const ViewBoardProject = ({setIsModalNewTaskOpen, data}) => {
 
-  const dataTasks = useSelector(state => state.tasks.tasks);
+  const dataTasks = data;
   const dispatch = useDispatch();
 
   const moveTask = async (taskId, toStatus) => {
     try {
       const response = await axiosInstance.patch(API_PATHS.TASK.UPDATE_STATUS, {taskId, toStatus});
-      console.log(response.data);
+      // console.log(response.data);
       dispatch(updateStatus(response.data.task));
       // getDataTasks();
     } catch (error) {

@@ -7,18 +7,35 @@ import ModalNewProject from './ModalNewProject';
 import TeamMember from './TeamMember';
 import ModalAllTeamInProject from './AllTeamInProject';
 import TabButton from '../tabButtons/TabButton';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
-const ProjectHeader = ({activeTab, setActiveTab, name}) => {
+const ProjectHeader = ({activeTab, setActiveTab}) => {
 
-  const [isModalNewProjectOpen, setIsModalNewProjectOpen] = useState(false);
+  const [modalNewProjectOpen, setModalNewProjectOpen] = useState({
+    isOpen: false,
+    type: "create",
+    data: null
+  });
 
+  const {projects} = useSelector(state => state.projects);
+  const {currentUser} = useSelector(state => state.users);
+
+  // console.log(currentUser);
+
+  const projectId = useParams().id;
+
+  const dataProject = projects.find(item => item._id == projectId);
+  // console.log(dataProject);
 
   return (
     <div className=''>
 
       <ModalNewProject 
-        isOpen={isModalNewProjectOpen}
-        onClose={() => setIsModalNewProjectOpen(false)}
+        isOpen={modalNewProjectOpen.isOpen}
+        onClose={() => setModalNewProjectOpen({isOpen: false, type: "create", data: null})}
+        type={modalNewProjectOpen.type}
+        data={modalNewProjectOpen.data}
       />
 
       <div className='pb-2 px-3'>
@@ -26,7 +43,7 @@ const ProjectHeader = ({activeTab, setActiveTab, name}) => {
           name={""}
           buttonComponet={
             <button className='flex items-center gap-2 rounded-lg bg-blue-primary hover:bg-blue-600 text-white px-3 py-2'
-              onClick={() => setIsModalNewProjectOpen(true)}
+              onClick={() => setModalNewProjectOpen({isOpen: true, type: "create", data: null})}
             >
               <FaRegPlusSquare className='-mb-[2px] size-4 text-white'/>New Board
             </button>
@@ -35,7 +52,12 @@ const ProjectHeader = ({activeTab, setActiveTab, name}) => {
       </div>
 
      
-      <TeamMember name="Apollo"/>
+      <TeamMember 
+        dataProject={dataProject} 
+        allowEdit={dataProject && currentUser && dataProject.authorUserId._id == currentUser._id} 
+        modalNewProjectOpen={modalNewProjectOpen} 
+        setModalNewProjectOpen={setModalNewProjectOpen}
+      />
 
       <div className='flex flex-wrap-reverse gap-2 border-y border-gray-200 dark:border-stroke-dark md:items-center px-3 py-2'>
         <div className='flex flex-1 gap-2 md:gap-4 items-center'>

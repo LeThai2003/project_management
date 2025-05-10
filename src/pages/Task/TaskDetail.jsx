@@ -93,7 +93,7 @@ const TaskDetail = () => {
 
             <div className='mt-5 flex items-center justify-between'>
               <div className='flex items-center justify-start gap-2'>
-                <p className='font-medium text-gray-700 dark:text-gray-200 tracking-[0.2px] text-sm'>Creator: <span className='text-slate-600 dark:text-slate-400'>Nguyễn Văn An</span></p>
+                <p className='font-medium text-gray-700 dark:text-gray-200 tracking-[0.2px] text-sm'>Creator: <span className='text-slate-600 dark:text-slate-400'>{taskDetail?.authorUserId?.fullname}</span></p>
                 {
                   taskDetail?.authorUserId?.profilePicture ? 
                     <div className='border border-gray-200 rounded-full'>
@@ -115,7 +115,7 @@ const TaskDetail = () => {
               {
                 taskDetail?.assignedUserId && 
                 <div className='flex items-center justify-start gap-2'>
-                  <p className='font-medium text-gray-700 dark:text-gray-200 tracking-[0.2px] text-sm'>Assignee: <span className='text-slate-600 dark:text-slate-400'>Nguyễn Văn An</span></p>
+                  <p className='font-medium text-gray-700 dark:text-gray-200 tracking-[0.2px] text-sm'>Assignee: <span className='text-slate-600 dark:text-slate-400'></span></p>
                   {
                     taskDetail?.authorUserId?.profilePicture ? 
                       <div className='border border-gray-200 rounded-full'>

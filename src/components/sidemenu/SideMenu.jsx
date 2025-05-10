@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setIsSiderMenuCollapsed } from '../../redux/globals';
 import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPath';
+import { setProjects } from '../../redux/projects/projectSlice';
 
 const SideMenu = () => {
 
@@ -22,8 +23,9 @@ const SideMenu = () => {
   
   const dispatch = useDispatch();
   const {isSiderMenuCollapsed} = useSelector(state => state.globals);
+  const dataProjects = useSelector(state => state.projects.projects);
 
-  const [dataProjects, setDataProjects] = useState([]);
+  // const [dataProjects, setDataProjects] = useState([]);
 
   useEffect(() => {
 
@@ -31,7 +33,7 @@ const SideMenu = () => {
       try {
         const response = await axiosInstance.get(API_PATHS.PROJECT.GET_ALL);
         // console.log(response.data);
-        setDataProjects(response.data.projects);
+        dispatch(setProjects(response.data.projects));
       } catch (error) {
         console.log(error);
       }

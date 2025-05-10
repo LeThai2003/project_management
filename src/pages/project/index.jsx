@@ -6,7 +6,7 @@ import ModalNewTask from '../../components/tasks/ModalNewTask';
 import { useParams } from 'react-router-dom';
 import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPath';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setTasks } from '../../redux/tasks/taskSlice';
 
 const Project = () => {
@@ -17,8 +17,7 @@ const Project = () => {
   const {id} = useParams();
   
   const dispatch = useDispatch();
-
-  const [dataProject, setDataProject] = useState(null);
+  const {tasks} = useSelector(state => state.tasks);
 
   const getDataTasks = async () => {
     try {
@@ -34,18 +33,8 @@ const Project = () => {
   }
 
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await axiosInstance.get(API_PATHS.PROJECT.GET_DETAIL(id));
-        setDataProject(response.data.project);
-        getDataTasks();
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    getData();
-  }, []);
+    getDataTasks();
+  }, [id]);
 
 
   return (
@@ -57,9 +46,9 @@ const Project = () => {
         projectId={id}
       />
 
-      <ProjectHeader activeTab={activeTab} setActiveTab={setActiveTab} name={dataProject && dataProject.name}/>
+      <ProjectHeader activeTab={activeTab} setActiveTab={setActiveTab}/>
 
-      {activeTab == "Board" && <ViewBoardProject setIsModalNewTaskOpen={setIsModalNewTaskOpen}/>}
+      {activeTab == "Board" && <ViewBoardProject data={tasks} setIsModalNewTaskOpen={setIsModalNewTaskOpen}/>}
 
     </HomeLayout>
   )

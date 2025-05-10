@@ -10,7 +10,6 @@ import { addTask, updateTask } from '../../redux/tasks/taskSlice';
 
 const ModalNewTask = ({isOpen, onClose, type, data, projectId}) => {
 
-  const dataTasks = useSelector(state => state.tasks.tasks);
   const dispatch = useDispatch();
 
   const [title, setTitle] = useState(data?.title || "");
@@ -39,6 +38,20 @@ const ModalNewTask = ({isOpen, onClose, type, data, projectId}) => {
     }
   }
 
+  const closeModalNewAndEditTask =  () => {
+    onClose();
+    setTitle("");
+    setDescription("");
+    setStatus("");
+    setPriority("");
+    setTags("");
+    setStartDate("");
+    setDueDate("");
+    setAssigneeUserId("");
+    setListSubTask([]);
+    setProfilePic(null);
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if(type == "create")
@@ -48,20 +61,10 @@ const ModalNewTask = ({isOpen, onClose, type, data, projectId}) => {
           title, description, status, priority, tags, startDate, sub_tasks: listSubTask, dueDate, projectId
         });
 
-        onClose();
+        console.log(response.data);
+        closeModalNewAndEditTask();
 
-        dispatch(addTask(response.data.task))
-
-        setTitle("");
-        setDescription("");
-        setStatus("");
-        setPriority("");
-        setTags("");
-        setStartDate("");
-        setDueDate("");
-        setAssigneeUserId("");
-        setListSubTask([]);
-        setProfilePic(null);
+        dispatch(addTask(response.data.task));
 
       } catch (error) {
         console.log(error);
@@ -73,19 +76,16 @@ const ModalNewTask = ({isOpen, onClose, type, data, projectId}) => {
         const response = await axiosInstance.patch(API_PATHS.TASK.UPDATE_TASK(data?._id), {
           title, description, status, priority, tags, startDate, sub_tasks: listSubTask, dueDate, projectId
         });
-  
-        onClose();
-  
+        closeModalNewAndEditTask();
         dispatch(updateTask(response.data.task));
       } catch (error) {
         console.log(error);
       }
     }
-
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={type == "create" ? "Create New Task" : `Edit Task ${data.title.toUpperCase()}`}>
+    <Modal isOpen={isOpen} onClose={closeModalNewAndEditTask} title={type == "create" ? "Create New Task" : `Edit Task ${data.title.toUpperCase()}`}>
       <form className='mt-4' onKeyDown={handleFormKeyDown} onSubmit={handleSubmit}>
 
         <div className='mt-3'>

@@ -73,7 +73,7 @@ const Navbar = () => {
   }
 
   return (
-    <div className='flex justify-between px-4 py-3 bg-white dark:bg-dark-bg dark:border-b dark:border-gray-700'>
+    <div className='flex sticky top-0 z-10 justify-between px-4 py-3 bg-white border-b-[1.5px] border-gray-200 dark:bg-dark-bg dark:border-b dark:border-gray-700'>
       <div className='flex items-center'>
         
         {isSiderMenuCollapsed ?

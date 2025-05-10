@@ -11,7 +11,7 @@ const SideMenuLink = ({href, icon : Icon, label}) => {
       <div className={`relative px-6 py-3 flex items-center justify-start gap-2 hover:bg-gray-50 dark:bg-black dark:hover:bg-gray-700 ${isActive ? "bg-blue-50 dark:bg-gray-600" : ""}`}>
         {isActive && <div className='absolute top-0 left-0 h-full w-[5px] bg-blue-200'></div>}
         {Icon && <Icon className={`size-5 font-medium ${isActive ? "text-blue-500" : "text-gray-800"} dark:text-gray-100`} />}
-        <span className={` ${isActive ? "text-blue-500" : "text-gray-800"} dark:text-gray-100`}>{label}</span>
+        <span className={` ${isActive ? "text-blue-500" : "text-gray-800"} dark:text-gray-100 overflow-hidden whitespace-nowrap text-ellipsis`}>{label}</span>
       </div>
     </Link>
   )

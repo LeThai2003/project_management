@@ -4,6 +4,9 @@ import { FiPlus } from "react-icons/fi";
 import { getNameInitials } from '../../utils/helper';
 import ModalAllTeamInProject from './AllTeamInProject';
 import ModalAddMember from './ModalAddMember';
+import { CiEdit } from "react-icons/ci";
+import { CgEditFlipH } from "react-icons/cg";
+import { data } from 'react-router-dom';
 
 const dataTeams = [
   {
@@ -38,11 +41,13 @@ const dataTeams = [
   },
 ]
 
-const TeamMember = ({name}) => {
+const TeamMember = ({dataProject, allowEdit, modalNewProjectOpen, setModalNewProjectOpen}) => {
 
   const [isModalAllTeamInProjectOpen, setIsModalAllTeamInProjectOpen] = useState(false); 
   const [isModalAddMemberOpen, setIsModalAddMemberOpen] = useState(false); 
 
+
+  // console.log(allowEdit);
 
   return (
     <>
@@ -58,55 +63,69 @@ const TeamMember = ({name}) => {
         dataMemeber={dataTeams}
       />
 
-      <div className='flex w-full items-start justify-between px-3 pt-1 pb-3'>
+      <div className='flex w-full items-start justify-between px-3 pt-1 pb-3 flex-wrap-reverse'>
      
-        <h2 className={`text-2xl font-semibold dark:text-white`}>{name}</h2>
-   
-        <div className='flex flex-col bg-white px-4 py-2 border border-gray-100 rounded-md dark:bg-dark-secondary dark:border-gray-600 dark:text-white'>
-          <div className={`${dataTeams?.length >= 6 ? "w-96" : "w-64"} flex items-center justify-between mb-2`}>
-            <h3 className='font-medium text-sm'>Team Members</h3>
+        <div className='flex items-center gap-2 mt-1'>
+          <h2 className={`text-2xl font-semibold dark:text-white`}>{dataProject && dataProject.name}</h2>
+          {
+            allowEdit && 
             <button 
-              onClick={() => setIsModalAllTeamInProjectOpen(true)}
-              className='text-sm px-3 py-1 rounded-md border border-gray-100 dark:border-gray-600 dark:bg-dark-secondary dark:text-white dark:hover:bg-dark-tertiary bg-white hover:bg-gray-200'
+              className='w-[35px] h-[35px] hover:bg-blue-50 hover:text-blue-500 rounded-md flex items-center justify-center text-slate-500 dark:text-gray-400 text-xl dark:hover:bg-slate-700 dark:hover:text-white'
+              onClick={() => setModalNewProjectOpen({type: "edit", isOpen: true, data: dataProject})}
             >
-              View All
+              <CiEdit className='-mb-[2px] cursor-pointer' size={20}/> 
             </button>
-          </div>
-          <div className={`flex ${dataTeams?.length >= 6 ? "w-96" : "w-64"} flex-wrap gap-1`}>
-            {
-              dataTeams.length > 0 ? (
-              <>
-                {dataTeams.map((item, index) => (
-                  item.profileImageUrl ? 
-                  <img
-                    key={index}
-                    src={item.profileImageUrl}
-                    alt='profile image'
-                    className='size-9 rounded-full flex items-center justify-center border border-blue-200 dark:border-gray-200'
-                  /> 
-                  : 
-                  <div className='size-9 text-sm font-medium text-green-800 dark:text-gray-200 bg-green-50 dark:bg-slate-700 rounded-full flex items-center justify-center border border-green-200 dark:border-gray-200'>
-                    {getNameInitials(item.name)}  
-                  </div>
-                ))}
-                <button 
-                  onClick={() => setIsModalAddMemberOpen(true)}
-                  className='size-9 rounded-full border border-blue-100 dark:border-gray-100 flex items-center justify-center bg-blue-50 dark:bg-slate-800 dark:hover:bg-dark-tertiary hover:bg-blue-100 dark:hover:opacity-85'
-                >
-                  <FiPlus className='size-5 text-blue-600 dark:text-gray-200'/>
-                </button>
-              </>
-            ) : (
-              <>
-                <button 
-                  onClick={() => setIsModalAddMemberOpen(true)} 
-                  className='size-9 rounded-full border border-blue-100 dark:border-gray-100 flex items-center justify-center bg-blue-50 dark:bg-slate-800 dark:hover:bg-dark-tertiary hover:bg-blue-100 dark:hover:opacity-85'
-                >
-                  <FiPlus className='size-5 text-blue-600 dark:text-gray-200'/>
-                </button>
-              </>
-              )
-            }
+          
+          }
+        </div>
+   
+        <div className='flex justify-end'>
+          <div className='flex w-fit flex-col bg-white px-4 py-2 border border-gray-100 rounded-md dark:bg-dark-secondary dark:border-gray-600 dark:text-white'>
+            <div className={`${dataTeams?.length >= 6 ? "w-96" : "w-64"} flex items-center justify-between mb-2`}>
+              <h3 className='font-medium text-sm'>Team Members</h3>
+              <button 
+                onClick={() => setIsModalAllTeamInProjectOpen(true)}
+                className='text-sm px-3 py-1 rounded-md border border-gray-100 dark:border-gray-600 dark:bg-dark-secondary dark:text-white dark:hover:bg-dark-tertiary bg-white hover:bg-gray-200'
+              >
+                View All
+              </button>
+            </div>
+            <div className={`flex ${dataTeams?.length >= 6 ? "w-96" : "w-64"} flex-wrap gap-1`}>
+              {
+                dataTeams.length > 0 ? (
+                <>
+                  {dataTeams.map((item, index) => (
+                    item.profileImageUrl ? 
+                    <img
+                      key={index}
+                      src={item.profileImageUrl}
+                      alt='profile image'
+                      className='size-9 rounded-full flex items-center justify-center border border-blue-200 dark:border-gray-200'
+                    /> 
+                    : 
+                    <div key={index} className='size-9 text-sm font-medium text-green-800 dark:text-gray-200 bg-green-50 dark:bg-slate-700 rounded-full flex items-center justify-center border border-green-200 dark:border-gray-200'>
+                      {getNameInitials(item.name)}  
+                    </div>
+                  ))}
+                  <button 
+                    onClick={() => setIsModalAddMemberOpen(true)}
+                    className='size-9 rounded-full border border-blue-100 dark:border-gray-100 flex items-center justify-center bg-blue-50 dark:bg-slate-800 dark:hover:bg-dark-tertiary hover:bg-blue-100 dark:hover:opacity-85'
+                  >
+                    <FiPlus className='size-5 text-blue-600 dark:text-gray-200'/>
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button 
+                    onClick={() => setIsModalAddMemberOpen(true)} 
+                    className='size-9 rounded-full border border-blue-100 dark:border-gray-100 flex items-center justify-center bg-blue-50 dark:bg-slate-800 dark:hover:bg-dark-tertiary hover:bg-blue-100 dark:hover:opacity-85'
+                  >
+                    <FiPlus className='size-5 text-blue-600 dark:text-gray-200'/>
+                  </button>
+                </>
+                )
+              }
+            </div>
           </div>
         </div>
       </div>

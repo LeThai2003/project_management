@@ -18,6 +18,7 @@ export const API_PATHS = {
   },
   PROJECT: {
     CREATE: `/${base_path.project}/create`,
+    UPDATE: `/${base_path.project}/update`,
     GET_ALL: `/${base_path.project}/get-all`,
     GET_DETAIL: (id) => `/${base_path.project}/${id}`,
   },

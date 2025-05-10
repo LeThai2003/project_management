@@ -1,16 +1,45 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Modal from '../Modal';
 import Input from '../inputs/Input';
+import axiosInstance from '../../utils/axiosInstance';
+import { API_PATHS } from '../../utils/apiPath';
+import { useDispatch } from 'react-redux';
+import { addProject, updateProject } from '../../redux/projects/projectSlice';
 
-const ModalNewProject = ({isOpen, onClose}) => {
+const ModalNewProject = ({isOpen, onClose, type, data}) => {
 
-  const [projectName, setProjectName] = useState("");
-  const [description, setDescription] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  // console.log(data);
+
+  const dispatch = useDispatch();
+
+  const [projectId, setProjectId] = useState("");
+  const [projectName, setProjectName] = useState(data?.name || "");
+  const [description, setDescription] = useState(data?.description || "");
+  const [startDate, setStartDate] = useState(data?.startDate.split("T")[0] || "");
+  const [endDate, setEndDate] = useState(data?.endDate.split("T")[0] || "");
+
+  useEffect(() => {
+    if (data?._id) {
+      setProjectId(data._id);
+    };
+    if (data?.name) {
+      setProjectName(data.name);
+    };
+    if (data?.description) {
+      setDescription(data.description);
+    };
+    if (data?.startDate) {
+      setStartDate(data.startDate.split("T")[0]);
+    };
+    if (data?.endDate) {
+      setEndDate(data.endDate.split("T")[0]);
+    };
+  }, [data]);
+
+  // console.log(data?.name, projectName);
 
   const isFormValid = () => {
-    return projectName && description && startDate && endDate;
+    return projectName && startDate && endDate;
   };
 
   const closeModalAndClearFields = () => {
@@ -21,8 +50,38 @@ const ModalNewProject = ({isOpen, onClose}) => {
     setEndDate("");
   }
 
+
+  const handleSubmit = async () => {
+    if(type == "edit")
+    {
+      try {
+        const response = await axiosInstance.patch(API_PATHS.PROJECT.UPDATE, {
+          projectId, projectName, description, startDate, endDate
+        });
+        closeModalAndClearFields();
+        console.log(response.data);
+        dispatch(updateProject(response.data.project));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    else
+    {
+      try {
+        const response = await axiosInstance.post(API_PATHS.PROJECT.CREATE, {
+          projectName, description, startDate, endDate
+        });
+        closeModalAndClearFields();
+        dispatch(addProject(response.data.project));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  } 
+
+
   return (
-    <Modal isOpen={isOpen} onClose={closeModalAndClearFields} title="Create New Project">
+    <Modal isOpen={isOpen} onClose={closeModalAndClearFields} title={type == "edit" ? <><span>Update Project <i>"{data && data.name}"</i></span></> : "Create New Project"}>
       <form 
         className='mt-1 space-y-6'
         onSubmit={(e) => {
@@ -71,7 +130,7 @@ const ModalNewProject = ({isOpen, onClose}) => {
           ${!isFormValid() ? "cursor-not-allowed opacity-50" : ""}`}
           disabled={!isFormValid()}
         >
-          Create Project
+          {type == "edit" ? "Update Project" : "Create Project"}
         </button>
       </form>
     </Modal>
