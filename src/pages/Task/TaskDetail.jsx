@@ -117,10 +117,10 @@ const TaskDetail = () => {
                 <div className='flex items-center justify-start gap-2'>
                   <p className='font-medium text-gray-700 dark:text-gray-200 tracking-[0.2px] text-sm'>Assignee: <span className='text-slate-600 dark:text-slate-400'></span></p>
                   {
-                    taskDetail?.authorUserId?.profilePicture ? 
+                    taskDetail?.assignedUserId?.profilePicture ? 
                       <div className='border border-gray-200 rounded-full'>
                         <img
-                          src={taskDetail?.authorUserId.profilePicture}
+                          src={taskDetail.assignedUserId.profilePicture}
                           alt='image assignee'
                           width={30}
                           height={30}
@@ -129,7 +129,7 @@ const TaskDetail = () => {
                       </div>
                       :
                       <div className='size-8 text-sm font-medium text-green-800 dark:text-gray-200 bg-green-50 dark:bg-slate-700 rounded-full flex items-center justify-center border border-green-200 dark:border-gray-200'>
-                        {getNameInitials(taskDetail?.authorUserId?.fullname)}  
+                        {getNameInitials(taskDetail?.assignedUserId?.fullname)}  
                       </div>
                   }  
                 </div>
@@ -143,7 +143,7 @@ const TaskDetail = () => {
               <TabButton name={`Comments`} activeTab={activeTab} setActiveTab={setActiveTab}/>
             </div>
 
-            {activeTab == `Tasks (${taskDetail?.sub_tasks?.length})` && <ListSubTask status={taskDetail?.status} taskId={id} listSubTasks={taskDetail.sub_tasks}/>}
+            {activeTab == `Tasks (${taskDetail?.sub_tasks?.length})` && <ListSubTask isJustView={taskDetail?.isJustView} status={taskDetail?.status} taskId={id} listSubTasks={taskDetail.sub_tasks}/>}
             {activeTab == `Comments` && <Comment/>}
 
                   

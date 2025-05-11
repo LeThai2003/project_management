@@ -4,7 +4,7 @@ import { API_PATHS } from '../../utils/apiPath';
 import { useDispatch } from 'react-redux';
 import { updateTask } from '../../redux/tasks/taskSlice';
 
-const ListSubTask = ({status, taskId, listSubTasks}) => {
+const ListSubTask = ({isJustView, status, taskId, listSubTasks}) => {
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -46,6 +46,8 @@ const ListSubTask = ({status, taskId, listSubTasks}) => {
       }
   }
 
+  // console.log(typeof isJustView, isJustView);
+
   return (
     <div className='px-1 pt-4 pb-2'>
       {listSubTasks?.length > 0 ? 
@@ -59,6 +61,7 @@ const ListSubTask = ({status, taskId, listSubTasks}) => {
                   type="checkbox" 
                   value={item._id} 
                   checked={listCheck.includes(item._id.toString())}
+                  disabled={isJustView}
                   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                 />
                 <label 
@@ -71,12 +74,14 @@ const ListSubTask = ({status, taskId, listSubTasks}) => {
             ))}
           </div>
 
-          <button 
-            className='mt-5 w-full px-4 py-2 cursor-pointer bg-violet-500 hover:bg-purple-600 uppercase rounded-lg flex items-center justify-center text-white font-medium my-3 dark:text-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700'
-            onClick={handleUpdate}
-          >
-            {isLoading ? "UPDATING..." : "UPDATE TASK COMPLETE"}
-          </button>
+          {!isJustView && (
+            <button
+              className='mt-4 w-full px-4 py-2 cursor-pointer bg-violet-500 hover:bg-purple-600 uppercase rounded-lg flex items-center justify-center text-white font-medium my-3 dark:text-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700'
+              onClick={handleUpdate}
+            >
+              {isLoading ? "UPDATING..." : "UPDATE TASK COMPLETE"}
+            </button>
+          )}
         </div> 
           : 
         <div>
@@ -88,6 +93,7 @@ const ListSubTask = ({status, taskId, listSubTasks}) => {
               type="checkbox" 
               onChange={handleChange} 
               value="completed" 
+              disabled={isJustView}
               checked={listCheck.includes("completed")}
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
             />
@@ -99,12 +105,14 @@ const ListSubTask = ({status, taskId, listSubTasks}) => {
             </label>
           </div>
 
-          <button 
-            className='mt-4 w-full px-4 py-2 cursor-pointer bg-violet-500 hover:bg-purple-600 uppercase rounded-lg flex items-center justify-center text-white font-medium my-3 dark:text-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700'
-            onClick={handleUpdate}
-          >
-            {isLoading ? "UPDATING..." : "UPDATE TASK COMPLETE"}
-          </button>
+          {!isJustView && (
+            <button
+              className='mt-4 w-full px-4 py-2 cursor-pointer bg-violet-500 hover:bg-purple-600 uppercase rounded-lg flex items-center justify-center text-white font-medium my-3 dark:text-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700'
+              onClick={handleUpdate}
+            >
+              {isLoading ? "UPDATING..." : "UPDATE TASK COMPLETE"}
+            </button>
+          )}
         </div>
       }
     </div>

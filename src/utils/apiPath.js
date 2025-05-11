@@ -4,7 +4,8 @@ const base_path = {
   auth: "auth",
   project: "project",
   task: "task",
-  upload: "upload"
+  upload: "upload",
+  search: "search"
 }
 
 export const API_PATHS = {
@@ -21,6 +22,7 @@ export const API_PATHS = {
     UPDATE: `/${base_path.project}/update`,
     GET_ALL: `/${base_path.project}/get-all`,
     GET_DETAIL: (id) => `/${base_path.project}/${id}`,
+    ADD_MEMBER: (id) => `/${base_path.project}/${id}/add-member`
   },
   TASK: {
     CREATE: `/${base_path.task}/create`,
@@ -33,5 +35,9 @@ export const API_PATHS = {
   },
   UPLOAD: {
     IMAGE_SINGLE: `/${base_path.upload}/image-single`
+  },
+  SEARCH: {
+    MEMBER_IN_PROJECT: (id) => `/${base_path.search}/all-members/${id}`,   // id project
+    ADD_MEMBER_TO_PROJECT: (id) => `/${base_path.search}/add-member/${id}`,
   }
 }

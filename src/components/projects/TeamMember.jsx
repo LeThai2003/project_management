@@ -5,48 +5,61 @@ import { getNameInitials } from '../../utils/helper';
 import ModalAllTeamInProject from './AllTeamInProject';
 import ModalAddMember from './ModalAddMember';
 import { CiEdit } from "react-icons/ci";
-import { CgEditFlipH } from "react-icons/cg";
-import { data } from 'react-router-dom';
+import {useSelector} from "react-redux"
 
-const dataTeams = [
-  {
-    id: "1",
-    name: "Nguyen Van Anh",
-    profileImageUrl: "https://enlink.themenate.net/assets/images/avatars/thumb-3.jpg",
-    description: "Project Manager"
-  },
-  {
-    id: "2",
-    name: "Nguyen Bao",
-    profileImageUrl: "https://enlink.themenate.net/assets/images/avatars/thumb-4.jpg",
-    description: "Project Manager"
-  },
-  {
-    id: "3",
-    name: "Le Van",
-    profileImageUrl: null,
-    description: "Project Manager"
-  },
-  {
-    id: "4",
-    name: "Nguyen Van Hung",
-    profileImageUrl: null,
-    description: "Project Manager"
-  },
-  {
-    id: "5",
-    name: "Tran Van Nam",
-    profileImageUrl: "https://enlink.themenate.net/assets/images/avatars/thumb-6.jpg",
-    description: "Project Manager"
-  },
-]
+
+
+// const dataTeams = [
+//   {
+//     id: "1",
+//     name: "Nguyen Van Anh",
+//     profileImageUrl: "https://enlink.themenate.net/assets/images/avatars/thumb-3.jpg",
+//     description: "Project Manager"
+//   },
+//   {
+//     id: "2",
+//     name: "Nguyen Bao",
+//     profileImageUrl: "https://enlink.themenate.net/assets/images/avatars/thumb-4.jpg",
+//     description: "Project Manager"
+//   },
+//   {
+//     id: "3",
+//     name: "Le Van",
+//     profileImageUrl: null,
+//     description: "Project Manager"
+//   },
+//   {
+//     id: "4",
+//     name: "Nguyen Van Hung",
+//     profileImageUrl: null,
+//     description: "Project Manager"
+//   },
+//   {
+//     id: "5",
+//     name: "Tran Van Nam",
+//     profileImageUrl: "https://enlink.themenate.net/assets/images/avatars/thumb-6.jpg",
+//     description: "Project Manager"
+//   },
+// ]
 
 const TeamMember = ({dataProject, allowEdit, modalNewProjectOpen, setModalNewProjectOpen}) => {
 
   const [isModalAllTeamInProjectOpen, setIsModalAllTeamInProjectOpen] = useState(false); 
   const [isModalAddMemberOpen, setIsModalAddMemberOpen] = useState(false); 
 
+  const dataTeams = [{...dataProject?.authorUserId, creator: true, totalCreate: 0, totalAssign: 0}];
+  dataProject?.membersId?.forEach(m => dataTeams.push({...m, totalCreate: 0, totalAssign: 0}));
 
+  const {tasks} = useSelector(state => state.tasks);
+  // console.log(tasks);
+
+  if(tasks.length > 0)
+  {
+    for (const task of tasks) {
+      const member = dataTeams.find(m => m._id == task.authorUserId._id);
+      member.totalCreate += 1;
+    }
+  }
   // console.log(allowEdit);
 
   return (
@@ -55,12 +68,12 @@ const TeamMember = ({dataProject, allowEdit, modalNewProjectOpen, setModalNewPro
         isOpen={isModalAllTeamInProjectOpen}
         onClose={() => setIsModalAllTeamInProjectOpen(false)}
         dataMemeber={dataTeams}
+        tasks={tasks}
       />
 
       <ModalAddMember
         isOpen={isModalAddMemberOpen}
         onClose={() => setIsModalAddMemberOpen(false)}
-        dataMemeber={dataTeams}
       />
 
       <div className='flex w-full items-start justify-between px-3 pt-1 pb-3 flex-wrap-reverse'>
@@ -95,16 +108,16 @@ const TeamMember = ({dataProject, allowEdit, modalNewProjectOpen, setModalNewPro
                 dataTeams.length > 0 ? (
                 <>
                   {dataTeams.map((item, index) => (
-                    item.profileImageUrl ? 
+                    item.profilePicture ? 
                     <img
-                      key={index}
-                      src={item.profileImageUrl}
+                      key={item._id}
+                      src={item.profilePicture}
                       alt='profile image'
                       className='size-9 rounded-full flex items-center justify-center border border-blue-200 dark:border-gray-200'
                     /> 
                     : 
                     <div key={index} className='size-9 text-sm font-medium text-green-800 dark:text-gray-200 bg-green-50 dark:bg-slate-700 rounded-full flex items-center justify-center border border-green-200 dark:border-gray-200'>
-                      {getNameInitials(item.name)}  
+                      {getNameInitials(item.fullname)}  
                     </div>
                   ))}
                   <button 

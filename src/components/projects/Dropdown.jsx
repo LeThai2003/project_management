@@ -61,7 +61,7 @@ const Dropdown = ({userId, data}) => {
         </div> */}
 
         
-        {userId == data.authorUserId._id || userId == data.assignedUserId._id ?  // sau nay onClick thi link sang trang chinh sua 
+        {userId == data.authorUserId._id || userId == data.assignedUserId?._id ?  // sau nay onClick thi link sang trang chinh sua 
           <div 
             onClick={() => setIsModalNewTaskOpen(true)}
             className='flex gap-2 items-center justify-start cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-700 px-3 py-1 mt-3'

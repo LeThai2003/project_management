@@ -3,11 +3,61 @@ import Modal from '../Modal'
 import {useParams} from "react-router-dom"
 import { IoSearchOutline } from 'react-icons/io5';
 import { getNameInitials } from '../../utils/helper';
+import { useState } from 'react';
+import { debounce } from 'lodash';
+import { useEffect } from 'react';
+import axiosInstance from "../../utils/axiosInstance";
+import { API_PATHS } from '../../utils/apiPath';
+import { useCallback } from 'react';
 
-const ModalAllTeamInProject = ({isOpen, onClose, dataMemeber}) => {
+const ModalAllTeamInProject = ({isOpen, onClose, dataMemeber, tasks}) => {
 
   const {id} = useParams();
   // console.log(id);
+
+  const [search, setSearch] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+
+  const handleSearch = useCallback(
+    debounce((e) => {
+      setSearch(e.target.value);
+    }, 500),
+    []
+  );
+
+  useEffect(() => {
+    return () => {
+      handleSearch.cancel();
+    };
+  }, [handleSearch]);
+
+  useEffect(() => {
+
+    if(search.trim().length < 3 )
+    {
+      setSearchResult([]); 
+      if(search.length == 0)
+      {
+        setSearchResult(dataMemeber);
+      }
+      return;
+    } 
+    setIsLoading(true);
+    try {
+      const getDataMember = async () => {
+        const response = await axiosInstance.post(API_PATHS.SEARCH.MEMBER_IN_PROJECT(id), {search, tasks});
+        // console.log(response.data);
+        setSearchResult(response.data.members)
+      }
+      getDataMember();
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  }, [search]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="All Members in Project" widthTight={true}>
@@ -17,49 +67,54 @@ const ModalAllTeamInProject = ({isOpen, onClose, dataMemeber}) => {
             type="text" 
             className='w-72 outline-none border bg-gray-100 dark:border-gray-600 dark:bg-dark-tertiary dark:text-white pl-8 pr-4 py-1 rounded-lg text-sm'
             placeholder='Search Member'
+            onChange={handleSearch}
           />
           <IoSearchOutline className='absolute left-2 top-[8px] size-4 dark:text-white'/>
         </div>
 
         <div className='flex flex-col h-[380px] overflow-y-auto custom-scrollbar pr-2 mt-2'>
           <div className=''>
-            {dataMemeber.map((member, index) => (
-              <div key={index} className='flex items-center justify-between w-full my-3 px-2 py-3 border border-gray-100 rounded-md dark:border-gray-600 bg-white dark:bg-dark-secondary'>
-                
-                <div className='flex justify-start gap-3 items-center'>
-                  {member.profileImageUrl ? 
-                    <img
-                      src={member.profileImageUrl}
-                      alt='profile image'
-                      className='size-14 rounded-full flex items-center justify-center border border-blue-200 dark:border-gray-200'
-                    /> 
-                    : 
-                    <div className='size-14 text-sm font-medium text-green-800 dark:text-gray-200 bg-green-50 dark:bg-slate-700 rounded-full flex items-center justify-center border border-green-200 dark:border-gray-200'>
-                      {getNameInitials(member.name)}  
+            {isLoading ? "Loading..." : <>
+              {searchResult?.map((member, index) => (
+                <div key={index} className={`flex items-center justify-between w-full my-3 px-2 py-3 rounded-md  ${member.creator ? "border-2 border-dashed border-red-100 dark:border-gray-300" : "border border-gray-100 dark:border-gray-600"} bg-white dark:bg-dark-secondary`}>
+                  
+                  <div className='flex justify-start gap-3 items-center'>
+                    {member.profilePicture ? 
+                      <img
+                        src={member.profilePicture}
+                        alt='profile image'
+                        className='size-14 rounded-full flex items-center justify-center border border-blue-200 dark:border-gray-200'
+                      /> 
+                      : 
+                      <div className='size-14 text-sm font-medium text-green-800 dark:text-gray-200 bg-green-50 dark:bg-slate-700 rounded-full flex items-center justify-center border border-green-200 dark:border-gray-200'>
+                        {getNameInitials(member.fullname)}  
+                      </div>
+                    }
+
+                    <div className='flex flex-col'>
+                      <h3 className='text-sm font-medium dark:text-gray-200'>{member.fullname}</h3>
+                      <span className='text-xs text-gray-600 dark:text-gray-200 mt-1'>{member.email}</span>
+                      <p className='text-xs text-gray-600 dark:text-gray-200 mt-1'>{member?.description}</p>
                     </div>
-                  }
-
-                  <div className='flex flex-col'>
-                    <h3 className='text-sm font-medium dark:text-gray-200'>{member.name}</h3>
-                    <p className='text-xs text-gray-600 dark:text-gray-200 mt-1'>{member?.description}</p>
                   </div>
+
+                  <div className="flex flex-col dark:bg-dark-secondary pr-1">
+                    <div className="text-sm text-gray-700 dark:text-gray-300">
+                      <p className="italic">
+                        Created Task: <span className="font-semibold text-blue-600 dark:text-blue-400">{member.totalCreate}</span>
+                      </p>
+                    </div>
+                    <div className="text-sm mt-1 text-gray-700 dark:text-gray-300">
+                      <p className="italic">
+                        Assigned Task: <span className="font-semibold text-green-600 dark:text-green-400">{member.totalAssign}</span>
+                      </p>
+                    </div>
+                  </div>
+
                 </div>
-
-                <div className="flex flex-col dark:bg-dark-secondary pr-1">
-                  <div className="text-sm text-gray-700 dark:text-gray-300">
-                    <p className="italic">
-                      Created Task: <span className="font-semibold text-blue-600 dark:text-blue-400">3</span>
-                    </p>
-                  </div>
-                  <div className="text-sm mt-1 text-gray-700 dark:text-gray-300">
-                    <p className="italic">
-                      Assigned Task: <span className="font-semibold text-green-600 dark:text-green-400">2</span>
-                    </p>
-                  </div>
-                </div>
-
-              </div>
-            ))}
+              ))}
+             
+            </>}
           </div>
         </div>
 

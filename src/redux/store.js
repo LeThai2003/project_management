@@ -17,7 +17,7 @@ const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  whitelist: ["users", "globals"] 
+  // whitelist: ["users", "globals"] 
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
