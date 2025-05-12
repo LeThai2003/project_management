@@ -2,15 +2,26 @@ import React, { useState } from 'react'
 import Modal from '../Modal';
 import Input from '../inputs/Input';
 import InputSubTask from '../inputs/InputSubTask';
-import ProfilePictureSelect from '../inputs/ProfilePictureSelect';
+import PictureSelect from '../inputs/PictureSelect';
 import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPath';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTask, updateTask } from '../../redux/tasks/taskSlice';
+import { CiImageOn } from "react-icons/ci";
+import { uploadSingleImage } from '../../utils/uploads/uploadimage';
 
 const ModalNewTask = ({isOpen, onClose, type, data, projectId}) => {
 
   const dispatch = useDispatch();
+  const {projects} = useSelector(state => state.projects);
+
+  console.log(projects);
+
+  const members = projects?.find(project => project._id == projectId)?.membersId || [];
+
+  console.log(members);
+
+
 
   const [title, setTitle] = useState(data?.title || "");
   const [description, setDescription] = useState(data?.description || "");
@@ -19,10 +30,12 @@ const ModalNewTask = ({isOpen, onClose, type, data, projectId}) => {
   const [tags, setTags] = useState(data?.tags || "");
   const [startDate, setStartDate] = useState(data?.startDate.split("T")[0] || "");
   const [dueDate, setDueDate] = useState(data?.dueDate.split("T")[0] || "");
-  const [assigneeUserId, setAssigneeUserId] = useState(data?.assigneeUserId || []);
+  const [assigneeUserId, setAssigneeUserId] = useState(data?.assigneeUserId?._id || "");
   const [listSubTask, setListSubTask] = useState(data?.sub_tasks || []);
-  
+  const [isLoading, setIsLoading] = useState(false);
   const [profilePic, setProfilePic] = useState(data?.imageTask || null);
+
+  console.log(assigneeUserId);
 
   const isFormValid = () => {
     return title
@@ -50,46 +63,76 @@ const ModalNewTask = ({isOpen, onClose, type, data, projectId}) => {
     setAssigneeUserId("");
     setListSubTask([]);
     setProfilePic(null);
+    setIsLoading(false);
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    let profileImageUrl = "";
+
     if(type == "create")
     {
       try {
+        setIsLoading(true);
+
+        if(profilePic)
+        {
+          const uploadImageResult = await uploadSingleImage(profilePic);
+          profileImageUrl = uploadImageResult.imageUrl || ""; 
+        }
+
         const response = await axiosInstance.post(API_PATHS.TASK.CREATE, {
-          title, description, status, priority, tags, startDate, sub_tasks: listSubTask, dueDate, projectId
+          title, description, status, priority, tags, startDate, sub_tasks: listSubTask, dueDate, projectId, assigneeUserId, imageTask: profileImageUrl
         });
 
         console.log(response.data);
         closeModalNewAndEditTask();
-
         dispatch(addTask(response.data.task));
 
       } catch (error) {
         console.log(error);
+        setIsLoading(false);
       }
     }
     else
     {
       try {
+        setIsLoading(true);
+
+        if(!profilePic)
+        {
+          profileImageUrl = ""
+        }
+        else if(profilePic && profilePic != data?.imageTask)
+        {
+          const uploadImageResult = await uploadSingleImage(profilePic);
+          profileImageUrl = uploadImageResult.imageUrl || ""; 
+        }
+        else
+        {
+          profileImageUrl = data?.imageTask
+        }
+
         const response = await axiosInstance.patch(API_PATHS.TASK.UPDATE_TASK(data?._id), {
-          title, description, status, priority, tags, startDate, sub_tasks: listSubTask, dueDate, projectId
+          title, description, status, priority, tags, startDate, sub_tasks: listSubTask, dueDate, projectId, imageTask: profileImageUrl, assigneeUserId
         });
         closeModalNewAndEditTask();
         dispatch(updateTask(response.data.task));
       } catch (error) {
         console.log(error);
+        setIsLoading(false);
       }
     }
   }
+
 
   return (
     <Modal isOpen={isOpen} onClose={closeModalNewAndEditTask} title={type == "create" ? "Create New Task" : `Edit Task ${data.title.toUpperCase()}`}>
       <form className='mt-4' onKeyDown={handleFormKeyDown} onSubmit={handleSubmit}>
 
         <div className='mt-3'>
-          <ProfilePictureSelect image={profilePic} setImage={setProfilePic}/>
+          <PictureSelect image={profilePic} setImage={setProfilePic} shape="s" iconFirst={CiImageOn}/>
         </div>
 
         <Input
@@ -171,23 +214,29 @@ const ModalNewTask = ({isOpen, onClose, type, data, projectId}) => {
           <p className=' text-gray-900 text-[14px] pl-1 font-medium dark:text-white'>List Sub Tasks</p>
           <InputSubTask listSubTask={listSubTask} setListSubTask={setListSubTask}/>
         </div>
-        
 
-        <Input
-          type="text"
-          placeholder="Assigned User ID"
-          value={assigneeUserId}
-          onChange={(e) => setAssigneeUserId(e.target.value)}
-          id="assignee"
-          label="Assignee"
-        />
+        <div className="grid grid-cols-1  mt-3">
+          <div>
+            <label htmlFor="" className='text-slate-800 text-[14px] pl-1 font-medium dark:text-white'>Assigned User ID</label>
+            <select
+              className={selectStyles + " mt-2"}
+              value={assigneeUserId}
+              onChange={(e) => setAssigneeUserId(e.target.value)}
+            >
+              <option value="">No One</option>
+              {members?.map(member => (
+                <option key={member._id} value={member._id}>{member.fullname}</option>
+              ))}
+            </select>
+          </div>
+        </div>
 
         <button
           type="submit"
           className={`focus-offset-2 mt-4 flex w-full justify-center rounded-md border border-transparent 
             bg-blue-primary px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
-            !isFormValid()? "cursor-not-allowed opacity-50" : ""}`}
-          disabled={!isFormValid()}
+            !isFormValid() || isLoading? "cursor-not-allowed opacity-50" : ""}`}
+            disabled={!isFormValid() || isLoading}
         >
           {type == "create" ? "Create Task" : "Update"}
         </button>

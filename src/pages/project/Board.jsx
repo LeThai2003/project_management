@@ -14,172 +14,6 @@ import { getNameInitials } from '../../utils/helper';
 import {updateStatus} from "../../redux/tasks/taskSlice.js"
 
 
-// const dataTasks = [
-//   {
-//     "id": 1,
-//     "title": "Task 1",
-//     "description": "I've made a huge tiny mistake. Don't worry, these young beauties have been nowhere near the bananas. You don't want a hungry dove down your pants. Caw ca caw, caw ca caw, caw ca caw, caw ca caw. I'm in Vegas this week and would like to point out the Blue Man Group is *actually* hiring. The support group? Oh, like when they say 'poofter' to mean 'tourist', yes.",
-//     "status": "Work In Progress",
-//     "priority": "Urgent",
-//     "tags": "Design",
-//     "startDate": "2023-01-10T00:00:00Z",
-//     "dueDate": "2023-04-10T00:00:00Z",
-//     "imageTask": "https://www.studytienganh.vn/upload/2021/06/105234.jpg",
-//     "projectId": 1,
-//     "authorUserId": 1,
-//     "assignedUserId": 2,
-//     "sub_tasks": [
-//       {
-//         "sub_task_id": "1-1",
-//         "sub_title": "Irish skinny, grinder affogato",
-//         "isChecked": false
-//       },
-//       {
-//         "sub_task_id": "1-2",
-//         "sub_title": "Let us wax poetic about the beauty of the cheeseburger",
-//         "isChecked": false
-//       },
-//       {
-//         "sub_task_id": "1-3",
-//         "sub_title": "Efficiently unleash cross-media information",
-//         "isChecked": false
-//       },
-//       {
-//         "sub_task_id": "1-4",
-//         "sub_title": "Here's the story of a man named Brady",
-//         "isChecked": false
-//       },
-//       {
-//         "sub_task_id": "1-5",
-//         "sub_title": "Bugger bag egg's old boy willy jolly",
-//         "isChecked": false
-//       },
-//     ]
-//   },
-//   {
-//     "id": 2,
-//     "title": "Task 2",
-//     "description": "Implement the navigation algorithm.",
-//     "status": "To Do",
-//     "priority": "High",
-//     "tags": "Coding",
-//     "startDate": "2023-01-15T00:00:00Z",
-//     "dueDate": "2023-05-15T00:00:00Z",
-//     "projectId": 1,
-//     "authorUserId": 3,
-//     "assignedUserId": 4
-//   },
-//   {
-//     "id": 3,
-//     "title": "Task 3",
-//     "description": "Develop renewable energy solutions.",
-//     "status": "Work In Progress",
-//     "priority": "Urgent",
-//     "tags": "Development",
-//     "startDate": "2023-03-20T00:00:00Z",
-//     "dueDate": "2023-09-20T00:00:00Z",
-//     "imageTask": "https://www.cflowapps.com/wp-content/uploads/2021/12/diffnce_job_task_process.jpeg",
-//     "projectId": 1,
-//     "authorUserId": 5,
-//     "assignedUserId": 6
-//   },
-//   {
-//     "id": 4,
-//     "title": "Task 4",
-//     "description": "Outline new software development workflows.",
-//     "status": "To Do",
-//     "priority": "High",
-//     "tags": "Planning",
-//     "startDate": "2023-01-25T00:00:00Z",
-//     "dueDate": "2023-06-25T00:00:00Z",
-//     "projectId": 1,
-//     "authorUserId": 7,
-//     "assignedUserId": 8
-//   },
-//   {
-//     "id": 5,
-//     "title": "Task 5",
-//     "description": "Research AI models for prediction.",
-//     "status": "Work In Progress",
-//     "priority": "Urgent",
-//     "tags": "Research",
-//     "startDate": "2023-04-20T00:00:00Z",
-//     "dueDate": "2023-10-20T00:00:00Z",
-//     "projectId": 1,
-//     "comments": 2,
-//     "authorUserId": 9,
-//     "assignedUserId": 10
-//   },
-//   {
-//     "id": 6,
-//     "title": "Task 6",
-//     "description": "Biotech product testing.",
-//     "status": "To Do",
-//     "priority": "Backlog",
-//     "tags": "Testing",
-//     "startDate": "2023-03-01T00:00:00Z",
-//     "dueDate": "2023-08-01T00:00:00Z",
-//     "projectId": 1,
-//     "authorUserId": 11,
-//     "assignedUserId": 12
-//   },
-//   {
-//     "id": 7,
-//     "title": "Task 7",
-//     "description": "AI optimization for golf equipment.",
-//     "status": "Work In Progress",
-//     "priority": "Urgent",
-//     "tags": "Optimization",
-//     "startDate": "2023-05-15T00:00:00Z",
-//     "dueDate": "2023-11-15T00:00:00Z",
-//     "projectId": 1,
-//     "comments": 1,
-//     "authorUserId": 13,
-//     "assignedUserId": 14
-//   },
-//   {
-//     "id": 8,
-//     "title": "Task 8",
-//     "description": "Overhaul of the database for hotel management.",
-//     "status": "Under Review",
-//     "priority": "High",
-//     "tags": "Database",
-//     "startDate": "2023-04-01T00:00:00Z",
-//     "dueDate": "2023-10-01T00:00:00Z",
-//     "projectId": 1,
-//     "authorUserId": 15,
-//     "assignedUserId": 16
-//   },
-//   {
-//     "id": 9,
-//     "title": "Task 9",
-//     "description": "Upgrade telecom infrastructure.",
-//     "status": "Work In Progress",
-//     "priority": "Urgent",
-//     "tags": "Infrastructure",
-//     "startDate": "2023-06-10T00:00:00Z",
-//     "dueDate": "2023-12-10T00:00:00Z",
-//     "projectId": 1,
-//     "comments": 3,
-//     "authorUserId": 17,
-//     "assignedUserId": 18
-//   },
-//   {
-//     "id": 10,
-//     "title": "Task 10",
-//     "description": "Enhance security protocols.",
-//     "status": "Completed",
-//     "priority": "Urgent",
-//     "tags": "Security",
-//     "startDate": "2023-07-05T00:00:00Z",
-//     "dueDate": "2024-01-05T00:00:00Z",
-//     "projectId": 1,
-//     "authorUserId": 19,
-//     "assignedUserId": 20
-//   },
-// ]
-
-
 const ViewBoardProject = ({setIsModalNewTaskOpen, data}) => {
 
   const dataTasks = data;
@@ -310,13 +144,13 @@ const Task = ({task}) => {
       className={`mb-4 rounded-md bg-white shadow dark:bg-dark-secondary ${isDragging ? "opacity-50" : "opacity-100"}`}
     >
       {task?.imageTask && (
-        <img
-          src={task.imageTask}
-          alt="image task"
-          width={400}
-          height={200}
-          className="h-auto w-full rounded-t-md"
-        />
+        <div className="h-[250px] overflow-hidden flex items-center justify-center">
+          <img
+            src={task.imageTask}
+            alt="image task"
+            className="object-contain max-h-full w-full"
+          />
+        </div>
       )}
 
       <div className='p-4'>
@@ -380,15 +214,20 @@ const Task = ({task}) => {
                 {getNameInitials(task.authorUserId?.fullname)}  
               </div>
             )}
-            {task.assignedUserId && (
+
+            {task.assigneeUserId ? task.assigneeUserId?.profilePicture ? (
               <img
-                src='https://enlink.themenate.net/assets/images/avatars/thumb-4.jpg'
-                alt='image assignee'
+                src={task.assigneeUserId?.profilePicture}
+                alt='image author'
                 width={30}
                 height={30}
                 className='size-8 rounded-full border-2 border-white object-cover dark:border-dark-secondary'
               />
-            )}
+            ) : (
+              <div className='size-8 text-sm font-medium text-green-800 dark:text-gray-200 bg-green-50 dark:bg-slate-700 rounded-full flex items-center justify-center border border-green-200 dark:border-gray-200'>
+                {getNameInitials(task.assigneeUserId?.fullname)}  
+              </div>
+            ) : null}
           </div>
 
           <div className='flex items-center justify-center text-gray-500 dark:text-neutral-500'>

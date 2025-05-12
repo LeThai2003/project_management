@@ -2,11 +2,12 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Input from '../../components/inputs/Input'
 import GoogleAuth from '../../components/oauths/GoogleAuth';
-import ProfilePictureSelect from '../../components/inputs/ProfilePictureSelect';
+import PictureSelect from '../../components/inputs/PictureSelect';
 import { validateEmail } from '../../utils/helper';
 import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPath';
 import { uploadSingleImage } from '../../utils/uploads/uploadimage';
+import {LuUser} from "react-icons/lu";
 
 const Signup = () => {
 
@@ -91,7 +92,7 @@ const Signup = () => {
         <p className='text-sm font-medium text-gray-600 text-center mt-3 mb-1 tracking-[0.25px]'>Join us today by entering your details below</p>
         <form className='mt-1' onSubmit={handleSignUp}>
 
-          <ProfilePictureSelect image={profilePic} setImage={setProfilePic}/>
+          <PictureSelect image={profilePic} setImage={setProfilePic} shape="c" iconFirst={LuUser}/>
 
           <Input label="Fullname" type="text" value={fullname} onChange={(e) => setFullname(e.target.value)} placeholder="Your fullname" id="fullname"/>
           <Input label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Your email" id="email"/>

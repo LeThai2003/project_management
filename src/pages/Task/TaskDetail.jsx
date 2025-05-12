@@ -60,67 +60,49 @@ const TaskDetail = () => {
 
         <div className='flex flex-col md:flex-row gap-3 mb-5 h-auto'>
 
-          <div className='flex-1 md:flex-[2] mb-4 bg-white dark:bg-dark-secondary dark:text-gray-200 relative top-[40px] min-h-[calc(100vh-140px)] mx-2 px-4 pt-4 pb-0 rounded-md shadow-sm'>
+          {
+            taskDetail && 
+            <div className='flex-1 md:flex-[2] mb-4 bg-white dark:bg-dark-secondary dark:text-gray-200 relative top-[40px] min-h-[calc(100vh-140px)] mx-2 px-4 pt-4 pb-0 rounded-md shadow-sm'>
 
-            <div className='flex justify-between items-center'>
-              <div className='flex items-center justify-start gap-3'>
-                { 
-                  taskDetail.imageTask && 
-                  <img 
-                    src={taskDetail.imageTask} 
-                    alt="image task"
-                    className='w-40 h-20 md:w-24 md:h-14 lg:w-40 lg:h-20  border-gray-200 dark:border-gray-600 object-cover'
-                  />
-                }
-                <h3 className='text-gray-800 dark:text-gray-100 text-xl md:text-lg lg:text-xl font-medium'>{taskDetail.title}</h3>
-              </div>
-
-              <div className='flex items-center justify-end gap-3'>
-                <PriorityTag priority={taskDetail.priority}/>
-                <StatusTag status={taskDetail.status}/>
-              </div>
-            </div>
-
-            <div className='mt-5'>
-              <h3 className=' font-medium text-gray-700 dark:text-gray-200 tracking-[0.2px]'>Description:</h3>
-              <p className='text-sm font-normal text-gray-700 tracking-[0.2px] dark:text-gray-200 text-justify mt-1'>{taskDetail.description}</p>
-            </div>
-
-            <div className='mt-5 flex items-center justify-between'>
-              <p className='text-sm font-medium text-gray-700 dark:text-gray-200 tracking-[0.2px]'>Start Date: <span className='text-green-700 text-sm font-medium'>{formattedStartDate}</span></p>
-              <p className='text-sm font-medium text-gray-700 dark:text-gray-200 tracking-[0.2px]'>End Date: <span className='text-red-700 text-sm font-medium'>{formattedDueDate}</span></p>
-            </div>
-
-            <div className='mt-5 flex items-center justify-between'>
-              <div className='flex items-center justify-start gap-2'>
-                <p className='font-medium text-gray-700 dark:text-gray-200 tracking-[0.2px] text-sm'>Creator: <span className='text-slate-600 dark:text-slate-400'>{taskDetail?.authorUserId?.fullname}</span></p>
-                {
-                  taskDetail?.authorUserId?.profilePicture ? 
-                    <div className='border border-gray-200 rounded-full'>
-                      <img
-                        src={taskDetail?.authorUserId.profilePicture}
-                        alt='image assignee'
-                        width={30}
-                        height={30}
-                        className='size-8 rounded-full object-cover dark:border-dark-secondary'
+              <div className='flex justify-between items-center'>
+                <div className='flex items-center justify-start gap-3'>
+                  <div className='flex items-center justify-center'>
+                    { 
+                      taskDetail.imageTask && 
+                      <img 
+                        src={taskDetail.imageTask} 
+                        alt="image task"
+                        className='w-40 h-20 md:w-24 md:h-14 lg:w-40 lg:h-20  border-gray-200 dark:border-gray-600 object-contain'
                       />
-                    </div>
-                    :
-                    <div className='size-8 text-sm font-medium text-green-800 dark:text-gray-200 bg-green-50 dark:bg-slate-700 rounded-full flex items-center justify-center border border-green-200 dark:border-gray-200'>
-                      {getNameInitials(taskDetail?.authorUserId?.fullname)}  
-                    </div>
-                }  
+                    }
+                  </div>
+                  <h3 className='text-gray-800 dark:text-gray-100 text-xl md:text-lg lg:text-xl font-medium'>{taskDetail.title}</h3>
+                </div>
+
+                <div className='flex items-center justify-end gap-3'>
+                  <PriorityTag priority={taskDetail.priority}/>
+                  <StatusTag status={taskDetail.status}/>
+                </div>
               </div>
 
-              {
-                taskDetail?.assignedUserId && 
+              <div className='mt-5'>
+                <h3 className=' font-medium text-gray-700 dark:text-gray-200 tracking-[0.2px]'>Description:</h3>
+                <p className='text-sm font-normal text-gray-700 tracking-[0.2px] dark:text-gray-200 text-justify mt-1'>{taskDetail.description}</p>
+              </div>
+
+              <div className='mt-5 flex items-center justify-between'>
+                <p className='text-sm font-medium text-gray-700 dark:text-gray-200 tracking-[0.2px]'>Start Date: <span className='text-green-700 text-sm font-medium'>{formattedStartDate}</span></p>
+                <p className='text-sm font-medium text-gray-700 dark:text-gray-200 tracking-[0.2px]'>End Date: <span className='text-red-700 text-sm font-medium'>{formattedDueDate}</span></p>
+              </div>
+
+              <div className='mt-5 flex items-center justify-between'>
                 <div className='flex items-center justify-start gap-2'>
-                  <p className='font-medium text-gray-700 dark:text-gray-200 tracking-[0.2px] text-sm'>Assignee: <span className='text-slate-600 dark:text-slate-400'></span></p>
+                  <p className='font-medium text-gray-700 dark:text-gray-200 tracking-[0.2px] text-sm'>Creator: <span className='text-slate-600 dark:text-slate-400'>{taskDetail?.authorUserId?.fullname}</span></p>
                   {
-                    taskDetail?.assignedUserId?.profilePicture ? 
+                    taskDetail?.authorUserId?.profilePicture ? 
                       <div className='border border-gray-200 rounded-full'>
                         <img
-                          src={taskDetail.assignedUserId.profilePicture}
+                          src={taskDetail?.authorUserId.profilePicture}
                           alt='image assignee'
                           width={30}
                           height={30}
@@ -129,28 +111,52 @@ const TaskDetail = () => {
                       </div>
                       :
                       <div className='size-8 text-sm font-medium text-green-800 dark:text-gray-200 bg-green-50 dark:bg-slate-700 rounded-full flex items-center justify-center border border-green-200 dark:border-gray-200'>
-                        {getNameInitials(taskDetail?.assignedUserId?.fullname)}  
+                        {getNameInitials(taskDetail?.authorUserId?.fullname)}  
                       </div>
                   }  
                 </div>
-              }
-            
+
+                {
+                  taskDetail?.assigneeUserId && 
+                  <div className='flex items-center justify-start gap-2'>
+                    <p className='font-medium text-gray-700 dark:text-gray-200 tracking-[0.2px] text-sm'>Assignee: <span className='text-slate-600 dark:text-slate-400'>{taskDetail.assigneeUserId.fullname}</span></p>
+                    {
+                      taskDetail?.assigneeUserId?.profilePicture ? 
+                        <div className='border border-gray-200 rounded-full'>
+                          <img
+                            src={taskDetail.assigneeUserId.profilePicture}
+                            alt='image assignee'
+                            width={30}
+                            height={30}
+                            className='size-8 rounded-full object-cover dark:border-dark-secondary'
+                          />
+                        </div>
+                        :
+                        <div className='size-8 text-sm font-medium text-green-800 dark:text-gray-200 bg-green-50 dark:bg-slate-700 rounded-full flex items-center justify-center border border-green-200 dark:border-gray-200'>
+                          {getNameInitials(taskDetail.assigneeUserId?.fullname)}  
+                        </div>
+                    }  
+                  </div>
+                }
+              
+              </div>
+
+              {/* tab */}
+              <div className='mt-5 flex items-center justify-start gap-4 border-b border-gray-200 dark:border-gray-600 pb-2'>
+                <TabButton name={`Tasks (${taskDetail?.sub_tasks?.length})`} activeTab={activeTab} setActiveTab={setActiveTab}/>
+                <TabButton name={`Comments`} activeTab={activeTab} setActiveTab={setActiveTab}/>
+              </div>
+
+              {activeTab == `Tasks (${taskDetail?.sub_tasks?.length})` && <ListSubTask isJustView={taskDetail?.isJustView} status={taskDetail?.status} taskId={id} listSubTasks={taskDetail.sub_tasks}/>}
+              {activeTab == `Comments` && <Comment/>}
+
+                    
             </div>
 
-            {/* tab */}
-            <div className='mt-5 flex items-center justify-start gap-4 border-b border-gray-200 dark:border-gray-600 pb-2'>
-              <TabButton name={`Tasks (${taskDetail?.sub_tasks?.length})`} activeTab={activeTab} setActiveTab={setActiveTab}/>
-              <TabButton name={`Comments`} activeTab={activeTab} setActiveTab={setActiveTab}/>
-            </div>
-
-            {activeTab == `Tasks (${taskDetail?.sub_tasks?.length})` && <ListSubTask isJustView={taskDetail?.isJustView} status={taskDetail?.status} taskId={id} listSubTasks={taskDetail.sub_tasks}/>}
-            {activeTab == `Comments` && <Comment/>}
-
-                  
-          </div>
+          }
 
           <div className='flex-1 md:flex-1 mb-4 bg-white dark:bg-dark-secondary dark:text-gray-200 relative top-[40px] min-h-[calc(100vh-140px)] mx-2 py-0 rounded-md shadow-sm'>
-            <h2 className="text-lg font-semibold mb-6 px-4 ">Activities</h2>
+            <h2 className="text-lg font-semibold my-3 px-4 ">Activities</h2>
 
             <div className='w-full h-[0.5px] bg-gray-200 dark:bg-gray-600'></div>
             
