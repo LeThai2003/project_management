@@ -12,6 +12,7 @@ import ResetPassword from "./pages/auth/ResetPassword"
 import PrivateRoute from "./components/privateRoute"
 import Profile from "./pages/account/Profile"
 import Account from "./pages/account/Account"
+import Search from "./pages/search/Search"
 
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
             <Route path="/task/:id" element={<TaskDetail/>}/>
             <Route path="/profile/:id" element={<Profile/>}/>
             <Route path="/account/:id" element={<Account/>}/>
+            <Route path="/search" element={<Search/>}/>
           </Route>
           
         </Routes>

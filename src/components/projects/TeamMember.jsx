@@ -57,7 +57,10 @@ const TeamMember = ({dataProject, allowEdit, modalNewProjectOpen, setModalNewPro
   {
     for (const task of tasks) {
       const member = dataTeams.find(m => m._id == task.authorUserId._id);
-      member.totalCreate += 1;
+      if(member)
+      {
+        member.totalCreate += 1;
+      }
     }
   }
   // console.log(allowEdit);

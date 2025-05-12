@@ -8,6 +8,9 @@ export default {
   ],
   theme: {
     extend: {
+      screens: {
+        'max-500': {'raw': '(max-width: 500px)'},   // tu 0 -> 499
+      },
       colors: {
         white: "#ffffff",
         gray: {

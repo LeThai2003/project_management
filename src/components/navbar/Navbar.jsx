@@ -83,7 +83,7 @@ const Navbar = () => {
           : 
           null
         }
-        <button className='btn-icon'> 
+        <button onClick={() => navigate("/search")} className='btn-icon'> 
           <IoSearchOutline />
         </button>
       </div>

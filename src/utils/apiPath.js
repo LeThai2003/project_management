@@ -40,6 +40,7 @@ export const API_PATHS = {
   SEARCH: {
     MEMBER_IN_PROJECT: (id) => `/${base_path.search}/all-members/${id}`,   // id project
     ADD_MEMBER_TO_PROJECT: (id) => `/${base_path.search}/add-member/${id}`,
+    ANYTHING: `/${base_path.search}/anything`,
   },
   USER: {
     UPDATE_PROFILE: (id) => `/${base_path.user}/update-profile/${id}`,   // id user

@@ -47,6 +47,8 @@ const TaskDetail = () => {
   const formattedStartDate = taskDetail.startDate ? moment(new Date(taskDetail.startDate)).format("DD/MM/yyyy"): "No Set";
   const formattedDueDate = taskDetail.dueDate ? moment(new Date(taskDetail.dueDate)).format("DD/MM/yyyy"): "No Set";
 
+  const taskTagsSplit = taskDetail?.tags ? taskDetail.tags?.split(",") : [];
+
   return (
     <HomeLayout>
       <div className='relative'>
@@ -94,6 +96,19 @@ const TaskDetail = () => {
                 <p className='text-sm font-medium text-gray-700 dark:text-gray-200 tracking-[0.2px]'>Start Date: <span className='text-green-700 text-sm font-medium'>{formattedStartDate}</span></p>
                 <p className='text-sm font-medium text-gray-700 dark:text-gray-200 tracking-[0.2px]'>End Date: <span className='text-red-700 text-sm font-medium'>{formattedDueDate}</span></p>
               </div>
+
+              {taskTagsSplit.length > 0 && 
+                <div className='flex items-center gap-2 mt-5'>
+                  <p className='text-sm font-medium text-gray-700 dark:text-gray-200 tracking-[0.2px]'>Priority: </p>
+                  <div className='flex gap-2'>
+                    {taskTagsSplit.map((tag) => (
+                      <div key={tag} className='rounded-full bg-blue-100 px-2 py-1 text-xs dark:text-slate-900 font-medium'>
+                        {" "}{tag}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              }
 
               <div className='mt-5 flex items-center justify-between'>
                 <div className='flex items-center justify-start gap-2'>
@@ -276,7 +291,7 @@ const TaskDetail = () => {
 export default TaskDetail
 
 
-const StatusTag = ({ status }) => {
+export const StatusTag = ({ status }) => {
   const tagClassName = `rounded-full px-2 py-1 text-xs font-semibold ${
     status === "To Do"
       ? "bg-blue-200 text-blue-700"

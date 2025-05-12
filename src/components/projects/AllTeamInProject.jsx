@@ -94,7 +94,7 @@ const ModalAllTeamInProject = ({isOpen, onClose, dataMemeber, tasks}) => {
                     <div className='flex flex-col'>
                       <h3 className='text-sm font-medium dark:text-gray-200'>{member.fullname}</h3>
                       <span className='text-xs text-gray-600 dark:text-gray-200 mt-1'>{member.email}</span>
-                      <p className='text-xs text-gray-600 dark:text-gray-200 mt-1'>{member?.description}</p>
+                      <p className='text-xs text-gray-600 dark:text-gray-200 mt-1'>{member?.major}</p>
                     </div>
                   </div>
 
