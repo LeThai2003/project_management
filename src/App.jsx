@@ -10,6 +10,8 @@ import ForgotPassword from "./pages/auth/ForgotPassword"
 import OtpPassword from "./pages/auth/OtpPassword"
 import ResetPassword from "./pages/auth/ResetPassword"
 import PrivateRoute from "./components/privateRoute"
+import Profile from "./pages/account/Profile"
+import Account from "./pages/account/Account"
 
 
 function App() {
@@ -33,6 +35,8 @@ function App() {
             <Route path="/" element={<Home/>}/>
             <Route path="/project/:id" element={<Project/>}/>
             <Route path="/task/:id" element={<TaskDetail/>}/>
+            <Route path="/profile/:id" element={<Profile/>}/>
+            <Route path="/account/:id" element={<Account/>}/>
           </Route>
           
         </Routes>

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import {LuUser, LuUpload, LuTrash} from "react-icons/lu";
 
-const PictureSelect = ({image, setImage, shape, iconFirst: Icon}) => {
+const PictureSelect = ({image, setImage, shape, iconFirst: Icon, isDisable}) => {
 
   const inputRef = useRef(null);
 
@@ -31,14 +31,14 @@ const PictureSelect = ({image, setImage, shape, iconFirst: Icon}) => {
 
   return (
     <div className='flex justify-center mt-3 mb-3'>
-      <input type="file" accept='image/*' ref={inputRef} onChange={handleChangeImage} className='hidden'/>
+      <input type="file" accept='image/*' ref={inputRef} onChange={handleChangeImage} disabled={isDisable} className='hidden'/>
 
       {!image ? (
           <div className={`relative size-20 flex items-center justify-center ${shape == "c" ? "rounded-full" : "rounded-lg"} bg-purple-100`}>
             {Icon && <Icon className='text-4xl text-primary'/>}
             <button 
               type='button' 
-              className='absolute -right-1 -bottom-1 bg-purple-600 hover:bg-purple-700 text-white size-8 flex items-center justify-center rounded-full cursor-pointer' 
+              className={`absolute -right-1 -bottom-1 bg-purple-600 text-white size-8 flex items-center justify-center rounded-full ${isDisable ? "cursor-not-allowed dark:bg-slate-800" : "cursor-pointer hover:bg-purple-700 dark:bg-slate-800 dark:hover:bg-slate-700"}`} 
               onClick={handleChooseFile}
             >
               <LuUpload/>

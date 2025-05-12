@@ -189,11 +189,17 @@ const Navbar = () => {
             <div className='border-b border-gray-100 dark:border-gray-600'></div>
 
             <div className='text-sm py-2'>
-              <div className='cursor-pointer px-4 py-3 flex justify-start items-center gap-3 text-gray-600 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 dark:bg-slate-800'>
+              <div 
+                className='cursor-pointer px-4 py-3 flex justify-start items-center gap-3 text-gray-600 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 dark:bg-slate-800'
+                onClick={() => navigate(`/profile/${currentUser._id}`)}
+              >
                 <FaRegUser className='size-4'/>
                 <p className=''>Edit Profile</p>
               </div>
-              <div className='cursor-pointer px-4 py-3 flex justify-start items-center gap-3 text-gray-600 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 dark:bg-slate-800'>
+              <div 
+                className='cursor-pointer px-4 py-3 flex justify-start items-center gap-3 text-gray-600 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 dark:bg-slate-800'
+                onClick={() => navigate(`/account/${currentUser._id}`)}
+              >
                 <MdOutlineLock className='size-4'/>
                 <p className=''>Account Setting</p>
               </div>

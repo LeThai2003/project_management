@@ -5,7 +5,8 @@ const base_path = {
   project: "project",
   task: "task",
   upload: "upload",
-  search: "search"
+  search: "search",
+  user: "user"
 }
 
 export const API_PATHS = {
@@ -39,5 +40,9 @@ export const API_PATHS = {
   SEARCH: {
     MEMBER_IN_PROJECT: (id) => `/${base_path.search}/all-members/${id}`,   // id project
     ADD_MEMBER_TO_PROJECT: (id) => `/${base_path.search}/add-member/${id}`,
+  },
+  USER: {
+    UPDATE_PROFILE: (id) => `/${base_path.user}/update-profile/${id}`,   // id user
+    UPDATE_ACCOUNT: (id) => `/${base_path.user}/update-account/${id}`,   
   }
 }

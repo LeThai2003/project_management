@@ -6,8 +6,8 @@ import PictureSelect from '../../components/inputs/PictureSelect';
 import { validateEmail } from '../../utils/helper';
 import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPath';
-import { uploadSingleImage } from '../../utils/uploads/uploadimage';
 import {LuUser} from "react-icons/lu";
+import { uploadSingleImage } from '../../utils/uploads/uploadImage';
 
 const Signup = () => {
 

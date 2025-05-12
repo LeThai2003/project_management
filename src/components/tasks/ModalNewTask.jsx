@@ -15,11 +15,11 @@ const ModalNewTask = ({isOpen, onClose, type, data, projectId}) => {
   const dispatch = useDispatch();
   const {projects} = useSelector(state => state.projects);
 
-  console.log(projects);
+  // console.log(projects);
 
   const members = projects?.find(project => project._id == projectId)?.membersId || [];
 
-  console.log(members);
+  // console.log(members);
 
 
 
@@ -35,7 +35,7 @@ const ModalNewTask = ({isOpen, onClose, type, data, projectId}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [profilePic, setProfilePic] = useState(data?.imageTask || null);
 
-  console.log(assigneeUserId);
+  // console.log(assigneeUserId);
 
   const isFormValid = () => {
     return title
