@@ -144,11 +144,11 @@ const Task = ({task}) => {
       className={`mb-4 rounded-md bg-white shadow dark:bg-dark-secondary ${isDragging ? "opacity-50" : "opacity-100"}`}
     >
       {task?.imageTask && (
-        <div className="h-[250px] overflow-hidden flex items-center justify-center">
+        <div className="h-[200px] overflow-hidden flex items-center justify-center">
           <img
             src={task.imageTask}
             alt="image task"
-            className="object-cover h-full w-full"
+            className="object-fill h-auto w-full"
           />
         </div>
       )}

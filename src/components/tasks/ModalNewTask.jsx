@@ -14,14 +14,30 @@ const ModalNewTask = ({isOpen, onClose, type, data, projectId}) => {
 
   const dispatch = useDispatch();
   const {projects} = useSelector(state => state.projects);
+  const {currentUser} = useSelector(state => state.users);
 
   // console.log(projects);
 
-  const members = projects?.find(project => project._id == projectId)?.membersId || [];
+  const project = projects?.find(project => project._id == projectId);
 
-  // console.log(members);
+  let members = [];
+  let membersUpdate = [];
 
-
+  if(project)
+  {
+    if(type == "create")   // new --> ignore yourself
+    {
+      members.push(project.authorUserId);
+      if(project.membersId) members.push(...project.membersId);
+      members = members.filter(m => m._id !== currentUser._id);
+    }
+    else  // update --> ignore author task
+    {
+      membersUpdate.push(project.authorUserId);
+      if(project.membersId) membersUpdate.push(...project.membersId);
+      membersUpdate = membersUpdate.filter(m => m._id !== data.authorUserId._id);
+    }
+  }
 
   const [title, setTitle] = useState(data?.title || "");
   const [description, setDescription] = useState(data?.description || "");
@@ -35,7 +51,7 @@ const ModalNewTask = ({isOpen, onClose, type, data, projectId}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [profilePic, setProfilePic] = useState(data?.imageTask || null);
 
-  // console.log(assigneeUserId);
+  console.log(assigneeUserId);
 
   const isFormValid = () => {
     return title
@@ -224,9 +240,15 @@ const ModalNewTask = ({isOpen, onClose, type, data, projectId}) => {
               onChange={(e) => setAssigneeUserId(e.target.value)}
             >
               <option value="">No One</option>
-              {members?.map(member => (
-                <option key={member._id} value={member._id}>{member.fullname}</option>
-              ))}
+              { type == "create" ? 
+                members?.map(member => (
+                  <option key={member._id} value={member._id}>{member.fullname}</option>
+                ))
+                :
+                membersUpdate?.map(member => (
+                  <option key={member._id} value={member._id}>{member.fullname}</option>
+                ))
+              }
             </select>
           </div>
         </div>
