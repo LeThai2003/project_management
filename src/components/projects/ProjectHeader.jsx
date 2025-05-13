@@ -10,7 +10,7 @@ import TabButton from '../tabButtons/TabButton';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-const ProjectHeader = ({activeTab, setActiveTab}) => {
+const ProjectHeader = ({activeTab, setActiveTab, setSearch, searchValue}) => {
 
   const [modalNewProjectOpen, setModalNewProjectOpen] = useState({
     isOpen: false,
@@ -72,8 +72,10 @@ const ProjectHeader = ({activeTab, setActiveTab}) => {
             type="text" 
             className='outline-none border bg-gray-100 dark:border-gray-600 dark:bg-dark-tertiary dark:text-white pl-8 pr-4 py-1 rounded-lg text-sm'
             placeholder='Search Tasks'
+            onChange={e => setSearch(e.target.value)}
+            value={searchValue}
           />
-          <IoSearchOutline className='absolute left-2 top-[7px] size-4 dark:text-white'/>
+          <IoSearchOutline className='absolute left-2 top-[7px] -mb-[5px] size-4 dark:text-white'/>
         </div>
       </div>
 

@@ -5,8 +5,12 @@ import { IoIosArrowBack, IoMdArrowBack } from "react-icons/io";
 import Input from '../../components/inputs/Input';
 import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPath';
+import { isLogin } from '../../utils/isLogin';
 
 const ResetPassword = () => {
+
+  isLogin();
+
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [error, setError] = useState("");
@@ -85,6 +89,7 @@ const ResetPassword = () => {
               placeholder="Password"
               type="password"
               onChange={(e) => setNewPassword(e.target.value)}
+              isDisable={false}
             />
 
             <Input
@@ -94,6 +99,7 @@ const ResetPassword = () => {
               placeholder="Password"
               type="password"
               onChange={(e) => setConfirmNewPassword(e.target.value)}
+              isDisable={false}
             />
 
             {error && <p className='text-sm text-red-500 pl-1 mt-2'>{error}</p>}

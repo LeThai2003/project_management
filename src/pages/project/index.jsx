@@ -8,6 +8,7 @@ import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPath';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTasks } from '../../redux/tasks/taskSlice';
+import { convertToSlug } from '../../utils/converToSlug';
 
 const Project = () => {
 
@@ -18,6 +19,9 @@ const Project = () => {
   
   const dispatch = useDispatch();
   const {tasks} = useSelector(state => state.tasks);
+
+  const [search, setSearch] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
 
   const getDataTasks = async () => {
     try {
@@ -34,8 +38,29 @@ const Project = () => {
 
   useEffect(() => {
     getDataTasks();
+    setSearch("");
   }, [id]);
 
+  useEffect(() => {
+    if (search.trim() === "") 
+    {
+      setSearchResult(tasks); 
+    } 
+    else 
+    {
+      const searchSlug = convertToSlug(search);
+      const filteredTasks = tasks.filter(task =>
+        task.slugTitle.toLowerCase().includes(searchSlug) ||
+        task.description?.toLowerCase().includes(search.toLowerCase()) ||
+        convertToSlug(task.authorUserId.fullname).includes(searchSlug) ||
+        convertToSlug(task.assigneeUserId?.fullname)?.includes(searchSlug) ||
+        convertToSlug(task.tags)?.includes(searchSlug) ||
+        task.priority.toLowerCase().includes(search.toLocaleLowerCase()) ||
+        task.status.toLowerCase().includes(search.toLocaleLowerCase())
+      );
+      setSearchResult(filteredTasks);
+    }
+  }, [search, tasks]);
 
   return (
     <HomeLayout>
@@ -46,9 +71,9 @@ const Project = () => {
         projectId={id}
       />
 
-      <ProjectHeader activeTab={activeTab} setActiveTab={setActiveTab}/>
+      <ProjectHeader setSearch={setSearch} searchValue={search} activeTab={activeTab} setActiveTab={setActiveTab}/>
 
-      {activeTab == "Board" && <ViewBoardProject data={tasks} setIsModalNewTaskOpen={setIsModalNewTaskOpen}/>}
+      {activeTab == "Board" && <ViewBoardProject data={searchResult} setIsModalNewTaskOpen={setIsModalNewTaskOpen}/>}
 
     </HomeLayout>
   )

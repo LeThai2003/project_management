@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Input from '../../components/inputs/Input'
 import GoogleAuth from '../../components/oauths/GoogleAuth';
@@ -8,10 +8,13 @@ import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPath';
 import {LuUser} from "react-icons/lu";
 import { uploadSingleImage } from '../../utils/uploads/uploadImage';
+import { isLogin } from '../../utils/isLogin';
 
 const Signup = () => {
 
   const navigate = useNavigate();
+
+  isLogin();
 
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");

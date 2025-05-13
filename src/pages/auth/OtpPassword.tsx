@@ -6,9 +6,12 @@ import CoundownTime from '../../components/CoundownTime/CoundownTime';
 import Input from '../../components/inputs/Input';
 import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPath';
+import { isLogin } from '../../utils/isLogin';
 
 
 const OtpPassword = () => {
+
+  isLogin();
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -105,6 +108,7 @@ const OtpPassword = () => {
               onChange={(e) => setOtp(e.target.value)}
               id="opt"
               label="OTP code"
+              isDisable={false}
             />
 
             {error && <p className='text-sm text-red-500 pl-1 mt-2'>{error}</p>}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Input from '../../components/inputs/Input'
 import GoogleAuth from '../../components/oauths/GoogleAuth';
@@ -7,13 +7,16 @@ import { API_PATHS } from '../../utils/apiPath';
 import axiosInstance from '../../utils/axiosInstance';
 import {useDispatch, useSelector} from "react-redux";
 import { signInFailed, signInStart, signInSuccess } from '../../redux/users/userSlice';
+import { isLogin } from '../../utils/isLogin';
 
 const Login = () => {
 
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-  const {currentUser, loading} = useSelector((state) => state.users);
+  const {loading} = useSelector((state) => state.users);
+
+  isLogin();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

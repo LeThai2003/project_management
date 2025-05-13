@@ -5,15 +5,20 @@ import { validateEmail } from '../../utils/helper';
 import Input from '../../components/inputs/Input';
 import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPath';
+import { uploadSingleImage } from '../../utils/uploads/uploadImage';
+import { useDispatch, useSelector } from 'react-redux';
+import { isLogin } from '../../utils/isLogin';
 
 
 const ForgotPassword = () => {
 
+  isLogin();
+
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
-  const navigate = useNavigate();
 
   const handleBack = () => {
     navigate(-1);
@@ -79,6 +84,7 @@ const ForgotPassword = () => {
               id="email"
               onChange={(e) => setEmail(e.target.value)}
               label="Email"
+              isDisable={false}
             />
 
             {error && <p className='text-sm text-red-500 mt-2 pl-1'>{error}</p>}

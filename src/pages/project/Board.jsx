@@ -148,7 +148,7 @@ const Task = ({task}) => {
           <img
             src={task.imageTask}
             alt="image task"
-            className="object-contain max-h-full w-full"
+            className="object-cover h-full w-full"
           />
         </div>
       )}

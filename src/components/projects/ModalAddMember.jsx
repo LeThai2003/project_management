@@ -99,7 +99,7 @@ const ModalAddMember = ({isOpen, onClose}) => {
                         <img
                           src={member.profilePicture}
                           alt='profile image'
-                          className='size-14 rounded-full flex items-center justify-center border border-blue-200 dark:border-gray-200'
+                          className='size-14 rounded-full flex object-cover items-center justify-center border border-blue-200 dark:border-gray-200'
                         /> 
                         : 
                         <div className='size-14 text-sm font-medium text-green-800 dark:text-gray-200 bg-green-50 dark:bg-slate-700 rounded-full flex items-center justify-center border border-green-200 dark:border-gray-200'>
