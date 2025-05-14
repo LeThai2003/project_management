@@ -5,10 +5,18 @@ import { getNameInitials } from '../../utils/helper'
 import { FaEdit } from "react-icons/fa";
 import { LuHeart, LuTrash2, LuX } from 'react-icons/lu'
 import { FaReply } from 'react-icons/fa6'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import CommentForm from './CommentForm';
+import Modal from '../Modal';
+import DeleteAlert from '../DeleteAlert';
+import axiosInstance from '../../utils/axiosInstance';
+import { API_PATHS } from '../../utils/apiPath';
+import { deleteComment } from '../../redux/comments/commentSlice';
+
 
 const Comment = ({comment, commentsByParentId}) => {
+
+  const dispatch = useDispatch();
 
   const dateFormat = moment(comment.createdAt).format("DD-MM-yyyy HH:mm:ss");
 
@@ -19,13 +27,34 @@ const Comment = ({comment, commentsByParentId}) => {
   const [areChildrenHidden, setAreChildrenHidden] = useState(true);
 
   const [isEditing, setIsEditing] = useState(false);
+  const [isReplying, setIsReplying] = useState(false);
+  const [isOpenDeleteAlert, setIsOpenDeleteAlert] = useState(false);
 
-  const handleUpdateComment = async () => {
-
+  const handleDelete = async () => {
+    try {
+      console.log(comment._id)
+      const response = await axiosInstance.delete(API_PATHS.COMMENT.DELETE(comment._id));
+      dispatch(deleteComment(comment._id));
+    } catch (error) {
+      console.log(error);
+    }
+    setIsOpenDeleteAlert(false);
   }
 
   return (
     <div className=''>
+
+      <Modal
+        isOpen={isOpenDeleteAlert}
+        onClose={() => setIsOpenDeleteAlert(false)}
+        title="Delete A Comment"
+      >
+        <DeleteAlert 
+          content={<>Are you sure you want to delete the comment?</>}
+          onDelete={handleDelete}
+        />
+      </Modal>
+
       <div className='flex flex-col border border-gray-200 mb-2 dark:border-gray-600 rounded-md px-4 py-2'>
         {/* header */}
         <div className='flex gap-2 items-center'>
@@ -56,9 +85,9 @@ const Comment = ({comment, commentsByParentId}) => {
           <div className='my-2'>
             <CommentForm 
               parentId={comment._id}
-              type="reply"
+              type="update"
               initialValue={comment.message}
-              setEditing={setIsEditing}
+              setOpen={setIsEditing}
             />
           </div>
         ) : (
@@ -68,8 +97,14 @@ const Comment = ({comment, commentsByParentId}) => {
 
         {/* footer */}
         <div className={`${isEditing ? "" : "ml-10"} flex items-center justify-start gap-3 text-gray-400 dark:text-gray-400 mt-1`}>
+
           <LuHeart className="size-[15px] cursor-pointer hover:text-gray-300 dark:hover:text-gray-200" />
-          <FaReply className="size-[15px] cursor-pointer hover:text-gray-300 dark:hover:text-gray-200" />
+
+          <div className='relative' onClick={() => setIsReplying(prev => !prev)}>
+            <FaReply className={`size-[15px] cursor-pointer dark:hover:text-gray-200 ${isReplying ? "text-red-300" : "hover:text-gray-300"}`}/>
+            {isReplying && <div className='absolute -bottom-1 -right-0.5 cursor-pointer hover:bg-red-500 bg-red-400 text-white size-3 rounded-full flex items-center justify-center'><LuX className='size-2 '/></div>}
+          </div>
+
           {
             currentUser._id == comment.userId._id &&
             <>
@@ -77,7 +112,7 @@ const Comment = ({comment, commentsByParentId}) => {
                 <FaEdit className={`size-[15px] cursor-pointer dark:hover:text-gray-200 ${isEditing ? "text-red-300" : "hover:text-gray-300"}`}/>
                 {isEditing && <div className='absolute -bottom-1 -right-0.5 cursor-pointer hover:bg-red-500 bg-red-400 text-white size-3 rounded-full flex items-center justify-center'><LuX className='size-2 '/></div>}
               </div>
-              <LuTrash2 className="size-[15px] cursor-pointer text-red-500 hover:text-red-400" />
+              <LuTrash2 onClick={() => setIsOpenDeleteAlert(true)} className="size-[15px] cursor-pointer text-red-500 hover:text-red-400" />
             </>
           }
         </div>
@@ -115,6 +150,18 @@ const Comment = ({comment, commentsByParentId}) => {
 
           </div>
         )
+      }
+
+      {
+        isReplying && 
+        <div className='my-2 ml-[25px]'>
+          <CommentForm 
+            parentId={comment._id}
+            type="reply"
+            initialValue=""
+            setOpen={setIsReplying}
+          />
+        </div>
       }
 
     </div>

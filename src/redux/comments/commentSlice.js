@@ -22,15 +22,22 @@ const commentSlice = createSlice({
       state.loading = false;
     },
     addComment: (state, action) => {
+      state.comments.unshift(action.payload);
+    },
+    replyComment: (state, action) => {
       state.comments.push(action.payload);
     },
     updateComment: (state, action) => {
       const index = state.comments.findIndex(c => c._id == action.payload._id);
       if(index !== -1) state.comments[index] = action.payload
+    },
+    deleteComment: (state, action) => {
+      console.log(action.payload);
+      state.comments = state.comments?.filter(comment => comment._id != action.payload);  // vi da thay doi comment o commentDetail
     }
   }
 });
 
-export const {setComment, setError, addComment, setLoading, updateComment} = commentSlice.actions;
+export const {setComment, setError, addComment, setLoading, updateComment, deleteComment, replyComment} = commentSlice.actions;
 
 export default commentSlice.reducer;

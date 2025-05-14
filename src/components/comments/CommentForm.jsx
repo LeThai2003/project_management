@@ -4,9 +4,9 @@ import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPath';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { addComment, updateComment } from '../../redux/comments/commentSlice';
+import { addComment, replyComment, updateComment } from '../../redux/comments/commentSlice';
 
-const CommentForm = ({parentId, type, initialValue, setEditing}) => {
+const CommentForm = ({parentId, type, initialValue, setOpen, }) => {
 
   const {id} = useParams();
 
@@ -34,7 +34,7 @@ const CommentForm = ({parentId, type, initialValue, setEditing}) => {
     console.log(message);
     if(!message.trim()) return;
     setIsLoading(true);
-    if(type == "create")
+    if(type == "create" || type == "reply")
     {
       try {
         const response = await axiosInstance.post(API_PATHS.COMMENT.CREATE(id), {
@@ -42,14 +42,25 @@ const CommentForm = ({parentId, type, initialValue, setEditing}) => {
         });
         // console.log(response.data);
         setMessage("");
-        dispatch(addComment(response.data.comment));
+
+        if(type == "reply")
+        {
+          setOpen(false);
+          dispatch(replyComment(response.data.comment))
+        }
+        else
+        {
+          dispatch(addComment(response.data.comment));
+        }
+
         setIsLoading(false);
+
       } catch (error) {
         setIsLoading(false);
         console.log(error);
       }
     }
-    else
+    else if(type == "update")
     {
       try {
         const response = await axiosInstance.patch(API_PATHS.COMMENT.UPDATE(parentId), {  // parentID --> id cua comment
@@ -59,7 +70,7 @@ const CommentForm = ({parentId, type, initialValue, setEditing}) => {
         setMessage("");
         dispatch(updateComment(response.data.comment));
         setIsLoading(false);
-        setEditing(false)
+        setOpen(false)
       } catch (error) {
         setIsLoading(false);
         console.log(error);
@@ -91,7 +102,7 @@ const CommentForm = ({parentId, type, initialValue, setEditing}) => {
           onClick={handleSubmit}
         >
           <LuSend className='size-4'/>
-          {isLoading ? (type == "create" ?  "Posting" : "updating") : (type == "create" ? "POST" : "Update")}
+          {isLoading ? ((type == "create" || type == "reply") ?  "Posting" : "updating") : ((type == "create" || type == "reply") ? "POST" : "Update")}
         </button>
       </div>
       
