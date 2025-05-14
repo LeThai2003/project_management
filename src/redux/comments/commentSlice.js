@@ -32,12 +32,25 @@ const commentSlice = createSlice({
       if(index !== -1) state.comments[index] = action.payload
     },
     deleteComment: (state, action) => {
-      console.log(action.payload);
       state.comments = state.comments?.filter(comment => comment._id != action.payload);  // vi da thay doi comment o commentDetail
+    },
+    updateLike: (state, action) => {
+      const index = state.comments.findIndex(c => c._id == action.payload._id);
+      if(index !== -1)
+      {
+        if(state.comments[index].like?.some(id => id == action.payload.userId))
+        {
+          state.comments[index].like = state.comments[index].like.filter(id => id != action.payload.userId);
+        }
+        else
+        {
+          state.comments[index].like.push(action.payload.userId);
+        }
+      }
     }
   }
 });
 
-export const {setComment, setError, addComment, setLoading, updateComment, deleteComment, replyComment} = commentSlice.actions;
+export const {setComment, setError, addComment, setLoading, updateComment, deleteComment, replyComment, updateLike} = commentSlice.actions;
 
 export default commentSlice.reducer;

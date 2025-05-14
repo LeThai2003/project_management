@@ -11,7 +11,8 @@ import Modal from '../Modal';
 import DeleteAlert from '../DeleteAlert';
 import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPath';
-import { deleteComment } from '../../redux/comments/commentSlice';
+import { deleteComment, updateLike } from '../../redux/comments/commentSlice';
+import { GoHeartFill } from "react-icons/go";
 
 
 const Comment = ({comment, commentsByParentId}) => {
@@ -39,6 +40,16 @@ const Comment = ({comment, commentsByParentId}) => {
       console.log(error);
     }
     setIsOpenDeleteAlert(false);
+  }
+
+  const handleUpdateLike = async () => {
+    try {
+      console.log(comment._id)
+      const response = await axiosInstance.patch(API_PATHS.COMMENT.LIKE(comment._id));
+      dispatch(updateLike({_id: comment._id, userId: currentUser._id}));
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -98,7 +109,18 @@ const Comment = ({comment, commentsByParentId}) => {
         {/* footer */}
         <div className={`${isEditing ? "" : "ml-10"} flex items-center justify-start gap-3 text-gray-400 dark:text-gray-400 mt-1`}>
 
-          <LuHeart className="size-[15px] cursor-pointer hover:text-gray-300 dark:hover:text-gray-200" />
+          {comment.like?.includes(currentUser._id) ? (
+            <div className='flex items-center justify-center gap-1'>
+              <GoHeartFill onClick={handleUpdateLike} className="size-[15px] cursor-pointer text-[#ff0000] hover:text-opacity-80" />
+              <span className='text-xs'>{comment.like?.length || 0}</span>
+            </div>
+          ) : (
+            <div className='flex items-center justify-center gap-1'>
+              <LuHeart onClick={handleUpdateLike} className="size-[15px] cursor-pointer hover:text-gray-300 dark:hover:text-gray-200" />
+              <span className='text-xs'>{comment.like?.length || 0}</span>
+            </div>
+          )}
+          
 
           <div className='relative' onClick={() => setIsReplying(prev => !prev)}>
             <FaReply className={`size-[15px] cursor-pointer dark:hover:text-gray-200 ${isReplying ? "text-red-300" : "hover:text-gray-300"}`}/>

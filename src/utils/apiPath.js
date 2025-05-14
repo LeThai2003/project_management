@@ -52,5 +52,6 @@ export const API_PATHS = {
     CREATE: (id) => `/${base_path.comment}/${id}`,   
     UPDATE: (id) => `/${base_path.comment}/${id}`, // id comment  
     DELETE: (id) => `/${base_path.comment}/${id}`,   
+    LIKE: (id) => `/${base_path.comment}/like/${id}`,   
   }
 }
