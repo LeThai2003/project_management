@@ -49,7 +49,9 @@ const CommentDetail = () => {
 
   return (
     <div>
-      <CommentForm/>
+      <div className='my-5'>
+        <CommentForm parentId={undefined} type="create" initialValue=""/>
+      </div>
       <CommentList commentsByParentId={commentsByParentId}/>
     </div>
   )

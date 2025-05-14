@@ -50,5 +50,6 @@ export const API_PATHS = {
   COMMENT: {
     GET_ALL: (id) => `/${base_path.comment}/${id}`,   // id task
     CREATE: (id) => `/${base_path.comment}/${id}`,   
+    UPDATE: (id) => `/${base_path.comment}/${id}`, // id comment  
   }
 }

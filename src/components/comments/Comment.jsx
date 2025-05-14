@@ -3,9 +3,10 @@ import CommentList from './CommentList'
 import moment from 'moment'
 import { getNameInitials } from '../../utils/helper'
 import { FaEdit } from "react-icons/fa";
-import { LuHeart, LuTrash2 } from 'react-icons/lu'
+import { LuHeart, LuTrash2, LuX } from 'react-icons/lu'
 import { FaReply } from 'react-icons/fa6'
 import { useSelector } from 'react-redux';
+import CommentForm from './CommentForm';
 
 const Comment = ({comment, commentsByParentId}) => {
 
@@ -15,7 +16,13 @@ const Comment = ({comment, commentsByParentId}) => {
 
   const childComments = commentsByParentId[comment._id];
 
-  const [areChildrenHidden, setAreChildrenHidden] = useState(true)
+  const [areChildrenHidden, setAreChildrenHidden] = useState(true);
+
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleUpdateComment = async () => {
+
+  }
 
   return (
     <div className=''>
@@ -45,17 +52,32 @@ const Comment = ({comment, commentsByParentId}) => {
         </div>
 
         {/* message */}
-        <div className="ml-10 text-md text-gray-800 dark:text-gray-200 tracking-[0.2px] my-1 text-justify">{comment.message}</div>
+        {isEditing ? (
+          <div className='my-2'>
+            <CommentForm 
+              parentId={comment._id}
+              type="reply"
+              initialValue={comment.message}
+              setEditing={setIsEditing}
+            />
+          </div>
+        ) : (
+          <div className="ml-10 text-md text-gray-800 dark:text-gray-200 tracking-[0.2px] my-1 text-justify">{comment.message}</div>
+        )}
+        
 
         {/* footer */}
-        <div className='ml-10 flex items-center justify-start gap-3 text-gray-400 dark:text-gray-300 mt-1'>
-          <LuHeart className="size-[15px] cursor-pointer" />
-          <FaReply className="size-[15px] cursor-pointer" />
+        <div className={`${isEditing ? "" : "ml-10"} flex items-center justify-start gap-3 text-gray-400 dark:text-gray-400 mt-1`}>
+          <LuHeart className="size-[15px] cursor-pointer hover:text-gray-300 dark:hover:text-gray-200" />
+          <FaReply className="size-[15px] cursor-pointer hover:text-gray-300 dark:hover:text-gray-200" />
           {
             currentUser._id == comment.userId._id &&
             <>
-              <FaEdit className="size-[15px] cursor-pointer" />
-              <LuTrash2 className="size-[15px] cursor-pointer text-red-500" />
+              <div className='relative' onClick={() => setIsEditing(prev => !prev)}>
+                <FaEdit className={`size-[15px] cursor-pointer dark:hover:text-gray-200 ${isEditing ? "text-red-300" : "hover:text-gray-300"}`}/>
+                {isEditing && <div className='absolute -bottom-1 -right-0.5 cursor-pointer hover:bg-red-500 bg-red-400 text-white size-3 rounded-full flex items-center justify-center'><LuX className='size-2 '/></div>}
+              </div>
+              <LuTrash2 className="size-[15px] cursor-pointer text-red-500 hover:text-red-400" />
             </>
           }
         </div>

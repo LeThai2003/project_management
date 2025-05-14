@@ -22,11 +22,15 @@ const commentSlice = createSlice({
       state.loading = false;
     },
     addComment: (state, action) => {
-      state.tasks.push(action.payload);
+      state.comments.push(action.payload);
     },
+    updateComment: (state, action) => {
+      const index = state.comments.findIndex(c => c._id == action.payload._id);
+      if(index !== -1) state.comments[index] = action.payload
+    }
   }
 });
 
-export const {setComment, setError, addComment, setLoading} = commentSlice.actions;
+export const {setComment, setError, addComment, setLoading, updateComment} = commentSlice.actions;
 
 export default commentSlice.reducer;
