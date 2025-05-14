@@ -5,6 +5,7 @@ import { API_PATHS } from '../../utils/apiPath';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addComment, replyComment, updateComment } from '../../redux/comments/commentSlice';
+import EmojiPicker from 'emoji-picker-react';
 
 const CommentForm = ({parentId, type, initialValue, setOpen, }) => {
 
@@ -17,6 +18,7 @@ const CommentForm = ({parentId, type, initialValue, setOpen, }) => {
   const [file, setFile] = useState();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
 
   const textareaRef = useRef(null);
 
@@ -26,12 +28,20 @@ const CommentForm = ({parentId, type, initialValue, setOpen, }) => {
     {
       textarea.style.height = "auto";
       textarea.style.height = `${textarea.scrollHeight}px`
-      textarea.selectionStart = textarea.selectionEnd = textarea.value.length;
+      // textarea.selectionStart = textarea.selectionEnd = textarea.value.length; 
     }
   }, [message]);
 
+  useEffect(() => {
+    if(type == "update")
+    {
+      const textarea = textareaRef.current;
+      textarea.selectionStart = textarea.selectionEnd = textarea.value.length;
+    }
+  }, []);
+
   const handleSubmit = async () => {
-    console.log(message);
+    // console.log(message);
     if(!message.trim()) return;
     setIsLoading(true);
     if(type == "create" || type == "reply")
@@ -76,10 +86,30 @@ const CommentForm = ({parentId, type, initialValue, setOpen, }) => {
         console.log(error);
       }
     }
+    setOpenEmojiPicker(false);
+  }
+
+  const onClickEmoji = (e) => {
+    const textarea = textareaRef.current;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+
+    const emoji = e.emoji;
+
+    // const newMessage = message.substring(0, start) + emoji + message.substring(end);
+
+    setMessage(prev => prev.substring(0, start) + emoji + prev.substring(end));
+
+    setTimeout(() => {
+      textarea.setSelectionRange(start + emoji.length, start + emoji.length);
+    }, 0);
   }
 
   return (
     <div className=" bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm w-full  border border-gray-100 dark:border-gray-600">
+      <div>
+        <EmojiPicker autoFocusSearch={false} onEmojiClick={onClickEmoji} width={300} height={400} open={openEmojiPicker}/>
+      </div>
       <textarea 
         type="text" 
         rows={1}
@@ -92,7 +122,7 @@ const CommentForm = ({parentId, type, initialValue, setOpen, }) => {
       />
       <div className='flex items-center justify-between mt-1'>
         <div className='flex items-center justify-start gap-3 text-gray-400 dark:text-gray-300'>
-          <LuSmile className="size-5 cursor-pointer hover:text-yellow-500" />
+          <LuSmile className="size-5 cursor-pointer hover:text-yellow-500" onClick={() => setOpenEmojiPicker(prev => !prev)}/>
           <LuImage className="size-5 cursor-pointer hover:text-blue-500" />
           <LuPaperclip className="size-5 cursor-pointer hover:text-green-500" />
         </div>
