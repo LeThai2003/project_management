@@ -6,7 +6,8 @@ const base_path = {
   task: "task",
   upload: "upload",
   search: "search",
-  user: "user"
+  user: "user",
+  comment: "comment"
 }
 
 export const API_PATHS = {
@@ -45,5 +46,9 @@ export const API_PATHS = {
   USER: {
     UPDATE_PROFILE: (id) => `/${base_path.user}/update-profile/${id}`,   // id user
     UPDATE_ACCOUNT: (id) => `/${base_path.user}/update-account/${id}`,   
+  },
+  COMMENT: {
+    GET_ALL: (id) => `/${base_path.comment}/${id}`,   // id task
+    CREATE: (id) => `/${base_path.comment}/${id}`,   
   }
 }

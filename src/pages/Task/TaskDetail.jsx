@@ -11,9 +11,9 @@ import { ImAttachment } from "react-icons/im";
 import { AiOutlineMessage } from "react-icons/ai";
 import TabButton from '../../components/tabButtons/TabButton';
 import ListSubTask from '../../components/tasks/ListSubTask';
-import Comment from '../../components/tasks/Comment';
 import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPath';
+import CommentDetail from '../../components/comments/CommentDetail';
 
 const TaskDetail = () => {
 
@@ -163,14 +163,14 @@ const TaskDetail = () => {
               </div>
 
               {activeTab == `Tasks (${taskDetail?.sub_tasks?.length})` && <ListSubTask isJustView={taskDetail?.isJustView} status={taskDetail?.status} taskId={id} listSubTasks={taskDetail.sub_tasks}/>}
-              {activeTab == `Comments` && <Comment/>}
+              {activeTab == `Comments` && <CommentDetail/>}
 
                     
             </div>
 
           }
 
-          <div className='flex-1 md:flex-1 mb-4 bg-white dark:bg-dark-secondary dark:text-gray-200 relative top-[40px] min-h-[calc(100vh-140px)] mx-2 py-0 rounded-md shadow-sm'>
+          <div className='h-fit flex-1 md:flex-1 mb-4 bg-white dark:bg-dark-secondary dark:text-gray-200 relative top-[40px] min-h-[calc(100vh-140px)] mx-2 py-0 rounded-md shadow-sm'>
             <h2 className="text-lg font-semibold my-3 px-4 ">Activities</h2>
 
             <div className='w-full h-[0.5px] bg-gray-200 dark:bg-gray-600'></div>

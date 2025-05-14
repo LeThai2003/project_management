@@ -5,12 +5,14 @@ import globalReducer from "./globals/index";
 import userReducer from "./users/userSlice";
 import taskReducer from "./tasks/taskSlice";
 import projectReducer from "./projects/projectSlice";
+import commentReducer from "./comments/commentSlice";
 
 const rootReducer = combineReducers({
   globals: globalReducer,
   users: userReducer,
   tasks: taskReducer,
-  projects: projectReducer
+  projects: projectReducer,
+  comments: commentReducer
 });
 
 const persistConfig = {
