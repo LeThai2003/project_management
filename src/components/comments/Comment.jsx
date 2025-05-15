@@ -102,7 +102,7 @@ const Comment = ({comment, commentsByParentId}) => {
             />
           </div>
         ) : (
-          <div className="ml-10 text-md text-gray-800 dark:text-gray-200 tracking-[0.2px] my-1 text-justify">{comment.message}</div>
+          <div className="ml-10 text-md text-gray-800 dark:text-gray-200 tracking-[0.2px] my-1">{comment.message}</div>
         )}
         
 

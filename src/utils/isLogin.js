@@ -8,12 +8,12 @@ export const isLogin = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if(currentUser)
-    {
-      navigate("/");
-      return;
-    }
-    else localStorage.clear();
-  }, []);
+  // useEffect(() => {
+  //   if(currentUser)
+  //   {
+  //     navigate("/");
+  //     return;
+  //   }
+  //   else localStorage.clear();
+  // }, []);
 }

@@ -3,7 +3,7 @@ import { LuImage, LuPaperclip, LuSend, LuSmile } from 'react-icons/lu';
 import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPath';
 import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addComment, replyComment, updateComment } from '../../redux/comments/commentSlice';
 import EmojiPicker from 'emoji-picker-react';
 
@@ -12,6 +12,7 @@ const CommentForm = ({parentId, type, initialValue, setOpen, }) => {
   const {id} = useParams();
 
   const dispatch = useDispatch();
+  const {isDarkMode} = useSelector(state => state.globals);
 
   const [message, setMessage] = useState(initialValue);
   const [image, setImage] = useState("");
@@ -90,6 +91,8 @@ const CommentForm = ({parentId, type, initialValue, setOpen, }) => {
   }
 
   const onClickEmoji = (e) => {
+    e?.preventDefault?.();
+
     const textarea = textareaRef.current;
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
@@ -101,14 +104,23 @@ const CommentForm = ({parentId, type, initialValue, setOpen, }) => {
     setMessage(prev => prev.substring(0, start) + emoji + prev.substring(end));
 
     setTimeout(() => {
+      textarea.focus();
       textarea.setSelectionRange(start + emoji.length, start + emoji.length);
-    }, 0);
+    }, 100);
   }
+
+  console.log(isDarkMode);
+
+  useEffect(() => {
+    if (!openEmojiPicker) {
+      textareaRef.current?.focus();
+    }
+  }, [openEmojiPicker]);
 
   return (
     <div className=" bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm w-full  border border-gray-100 dark:border-gray-600">
-      <div>
-        <EmojiPicker autoFocusSearch={false} onEmojiClick={onClickEmoji} width={300} height={400} open={openEmojiPicker}/>
+      <div className='mb-1'>
+        <EmojiPicker theme={isDarkMode ? "dark" : "light"} autoFocusSearch={false} onEmojiClick={onClickEmoji} width={300} height={400} open={openEmojiPicker}/>
       </div>
       <textarea 
         type="text" 

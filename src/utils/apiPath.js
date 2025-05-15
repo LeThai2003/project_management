@@ -18,6 +18,7 @@ export const API_PATHS = {
     PASSWORD_FORGOT: `/${base_path.auth}/password-forgot`,
     PASSWORD_OTP: `/${base_path.auth}/password-otp`,
     PASSWORD_RESET: `/${base_path.auth}/password-reset`,
+    REFRESH_TOKEN: `/${base_path.auth}/refresh-token`,
   },
   PROJECT: {
     CREATE: `/${base_path.project}/create`,
