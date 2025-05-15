@@ -19,6 +19,7 @@ export const API_PATHS = {
     PASSWORD_OTP: `/${base_path.auth}/password-otp`,
     PASSWORD_RESET: `/${base_path.auth}/password-reset`,
     REFRESH_TOKEN: `/${base_path.auth}/refresh-token`,
+    LOGOUT: `/${base_path.auth}/logout`
   },
   PROJECT: {
     CREATE: `/${base_path.project}/create`,
@@ -37,7 +38,8 @@ export const API_PATHS = {
     LIST_SUB_TASKS: (id) => `/${base_path.task}/update-completed/${id}`,
   },
   UPLOAD: {
-    IMAGE_SINGLE: `/${base_path.upload}/image-single`
+    IMAGE_SINGLE: `/${base_path.upload}/image-single`,
+    IMAGES: `/${base_path.upload}/images`,
   },
   SEARCH: {
     MEMBER_IN_PROJECT: (id) => `/${base_path.search}/all-members/${id}`,   // id project

@@ -27,6 +27,8 @@ const Comment = ({comment, commentsByParentId}) => {
 
   const [areChildrenHidden, setAreChildrenHidden] = useState(true);
 
+  const [imagesUrl, setImagesUrl] = useState(comment.imagesUrl || []);
+
   const [isEditing, setIsEditing] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
   const [isOpenDeleteAlert, setIsOpenDeleteAlert] = useState(false);
@@ -50,6 +52,12 @@ const Comment = ({comment, commentsByParentId}) => {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  const handleRemoveImage = (src) => {
+    console.log(src);
+    console.log(imagesUrl);
+    setImagesUrl(prev => prev.filter(item => item != src));
   }
 
   return (
@@ -91,6 +99,25 @@ const Comment = ({comment, commentsByParentId}) => {
           </div>
         </div>
 
+        {/* images */}
+        {imagesUrl?.length > 0 && 
+          <div className="flex flex-wrap gap-2 mt-2 ml-10">
+            {imagesUrl.map((src, idx) => (
+              <div className='relative' key={src}>
+                {isEditing && 
+                  <div 
+                    className='absolute -top-1 -right-1 text-white size-5 rounded-full flex items-center justify-center bg-gray-700 hover:bg-gray-500 cursor-pointer'
+                    onClick={() => handleRemoveImage(src)}
+                  >
+                    <LuX/>
+                  </div>
+                }
+                <img key={src} src={src} alt={`Gallery preview ${idx}`} className="w-24 h-24 object-cover border rounded" />
+              </div>
+            ))}
+          </div>
+        }
+
         {/* message */}
         {isEditing ? (
           <div className='my-2'>
@@ -99,6 +126,7 @@ const Comment = ({comment, commentsByParentId}) => {
               type="update"
               initialValue={comment.message}
               setOpen={setIsEditing}
+              imagesUrlUpdate={imagesUrl}
             />
           </div>
         ) : (

@@ -17,3 +17,24 @@ export const uploadSingleImage = async (imageFile) => {
     console.log(error);
   }
 }
+
+export const uploadImages = async (imagesFile) => {
+  const formData = new FormData();
+  for (let i = 0; i < imagesFile.length; i++) {
+    formData.append('gallery', imagesFile[i]); 
+  }
+  try {
+    const response = await axiosInstance.post(API_PATHS.UPLOAD.IMAGES, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    });
+
+    console.log(response.data);
+    return response.data;
+  }
+  catch(err)
+  {
+    console.log(err);
+  }
+}

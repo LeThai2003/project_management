@@ -11,6 +11,8 @@ import { FaRegUser } from "react-icons/fa6";
 import { MdOutlineLock } from "react-icons/md";
 import { AiOutlineLogout } from "react-icons/ai";
 import { getNameInitials } from '../../utils/helper';
+import axiosInstance from '../../utils/axiosInstance';
+import { API_PATHS } from '../../utils/apiPath';
 
 const Navbar = () => {
 
@@ -67,7 +69,13 @@ const Navbar = () => {
   }, [isOpenDropdownAvatar]);
 
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await axiosInstance.post(API_PATHS.AUTH.LOGOUT);
+      
+    } catch (error) {
+      console.log(error);
+    }
     localStorage.clear();
     navigate("/login");
   }
