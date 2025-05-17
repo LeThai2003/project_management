@@ -51,7 +51,6 @@ const ModalNewTask = ({isOpen, onClose, type, data, projectId}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [profilePic, setProfilePic] = useState(data?.imageTask || null);
 
-  console.log(assigneeUserId);
 
   const isFormValid = () => {
     return title

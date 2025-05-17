@@ -22,7 +22,6 @@
   }
 }
 
-
 .input-box{
   @apply w-full px-4 py-3 outline-none rounded-lg dark:bg-dark-tertiary dark:text-white text-gray-900 flex justify-between gap-3 text-sm mt-1 border border-gray-100 dark:border-gray-600
 }

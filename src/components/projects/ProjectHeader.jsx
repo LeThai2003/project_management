@@ -45,7 +45,7 @@ const ProjectHeader = ({activeTab, setActiveTab, setSearch, searchValue}) => {
             <button className='flex items-center gap-2 rounded-lg bg-blue-primary hover:bg-blue-600 text-white px-3 py-2'
               onClick={() => setModalNewProjectOpen({isOpen: true, type: "create", data: null})}
             >
-              <FaRegPlusSquare className='-mb-[2px] size-4 text-white'/>New Board
+              <FaRegPlusSquare className='-mb-[2px] size-4 text-white'/>New Project
             </button>
           }
         />

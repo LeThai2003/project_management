@@ -38,7 +38,7 @@ axiosInstance.interceptors.request.use(
     if(accessToken)
     {
       const decodedToken = jwtDecode(accessToken);
-      console.log(decodedToken);
+      // console.log(decodedToken);
       const currentTime = Date.now() / 1000;
       if (decodedToken.exp < currentTime) {
         try {

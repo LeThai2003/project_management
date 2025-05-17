@@ -26,7 +26,9 @@ export const API_PATHS = {
     UPDATE: `/${base_path.project}/update`,
     GET_ALL: `/${base_path.project}/get-all`,
     GET_DETAIL: (id) => `/${base_path.project}/${id}`,
-    ADD_MEMBER: (id) => `/${base_path.project}/${id}/add-member`
+    ADD_MEMBER: (id) => `/${base_path.project}/${id}/add-member`,
+    DATA_CHART: `/${base_path.project}/data/chart`,
+    GET_PERCENT_COMPELETED: `/${base_path.project}/get-percent-completed`,
   },
   TASK: {
     CREATE: `/${base_path.task}/create`,
@@ -36,6 +38,7 @@ export const API_PATHS = {
     DELETE_TASK: (id) => `/${base_path.task}/delete/${id}`,
     TASK_DETAIL: (id) => `/${base_path.task}/${id}`,
     LIST_SUB_TASKS: (id) => `/${base_path.task}/update-completed/${id}`,
+    DATA_CHART: `/${base_path.task}/data/chart`,
   },
   UPLOAD: {
     IMAGE_SINGLE: `/${base_path.upload}/image-single`,
