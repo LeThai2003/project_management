@@ -12,6 +12,7 @@ import ColumnBasic from '../../components/charts/ColumnBasic';
 import PieBasic from '../../components/charts/PieBasic';
 import HomeProjectTable from '../../components/tables/HomeProjectTable';
 import ChartBoxHeader from '../../components/charts/ChartBoxHeader';
+import { Button } from 'antd';
 
 const Home = () => {
   const [modalNewProjectOpen, setModalNewProjectOpen] = useState(false);
@@ -68,11 +69,13 @@ const Home = () => {
     return {...project, percent};  // tạo object mới với thêm thuộc tính percent
   }) : [];
   
-  console.log(dataProjectResult);
+  // console.log(dataProjectResult);
 
 
   return (
     <HomeLayout>
+      <Button type="primary">Button</Button>
+
       <ModalNewProject 
         isOpen={modalNewProjectOpen}
         onClose={() => setModalNewProjectOpen(false)}

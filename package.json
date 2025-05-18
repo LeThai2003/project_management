@@ -16,6 +16,7 @@
     "@mui/x-data-grid": "^8.3.1",
     "@reduxjs/toolkit": "^2.7.0",
     "@tailwindcss/vite": "^4.1.4",
+    "antd": "^4.24.16",
     "axios": "^1.8.4",
     "debounce": "^2.2.0",
     "emoji-picker-react": "^4.12.2",
