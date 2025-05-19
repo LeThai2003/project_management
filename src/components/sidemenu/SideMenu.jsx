@@ -86,11 +86,11 @@ const SideMenu = () => {
           {showPriority ? <FaChevronUp className='size-3'/> : <FaChevronDown className='size-3'/> }
         </button>
         {showPriority && (<>
-          <SideMenuLink label="Urgent" href="#" icon={AiOutlineAlert}/>
-          <SideMenuLink label="Hight" href="#" icon={LuCircleAlert}/>
-          <SideMenuLink label="Medium" href="#" icon={GoAlert}/>
-          <SideMenuLink label="Low" href="#" icon={IoAlert}/>
-          <SideMenuLink label="Backlog" href="#" icon={BiLayer}/>
+          <SideMenuLink label="Urgent" href="/task/priority/Urgent" icon={AiOutlineAlert}/>
+          <SideMenuLink label="High" href="/task/priority/High" icon={LuCircleAlert}/>
+          <SideMenuLink label="Medium" href="/task/priority/Medium" icon={GoAlert}/>
+          <SideMenuLink label="Low" href="/task/priority/Low" icon={IoAlert}/>
+          <SideMenuLink label="Backlog" href="/task/priority/Backlog" icon={BiLayer}/>
         </>)}
       </div>
 

@@ -4,11 +4,15 @@
 @tailwind components;
 @tailwind utilities;
 
-@theme{
+:root {
   --font-display: "Poppins", "sans-serif";
   --breakpoint-3xl: 1920px;
   --color-primary: #875cf5;
-  
+}
+
+p, h1, h2, h3, h4, h5, h6, ul, ol {
+  margin: 0;
+  padding: 0;
 }
 
 @layer{
@@ -57,4 +61,33 @@
   .dark .custom-scrollbar::-webkit-scrollbar-thumb {
     background-color: #38475b; /* Màu thumb trong dark mode */
   }
+}
+
+
+/* collapse */
+.dark .ant-collapse{
+  background-color: #393c40;
+  border-color: #3f4856;
+}
+
+.dark .ant-collapse .ant-collapse-header{
+  color: white;
+  border-bottom: 1px solid #ddd;
+  height: 50px;
+}
+
+.ant-collapse-expand-icon{
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dark .ant-collapse-content{
+  background-color: #505050;
+  border-top-color: #4b5563;
+}
+
+.dark .MuiTablePagination-actions button{
+  color: #a3a3a3;
 }

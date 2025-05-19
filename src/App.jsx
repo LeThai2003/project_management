@@ -13,6 +13,7 @@ import PrivateRoute from "./components/privateRoute"
 import Profile from "./pages/account/Profile"
 import Account from "./pages/account/Account"
 import Search from "./pages/search/Search"
+import Priority from "./pages/priority/Priority"
 
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
             <Route path="/profile/:id" element={<Profile/>}/>
             <Route path="/account/:id" element={<Account/>}/>
             <Route path="/search" element={<Search/>}/>
+            <Route path="/task/priority/:priority" element={<Priority/>}/>
           </Route>
           
         </Routes>

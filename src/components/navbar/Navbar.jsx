@@ -103,9 +103,10 @@ const Navbar = () => {
             <IoMoonOutline className='cursor-pointer'/>
           }
         </button>
-        <Link href="#" className='btn-icon'>
+        
+        <button onClick={() => navigate("/#")} className='btn-icon'> 
           <IoSettingsOutline className='cursor-pointer'/>
-        </Link>
+        </button>
 
         <div className='w-[0.1rem] min-h-[2em] bg-gray-200 ml-2 mr-2'></div>
 

@@ -6,6 +6,8 @@ import ModalAllTeamInProject from './AllTeamInProject';
 import ModalAddMember from './ModalAddMember';
 import { CiEdit } from "react-icons/ci";
 import {useSelector} from "react-redux"
+import { Tooltip } from 'antd';
+import ImageWithPreview from '../images/ImageWithPreview';
 
 
 
@@ -111,17 +113,21 @@ const TeamMember = ({dataProject, allowEdit, modalNewProjectOpen, setModalNewPro
                 dataTeams.length > 0 ? (
                 <>
                   {dataTeams.map((item, index) => (
-                    item.profilePicture ? 
-                    <img
-                      key={item._id}
-                      src={item.profilePicture}
-                      alt='profile image'
-                      className='size-9 rounded-full object-cover flex items-center justify-center border border-blue-200 dark:border-gray-200'
-                    /> 
-                    : 
-                    <div key={index} className='size-9 text-sm font-medium text-green-800 dark:text-gray-200 bg-green-50 dark:bg-slate-700 rounded-full flex items-center justify-center border border-green-200 dark:border-gray-200'>
-                      {getNameInitials(item.fullname)}  
-                    </div>
+                    <Tooltip
+                      title={item.fullname}
+                      placement='top'
+                      zIndex={1}
+                    >
+                      {item.profilePicture ? (
+                        <div className='h-full flex items-center'>
+                          <ImageWithPreview src={item.profilePicture} width={36} height={36}/>
+                        </div>
+                      ) : (
+                        <div className='size-9 text-sm font-medium text-green-800 dark:text-gray-200 bg-green-50 dark:bg-slate-700 rounded-full flex items-center justify-center border border-green-200 dark:border-gray-200'>
+                          {getNameInitials(item.fullname)}
+                        </div>
+                      )}
+                    </Tooltip>
                   ))}
                   <button 
                     onClick={() => setIsModalAddMemberOpen(true)}

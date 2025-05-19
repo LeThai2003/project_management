@@ -39,6 +39,7 @@ export const API_PATHS = {
     TASK_DETAIL: (id) => `/${base_path.task}/${id}`,
     LIST_SUB_TASKS: (id) => `/${base_path.task}/update-completed/${id}`,
     DATA_CHART: `/${base_path.task}/data/chart`,
+    PRIORITY: (prioriry) => `/${base_path.task}/priority/${prioriry}`,
   },
   UPLOAD: {
     IMAGE_SINGLE: `/${base_path.upload}/image-single`,

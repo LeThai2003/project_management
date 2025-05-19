@@ -74,8 +74,7 @@ const Home = () => {
 
   return (
     <HomeLayout>
-      <Button type="primary">Button</Button>
-
+      
       <ModalNewProject 
         isOpen={modalNewProjectOpen}
         onClose={() => setModalNewProjectOpen(false)}
