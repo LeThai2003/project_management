@@ -12,7 +12,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { dataGridSxStyles } from '../../components/tables/styleTable';
 import PriorityTag from '../../components/tasks/PriorityTag';
 
-const TableProject = ({data}) => {
+const TableProject = ({data, setIsModalNewTaskOpen}) => {
   const navigate = useNavigate();
 
   const {isDarkMode} = useSelector(state => state.globals);

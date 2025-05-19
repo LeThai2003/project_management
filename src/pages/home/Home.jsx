@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import HomeLayout from '../../components/Layouts/HomeLayout'
 import { useState } from 'react';
 import Header from '../../components/projects/Header';
@@ -35,7 +35,7 @@ const Home = () => {
     };
 
     getDataTasks();
-  }, [tasks]);
+  }, []);
 
   useEffect(() => {
     const getDataProjects = async () => {
@@ -61,14 +61,18 @@ const Home = () => {
     };
 
     getPerentProjects();
-  }, [projects, tasks]);
+  }, [projects]);
 
 
-  let dataProjectResult = projects.length > 0 ? projects.map(project => {
-    const percent = dataPercentCompleted.find(item => item.projectId == project._id)?.percent;
-    return {...project, percent};  // tạo object mới với thêm thuộc tính percent
-  }) : [];
-  
+  let dataProjectResult = useMemo(() => {
+    return projects.length > 0
+      ? projects.map(project => {
+          const percent = dataPercentCompleted.find(item => item.projectId == project._id)?.percent;
+          return { ...project, percent };
+        })
+      : [];
+  }, [projects, dataPercentCompleted]);
+    
   // console.log(dataProjectResult);
 
 

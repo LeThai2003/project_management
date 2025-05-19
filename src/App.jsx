@@ -13,6 +13,7 @@ import Profile from "./pages/account/Profile"
 import Account from "./pages/account/Account"
 import Search from "./pages/search/Search"
 import Priority from "./pages/priority/Priority"
+import Timeline from "./pages/timeline/Timeline"
 
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
             <Route path="/account/:id" element={<Account/>}/>
             <Route path="/search" element={<Search/>}/>
             <Route path="/task/priority/:priority" element={<Priority/>}/>
+            <Route path="/timeline" element={<Timeline/>}/>
           </Route>
           
         </Routes>
