@@ -2,7 +2,6 @@
 import Login from "./pages/auth/Login"
 import Signup from "./pages/auth/Signup"
 import Home from "./pages/home/Home"
-
 import {BrowserRouter, Routes, Route} from "react-router-dom"
 import Project from "./pages/project"
 import TaskDetail from "./pages/Task/TaskDetail"

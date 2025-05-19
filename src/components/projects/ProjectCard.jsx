@@ -4,7 +4,7 @@ import { getNameInitials } from '../../utils/helper';
 
 const ProjectCard = ({project}) => {
 
-  console.log(project);
+  // console.log(project);
 
   const startDateFormat = project.startDate ? moment(new Date(project.startDate)).format("DD/MM/yyyy") : "Not set";
   const endDateFormat = project.endDate ? moment(new Date(project.endDate)).format("DD/MM/yyyy") : "Not set";
@@ -19,7 +19,7 @@ const ProjectCard = ({project}) => {
 
   return (
     <div className='mt-3 border border-gray-200 dark:border-gray-600 rounded-md px-3 py-3 tracking-[0.25px] flex flex-col gap-2'>
-      <h3 className='text-sm font-medium'>Name: <span className='font-normal'>{project.name}</span></h3>
+      <h3 className='text-sm font-medium dark:text-gray-200'>Name: <span className='font-normal'>{project.name}</span></h3>
       <p className='text-sm font-medium'>Description: <span className='font-normal'>{project.description}</span></p>
       <p className='text-sm font-medium'>Start date: <span className='font-normal text-green-700 dark:text-green-400'>{startDateFormat}</span></p>
       <p className='text-sm font-medium'>End date: <span className='font-normal text-red-700 dark:text-yellow-400'>{endDateFormat}</span></p>

@@ -9,6 +9,9 @@ import { API_PATHS } from '../../utils/apiPath';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTasks } from '../../redux/tasks/taskSlice';
 import { convertToSlug } from '../../utils/converToSlug';
+import ListProject from './ListProject';
+import TableProject from './TableProject';
+import TimelineProject from './TimelineProject';
 
 const Project = () => {
 
@@ -74,6 +77,9 @@ const Project = () => {
       <ProjectHeader setSearch={setSearch} searchValue={search} activeTab={activeTab} setActiveTab={setActiveTab}/>
 
       {activeTab == "Board" && <ViewBoardProject data={searchResult} setIsModalNewTaskOpen={setIsModalNewTaskOpen}/>}
+      {activeTab == "List" && <ListProject data={searchResult} setIsModalNewTaskOpen={setIsModalNewTaskOpen}/>}
+      {activeTab == "Table" && <TableProject data={searchResult} setIsModalNewTaskOpen={setIsModalNewTaskOpen}/>}
+      {activeTab == "Timeline" && <TimelineProject data={searchResult} setIsModalNewTaskOpen={setIsModalNewTaskOpen}/>}
 
     </HomeLayout>
   )

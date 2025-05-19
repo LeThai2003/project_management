@@ -72,7 +72,7 @@ const Search = () => {
           {
             searchResult?.projects?.length > 0 && 
             <div className='mt-5 bg-white dark:bg-dark-secondary rounded-lg py-3 px-3 drop-shadow-md dark:text-gray-200 dark:border dark:border-gray-600'>
-              <h2 className="uppercase text-base font-semibold tracking-wide mb-2 border-b border-gray-200 pb-1">
+              <h2 className="uppercase text-base font-semibold tracking-wide mb-2 border-b border-gray-200 pb-1 dark:text-gray-200">
                 Projects
               </h2>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
@@ -86,7 +86,7 @@ const Search = () => {
           {
             searchResult?.tasks?.length > 0 && 
             <div className='mt-5 bg-white dark:bg-dark-secondary rounded-lg py-3 px-3 drop-shadow-md dark:text-gray-200 dark:border dark:border-gray-600'>
-              <h2 className="uppercase text-base font-semibold tracking-wide mb-2 border-b border-gray-200 pb-1">
+              <h2 className="uppercase text-base font-semibold tracking-wide mb-2 border-b border-gray-200 pb-1 dark:text-gray-200">
                 Tasks
               </h2>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
@@ -100,7 +100,7 @@ const Search = () => {
           {
             searchResult?.users?.length > 0 && 
             <div className='mt-5 bg-white dark:bg-dark-secondary rounded-lg py-3 px-3 drop-shadow-md dark:text-gray-200 dark:border dark:border-gray-600'>
-              <h2 className="uppercase text-base font-semibold tracking-wide mb-2 border-b border-gray-200 pb-1">
+              <h2 className="uppercase text-base font-semibold tracking-wide mb-2 border-b border-gray-200 pb-1 dark:text-gray-200">
                 Users
               </h2>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>

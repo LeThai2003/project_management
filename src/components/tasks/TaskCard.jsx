@@ -15,13 +15,13 @@ const TaskCard = ({task}) => {
   const taskTagsSplit =task.tags ? task.tags?.split(",") : [];
 
   return (
-    <div className='group relative mt-3 border border-gray-200 dark:border-gray-600 rounded-md px-3 pt-3 pb-3 tracking-[0.25px] flex flex-col gap-2'>
+    <div className='group relative mt-3 bg-white dark:bg-slate-800 shadow-md dark:text-gray-200 border border-gray-200 dark:border-gray-600 rounded-md px-3 pt-3 pb-3 tracking-[0.25px] flex flex-col gap-2'>
       <div className='absolute top-1 right-2 flex items-center justify-center gap-2'>
         <PriorityTag priority={task.priority}/>
         <StatusTag status={task.status}/>
       </div>
       
-      <h3 className='mt-0 max-500:mt-5 text-sm font-medium'>Title: <span className='font-normal'>{task.title}</span></h3>
+      <h3 className='mt-0 max-500:mt-5 text-sm font-medium dark:text-gray-200'>Title: <span className='font-normal'>{task.title}</span></h3>
       <p className='text-sm font-medium'>Description: <span className='font-normal'>{task.description}</span></p>
       <p className='text-sm font-medium'>Start date: <span className='font-normal text-green-700 dark:text-green-400'>{startDateFormat}</span></p>
       <p className='text-sm font-medium'>Due date: <span className='font-normal text-red-700 dark:text-yellow-400'>{dueDateFormat}</span></p>

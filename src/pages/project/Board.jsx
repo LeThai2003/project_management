@@ -187,11 +187,11 @@ const Task = ({task}) => {
           <h4 className='text-sm font-semibold dark:text-white'>{task.title}</h4>
         </div>
 
-        <p className='font-medium text-xs text-gray-700 dark:text-neutral-500 line-clamp-3'>
+        <p className='font-medium text-xs text-gray-700 dark:text-neutral-400 line-clamp-3'>
           {task.description}
         </p>
         
-        <div className='mt-2 flex items-center justify-between text-xs text-gray-600 dark:text-neutral-500'>
+        <div className='mt-2 flex items-center justify-between text-xs text-gray-600 dark:text-neutral-400'>
           {formattedStartDate && <span className='font-medium'><strong>Start date:</strong> {formattedStartDate}</span>}
           {/* {formattedStartDate && formattedDueDate && <span> - </span>} */}
           {formattedDueDate && <span className='font-medium'><strong>Due date:</strong> {formattedDueDate}</span>}

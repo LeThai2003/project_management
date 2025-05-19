@@ -100,7 +100,7 @@ const TeamMember = ({dataProject, allowEdit, modalNewProjectOpen, setModalNewPro
         <div className='flex justify-end'>
           <div className='flex w-fit flex-col bg-white px-4 py-2 border border-gray-100 rounded-md dark:bg-dark-secondary dark:border-gray-600 dark:text-white'>
             <div className={`${dataTeams?.length >= 6 ? "w-96" : "w-64"} flex items-center justify-between mb-2`}>
-              <h3 className='font-medium text-sm'>Team Members</h3>
+              <h3 className='font-medium text-sm dark:text-white'>Team Members</h3>
               <button 
                 onClick={() => setIsModalAllTeamInProjectOpen(true)}
                 className='text-sm px-3 py-1 rounded-md border border-gray-100 dark:border-gray-600 dark:bg-dark-secondary dark:text-white dark:hover:bg-dark-tertiary bg-white hover:bg-gray-200'
@@ -117,6 +117,7 @@ const TeamMember = ({dataProject, allowEdit, modalNewProjectOpen, setModalNewPro
                       title={item.fullname}
                       placement='top'
                       zIndex={1}
+                      key={item._id}
                     >
                       {item.profilePicture ? (
                         <div className='h-full flex items-center'>
