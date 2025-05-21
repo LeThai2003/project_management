@@ -13,6 +13,7 @@ import PieBasic from '../../components/charts/PieBasic';
 import HomeProjectTable from '../../components/tables/HomeProjectTable';
 import ChartBoxHeader from '../../components/charts/ChartBoxHeader';
 import { Button } from 'antd';
+import { socket } from '../../utils/socket/socket';
 
 const Home = () => {
   const [modalNewProjectOpen, setModalNewProjectOpen] = useState(false);
@@ -71,7 +72,7 @@ const Home = () => {
           return { ...project, percent };
         })
       : [];
-  }, [projects, dataPercentCompleted]);
+  }, [dataPercentCompleted]);
     
   // console.log(dataProjectResult);
 

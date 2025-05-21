@@ -13,6 +13,8 @@ import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPath';
 import { deleteComment, updateLike } from '../../redux/comments/commentSlice';
 import { GoHeartFill } from "react-icons/go";
+import { socket } from '../../utils/socket/socket';
+import { useEffect } from 'react';
 
 
 const Comment = ({comment, commentsByParentId}) => {
@@ -35,9 +37,7 @@ const Comment = ({comment, commentsByParentId}) => {
 
   const handleDelete = async () => {
     try {
-      console.log(comment._id)
       const response = await axiosInstance.delete(API_PATHS.COMMENT.DELETE(comment._id));
-      dispatch(deleteComment(comment._id));
     } catch (error) {
       console.log(error);
     }
@@ -48,7 +48,7 @@ const Comment = ({comment, commentsByParentId}) => {
     try {
       console.log(comment._id)
       const response = await axiosInstance.patch(API_PATHS.COMMENT.LIKE(comment._id));
-      dispatch(updateLike({_id: comment._id, userId: currentUser._id}));
+      
     } catch (error) {
       console.log(error);
     }
@@ -59,6 +59,21 @@ const Comment = ({comment, commentsByParentId}) => {
     console.log(imagesUrl);
     setImagesUrl(prev => prev.filter(item => item != src));
   }
+
+
+  // -----------------socket------------------------
+  useEffect(() => {
+    socket.on("SERVER_DELETE_COMMENT", (data) => {
+      // console.log(data);
+      dispatch(deleteComment(data.commentId));
+    });
+
+    socket.on("SERVER_UPDATE_LIKE_COMMENT", (data) => {
+      console.log(data);
+      dispatch(updateLike({_id: data.commentId, userId: data.userId}));
+    });
+  }, []);
+  // -----------------end socket---------------------
 
   return (
     <div className=''>

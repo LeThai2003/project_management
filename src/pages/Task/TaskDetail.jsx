@@ -14,11 +14,13 @@ import ListSubTask from '../../components/tasks/ListSubTask';
 import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPath';
 import CommentDetail from '../../components/comments/CommentDetail';
+import { socket } from '../../utils/socket/socket';
+import { useSelector } from 'react-redux';
 
 const TaskDetail = () => {
 
   const {id} = useParams();
- 
+  const {currentUser} = useSelector(state => state.users);
   const [taskDetail, setTaskDetail] = useState({});
   const [activeTab, setActiveTab] = useState(`Tasks (0)`);
 
@@ -49,11 +51,16 @@ const TaskDetail = () => {
 
   const taskTagsSplit = taskDetail?.tags ? taskDetail.tags?.split(",") : [];
 
+  const clickBack = () => {
+    socket.emit("USER_LEAVE_TASK", {userId: currentUser._id});
+    navigate(`/project/${taskDetail?.projectId?._id}`);
+  }
+
   return (
     <HomeLayout>
       <div className='relative'>
         <div 
-          onClick={() => navigate(`/project/${taskDetail?.projectId?._id}`)}
+          onClick={clickBack}
           className='absolute top-0 left-1 flex items-center justify-center gap-2 px-3 py-1 rounded text-sm font-medium text-blue-600 dark:text-white hover:bg-blue-50 dark:hover:bg-dark-tertiary cursor-pointer transition-all duration-200'
         >
           <IoIosArrowBack className='size-4'/>

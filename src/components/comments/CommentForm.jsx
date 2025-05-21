@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addComment, replyComment, updateComment } from '../../redux/comments/commentSlice';
 import EmojiPicker from 'emoji-picker-react';
 import { uploadImages } from '../../utils/uploads/uploadImage';
+import { socket } from '../../utils/socket/socket';
 
 const CommentForm = ({parentId, type, initialValue, setOpen, imagesUrlUpdate}) => {
 
@@ -53,8 +54,8 @@ const CommentForm = ({parentId, type, initialValue, setOpen, imagesUrlUpdate}) =
   // post comment or update or reply
   const handleSubmit = async () => {
     // console.log(message);
-    console.log(gallery.length);
-    console.log(!message.trim() && gallery.length == 0);
+    // console.log(gallery.length);
+    // console.log(!message.trim() && gallery.length == 0);
 
     if(!message.trim() && gallery.length == 0) return;
     setIsLoading(true);
@@ -74,17 +75,13 @@ const CommentForm = ({parentId, type, initialValue, setOpen, imagesUrlUpdate}) =
         const response = await axiosInstance.post(API_PATHS.COMMENT.CREATE(id), {
           message, parentId, imagesUrl
         });
-        // console.log(response.data);
+
         setMessage("");
 
         if(type == "reply")
         {
           setOpen(false);
-          dispatch(replyComment(response.data.comment))
-        }
-        else
-        {
-          dispatch(addComment(response.data.comment));
+          
         }
 
         setIsLoading(false);
@@ -102,7 +99,7 @@ const CommentForm = ({parentId, type, initialValue, setOpen, imagesUrlUpdate}) =
         });
         console.log(response.data);
         setMessage("");
-        dispatch(updateComment(response.data.comment));
+        
         setIsLoading(false);
         setOpen(false)
       } catch (error) {
@@ -112,6 +109,28 @@ const CommentForm = ({parentId, type, initialValue, setOpen, imagesUrlUpdate}) =
     }
     setOpenEmojiPicker(false);
   }
+
+  // -----------------socket------------------------
+  useEffect(() => {
+    socket.on("SERVER_SEND_NEW_COMMENT", (data) => {
+      dispatch(addComment(data.comment));
+    });
+    
+    socket.on("SERVER_SEND_REP_COMMENT", (data) => {
+      console.log(data);
+      dispatch(replyComment(data.comment));
+    });
+
+    socket.on("SERVER_SEND_UPDATE_COMMENT", (data) => {
+      console.log(data);
+      dispatch(updateComment(data.comment));
+    });
+
+    return () => {
+      // socket.off("SERVER_SEND_NEW_COMMENT");
+    };
+  }, []);
+  // -----------------end socket---------------------
 
   // click icon
   const onClickEmoji = (e) => {
@@ -176,8 +195,8 @@ const CommentForm = ({parentId, type, initialValue, setOpen, imagesUrlUpdate}) =
     setGalleryPreview(arrTempPreview);
   }
 
-  console.log(gallery);
-  console.log(galleryPreview);
+  // console.log(gallery);
+  // console.log(galleryPreview);
 
   const handleRemoveImage = (e) => {
     setGalleryPreview(prev => prev.filter(item => item.src != e.src));
@@ -228,7 +247,9 @@ const CommentForm = ({parentId, type, initialValue, setOpen, imagesUrlUpdate}) =
       />
       <div className='flex items-center justify-between mt-1'>
         <div className='flex items-center justify-start gap-3 text-gray-400 dark:text-gray-300'>
-          <LuSmile ref={iconRef} className="size-5 cursor-pointer hover:text-yellow-500" onClick={() => setOpenEmojiPicker(prev => !prev)}/>
+          <div ref={iconRef} onClick={() => setOpenEmojiPicker(prev => !prev)}>
+            <LuSmile className="size-5 cursor-pointer hover:text-yellow-500"/>
+          </div>
           {type != "update" && 
             <>
               <LuImage className="size-5 cursor-pointer hover:text-blue-500" onClick={handleChooseImages}/>

@@ -9,20 +9,26 @@ import { useMemo } from 'react';
 import { result } from 'lodash';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
+import { socket } from '../../utils/socket/socket';
 
 const CommentDetail = () => {
 
   const {id} = useParams();  // taskId;
   const dispatch = useDispatch();
+  const {currentUser} = useSelector(state => state.users);
   const {loading, error, comments} = useSelector(state => state.comments);
 
   useEffect(() => {
     const getComments = async () => {
       dispatch(setLoading());
       try {
+        socket.emit("CLIENT_GET_ALL_COMMENT", "Hello");
+
         const response = await axiosInstance.get(API_PATHS.COMMENT.GET_ALL(id));
         // console.log(response.data);
         dispatch(setComment(response.data.comments));
+
+        socket.emit("USER_VIEW_TASK", {userId: currentUser._id, taskId: id});
       } catch (error) {
         dispatch(setError(error.response?.data?.message || "Error"));
         console.log(error);

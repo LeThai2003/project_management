@@ -87,7 +87,7 @@ const ListSubTask = ({isJustView, status, taskId, listSubTasks}) => {
         <div>
           <p className='text-sm italic text-blue-500 dark:text-gray-200'>No list sub tasks</p>
 
-          <div class="flex items-center mt-4" name="tasksChecked">
+          <div className="flex items-center mt-4" name="tasksChecked">
             <input 
               id="completed" 
               type="checkbox" 

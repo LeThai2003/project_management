@@ -22,10 +22,16 @@ const commentSlice = createSlice({
       state.loading = false;
     },
     addComment: (state, action) => {
-      state.comments.unshift(action.payload);
+      const exists = state.comments.some(c => c._id === action.payload._id);
+      if (!exists) {
+        state.comments.unshift(action.payload);
+      }
     },
     replyComment: (state, action) => {
-      state.comments.push(action.payload);
+      const exists = state.comments.some(c => c._id === action.payload._id);
+      if (!exists) {
+        state.comments.push(action.payload);
+      }
     },
     updateComment: (state, action) => {
       const index = state.comments.findIndex(c => c._id == action.payload._id);

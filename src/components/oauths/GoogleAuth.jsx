@@ -6,7 +6,8 @@ import { app } from '../../firebase';
 import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPath';
 import { useNavigate } from 'react-router-dom';
-import { signInStart, signInSuccess } from '../../redux/users/userSlice';
+import { signInFailed, signInStart, signInSuccess } from '../../redux/users/userSlice';
+import { socket } from '../../utils/socket/socket';
 
 const GoogleAuth = () => {
 
@@ -41,7 +42,9 @@ const GoogleAuth = () => {
       if(response.data.user)
       {
         dispatch(signInSuccess(response.data.user));
-        localStorage.setItem("token", response.data.accessToken)
+        localStorage.setItem("token", response.data.accessToken);
+
+        socket.emit("USER_LOGIN", {userId: response.data.user._id});
       }
 
       navigate("/");

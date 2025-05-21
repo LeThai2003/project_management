@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { data, Link, useNavigate } from 'react-router-dom'
 import Input from '../../components/inputs/Input'
 import GoogleAuth from '../../components/oauths/GoogleAuth';
 import { validateEmail } from '../../utils/helper';
@@ -8,6 +8,7 @@ import axiosInstance from '../../utils/axiosInstance';
 import {useDispatch, useSelector} from "react-redux";
 import { signInFailed, signInStart, signInSuccess } from '../../redux/users/userSlice';
 import { isLogin } from '../../utils/isLogin';
+import { socket } from '../../utils/socket/socket';
 
 const Login = () => {
 
@@ -58,7 +59,9 @@ const Login = () => {
       if(response.data)
       {
         dispatch(signInSuccess(response.data.user));
-        localStorage.setItem("token", response.data.accessToken)
+        localStorage.setItem("token", response.data.accessToken);
+
+        socket.emit("USER_LOGIN", {userId: response.data.user._id});
       }
 
       navigate("/")
