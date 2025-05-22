@@ -4,15 +4,16 @@ import { IoIosMenu } from "react-icons/io";
 import { Link, useNavigate } from 'react-router-dom';
 import {useDispatch, useSelector} from "react-redux";
 import { setIsDarkMode, setIsSiderMenuCollapsed } from '../../redux/globals';
-import { GoBell } from "react-icons/go";
-import { FaRegMessage } from "react-icons/fa6";
-import Notify from './Notify';
 import { FaRegUser } from "react-icons/fa6";
 import { MdOutlineLock } from "react-icons/md";
 import { AiOutlineLogout } from "react-icons/ai";
 import { getNameInitials } from '../../utils/helper';
 import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPath';
+import Notification from './Notification';
+import { socket } from '../../utils/socket/socket';
+import { addProject, updateMember } from '../../redux/projects/projectSlice';
+
 
 const Navbar = () => {
 
@@ -80,6 +81,24 @@ const Navbar = () => {
     navigate("/login");
   }
 
+  // socket add member
+  useEffect(() => {
+    socket.on("ADD_MEMBER_TO_PROJECT", (data) => {  
+      console.log(currentUser._id, " ---- ", data.member._id);
+      if(currentUser._id == data.member._id)  // nguoi duoc them
+      {
+        console.log("add member: ", data);
+        dispatch(addProject(data.project));
+        dispatch(updateMember(data));
+      }
+      if(currentUser._id == data.project.authorUserId._id)  // nguoi them vao du an
+      {
+        dispatch(updateMember(data));
+      }
+    })
+  }, []);
+  // socket add member
+
   return (
     <div className='flex sticky top-0 z-10 justify-between px-4 py-3 bg-white border-b-[1.5px] border-gray-200 dark:bg-dark-bg dark:border-b dark:border-gray-700'>
       <div className='flex items-center'>
@@ -110,15 +129,17 @@ const Navbar = () => {
 
         <div className='w-[0.1rem] min-h-[2em] bg-gray-200 ml-2 mr-2'></div>
 
-        <div className='relative' ref={dropdownRef}>
+        {/* <div className='relative' ref={dropdownRef}>
           <button 
             className='btn-icon' 
             onClick={() => setIsNotificationOpen(!isNotificationOpen)}
           >
-            <GoBell className='cursor-pointer'/>
+            <Badge count={1} showZero={false}>
+              <GoBell className='cursor-pointer size-5'/>
+            </Badge>
           </button>
 
-          <div className={`absolute top-10 right-0 bg-white dark:bg-slate-800 dark:text-gray-200 dark:border-gray-600 w-[350px] h-[375px] rounded border border-gray-100 z-10 shadow-xl transition-all duration-200 ease-out ${isNotificationOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}>
+          <div className={`absolute top-10 right-0 bg-white dark:bg-slate-800 dark:text-gray-200 dark:border-gray-600 w-[370px] h-[375px] rounded border border-gray-100 z-10 shadow-xl transition-all duration-200 ease-out ${isNotificationOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}>
             
             <div className='w-full flex items-center justify-between px-4 py-5'>
               <div className='flex items-center justify-center gap-2'>
@@ -132,17 +153,12 @@ const Navbar = () => {
 
             <div className='w-full h-[0.5px] dark:bg-gray-600 bg-gray-200'></div>
 
-            <div className='overflow-y-auto custom-scrollbar h-[290px]'>
-              <Notify type="comment" title="You received a new comment in project Apollo" time="25/04/2025 22:10"/>
-              <Notify type="comment" title="You received a new comment in project Apollo" time="25/04/2025 22:10"/>
-              <Notify type="comment" title="You received a new comment in project Apollo" time="25/04/2025 22:10"/>
-              <Notify type="comment" title="You received a new comment in project Apollo" time="25/04/2025 22:10"/>
-              <Notify type="comment" title="You received a new comment in project Apollo" time="25/04/2025 22:10"/>
-              <Notify type="comment" title="You received a new comment in project Apollo" time="25/04/2025 22:10"/>
-            </div>
+            <Notification/>
 
           </div>
-        </div>
+        </div> */}
+
+        <Notification/>
         
         <div ref={avatarDropdown} className='relative'>
           {

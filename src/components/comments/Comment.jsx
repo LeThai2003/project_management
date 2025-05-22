@@ -48,15 +48,16 @@ const Comment = ({comment, commentsByParentId}) => {
     try {
       console.log(comment._id)
       const response = await axiosInstance.patch(API_PATHS.COMMENT.LIKE(comment._id));
-      
+      console.log(comment._id, " ", currentUser._id);
+      // dispatch(updateLike({_id: comment._id, userId: currentUser._id}));
     } catch (error) {
       console.log(error);
     }
   }
 
   const handleRemoveImage = (src) => {
-    console.log(src);
-    console.log(imagesUrl);
+    // console.log(src);
+    // console.log(imagesUrl);
     setImagesUrl(prev => prev.filter(item => item != src));
   }
 
@@ -69,9 +70,13 @@ const Comment = ({comment, commentsByParentId}) => {
     });
 
     socket.on("SERVER_UPDATE_LIKE_COMMENT", (data) => {
-      console.log(data);
+      console.log(data.commentId, " ", data.userId);
       dispatch(updateLike({_id: data.commentId, userId: data.userId}));
     });
+
+    return () => {
+      socket.off("SERVER_UPDATE_LIKE_COMMENT");
+    };
   }, []);
   // -----------------end socket---------------------
 

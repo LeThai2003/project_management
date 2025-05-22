@@ -7,8 +7,11 @@ import ModalNewProject from './ModalNewProject';
 import TeamMember from './TeamMember';
 import ModalAllTeamInProject from './AllTeamInProject';
 import TabButton from '../tabButtons/TabButton';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { socket } from '../../utils/socket/socket';
+import { updateMember } from '../../redux/projects/projectSlice';
 
 const ProjectHeader = ({activeTab, setActiveTab, setSearch, searchValue}) => {
 
@@ -21,12 +24,22 @@ const ProjectHeader = ({activeTab, setActiveTab, setSearch, searchValue}) => {
   const {projects} = useSelector(state => state.projects);
   const {currentUser} = useSelector(state => state.users);
 
+  const [dataProject, setDataProject] = useState({});
+
+  const dispatch = useDispatch();
+
   // console.log(currentUser);
 
   const projectId = useParams().id;
 
-  const dataProject = projects.find(item => item._id == projectId);
+  console.log(dataProject);
+
+  useEffect(() => {
+    let data = projects.find(item => item._id == projectId);
+    setDataProject(data);
+  }, [projectId]);
   // console.log(dataProject);
+
 
   return (
     <div className=''>
@@ -52,12 +65,14 @@ const ProjectHeader = ({activeTab, setActiveTab, setSearch, searchValue}) => {
       </div>
 
      
-      <TeamMember 
-        dataProject={dataProject} 
-        allowEdit={dataProject && currentUser && dataProject.authorUserId._id == currentUser._id} 
-        modalNewProjectOpen={modalNewProjectOpen} 
-        setModalNewProjectOpen={setModalNewProjectOpen}
-      />
+      {
+        dataProject &&
+        <TeamMember 
+          dataProject={dataProject}
+          modalNewProjectOpen={modalNewProjectOpen} 
+          setModalNewProjectOpen={setModalNewProjectOpen}
+        />
+      }
 
       <div className='flex flex-wrap-reverse gap-2 border-y border-gray-200 dark:border-stroke-dark md:items-center px-3 py-2'>
         <div className='flex flex-1 gap-2 md:gap-4 items-center'>

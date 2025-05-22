@@ -13,10 +13,10 @@ import { useCallback } from 'react';
 const ModalAllTeamInProject = ({isOpen, onClose, dataMemeber, tasks}) => {
 
   const {id} = useParams();
-  // console.log(id);
+  console.log(dataMemeber);
 
   const [search, setSearch] = useState("");
-  const [searchResult, setSearchResult] = useState([]);
+  const [searchResult, setSearchResult] = useState(dataMemeber);
   const [isLoading, setIsLoading] = useState(false);
 
 
@@ -57,10 +57,17 @@ const ModalAllTeamInProject = ({isOpen, onClose, dataMemeber, tasks}) => {
       console.log(error);
       setIsLoading(false);
     }
-  }, [search]);
+  }, [search, id, dataMemeber]);
+
+  console.log(searchResult);
+
+  const handleClose = () => {
+    setSearchResult(dataMemeber);
+    onClose();
+  }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="All Members in Project" widthTight={true}>
+    <Modal isOpen={isOpen} onClose={handleClose} title="All Members in Project" widthTight={true}>
       <div className='w-full py-3 flex flex-col'>
         <div className='relative flex items-center'>
           <input 

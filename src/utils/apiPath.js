@@ -7,7 +7,8 @@ const base_path = {
   upload: "upload",
   search: "search",
   user: "user",
-  comment: "comment"
+  comment: "comment",
+  notification: "notification",
 }
 
 export const API_PATHS = {
@@ -60,5 +61,9 @@ export const API_PATHS = {
     UPDATE: (id) => `/${base_path.comment}/${id}`, // id comment  
     DELETE: (id) => `/${base_path.comment}/${id}`,   
     LIKE: (id) => `/${base_path.comment}/like/${id}`,   
+  },
+  NOTIFICATION: {
+    GET_ALL: `/${base_path.notification}`,
+    UPDATE_SEEN: (id) => `/${base_path.notification}/update-seen/${id}`,  // notification id
   }
 }

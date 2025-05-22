@@ -178,7 +178,7 @@ const TaskDetail = () => {
           }
 
           <div className='h-fit flex-1 md:flex-1 mb-4 bg-white dark:bg-dark-secondary dark:text-gray-200 relative top-[40px] min-h-[calc(100vh-140px)] mx-2 py-0 rounded-md shadow-sm'>
-            <h2 className="text-lg font-semibold my-3 px-4 ">Activities</h2>
+            <h2 className="text-lg font-semibold my-3 px-4 dark:text-gray-200">Activities</h2>
 
             <div className='w-full h-[0.5px] bg-gray-200 dark:bg-gray-600'></div>
             

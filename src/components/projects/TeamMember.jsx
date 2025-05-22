@@ -44,7 +44,9 @@ import ImageWithPreview from '../images/ImageWithPreview';
 //   },
 // ]
 
-const TeamMember = ({dataProject, allowEdit, modalNewProjectOpen, setModalNewProjectOpen}) => {
+const TeamMember = ({dataProject, modalNewProjectOpen, setModalNewProjectOpen}) => {
+
+  // console.log(dataProject);
 
   const [isModalAllTeamInProjectOpen, setIsModalAllTeamInProjectOpen] = useState(false); 
   const [isModalAddMemberOpen, setIsModalAddMemberOpen] = useState(false); 
@@ -52,16 +54,23 @@ const TeamMember = ({dataProject, allowEdit, modalNewProjectOpen, setModalNewPro
   const dataTeams = [{...dataProject?.authorUserId, creator: true, totalCreate: 0, totalAssign: 0}];
   dataProject?.membersId?.forEach(m => dataTeams.push({...m, totalCreate: 0, totalAssign: 0}));
 
+  const {currentUser} = useSelector(state => state.users);
+
   const {tasks} = useSelector(state => state.tasks);
-  // console.log(tasks);
+  // console.log("------------team-------------", dataTeams);
 
   if(tasks.length > 0)
   {
     for (const task of tasks) {
-      const member = dataTeams.find(m => m._id == task.authorUserId._id);
-      if(member)
+      let authorTask = dataTeams.find(m => m._id == task.authorUserId._id);
+      if(authorTask)
       {
-        member.totalCreate += 1;
+        authorTask.totalCreate += 1;
+      }
+      let assigneeTask = dataTeams.find(m => m._id == task.assigneeUserId?._id);
+      if(assigneeTask)
+      {
+        assigneeTask.totalAssign += 1;
       }
     }
   }
@@ -86,7 +95,7 @@ const TeamMember = ({dataProject, allowEdit, modalNewProjectOpen, setModalNewPro
         <div className='flex items-center gap-2 mt-1'>
           <h2 className={`text-2xl font-semibold dark:text-white`}>{dataProject && dataProject.name}</h2>
           {
-            allowEdit && 
+            dataProject?.authorUserId?._id == currentUser._id && 
             <button 
               className='w-[35px] h-[35px] hover:bg-blue-50 hover:text-blue-500 rounded-md flex items-center justify-center text-slate-500 dark:text-gray-400 text-xl dark:hover:bg-slate-700 dark:hover:text-white'
               onClick={() => setModalNewProjectOpen({type: "edit", isOpen: true, data: dataProject})}
@@ -130,21 +139,27 @@ const TeamMember = ({dataProject, allowEdit, modalNewProjectOpen, setModalNewPro
                       )}
                     </Tooltip>
                   ))}
-                  <button 
-                    onClick={() => setIsModalAddMemberOpen(true)}
-                    className='size-9 rounded-full border border-blue-100 dark:border-gray-100 flex items-center justify-center bg-blue-50 dark:bg-slate-800 dark:hover:bg-dark-tertiary hover:bg-blue-100 dark:hover:opacity-85'
-                  >
-                    <FiPlus className='size-5 text-blue-600 dark:text-gray-200'/>
-                  </button>
+                  {
+                    dataProject?.authorUserId?._id == currentUser._id &&
+                    <button 
+                      onClick={() => setIsModalAddMemberOpen(true)}
+                      className='size-9 rounded-full border border-blue-100 dark:border-gray-100 flex items-center justify-center bg-blue-50 dark:bg-slate-800 dark:hover:bg-dark-tertiary hover:bg-blue-100 dark:hover:opacity-85'
+                    >
+                      <FiPlus className='size-5 text-blue-600 dark:text-gray-200'/>
+                    </button>
+                  }
                 </>
               ) : (
                 <>
-                  <button 
-                    onClick={() => setIsModalAddMemberOpen(true)} 
-                    className='size-9 rounded-full border border-blue-100 dark:border-gray-100 flex items-center justify-center bg-blue-50 dark:bg-slate-800 dark:hover:bg-dark-tertiary hover:bg-blue-100 dark:hover:opacity-85'
-                  >
-                    <FiPlus className='size-5 text-blue-600 dark:text-gray-200'/>
-                  </button>
+                  {
+                    dataProject?.authorUserId?._id == currentUser._id &&
+                    <button 
+                      onClick={() => setIsModalAddMemberOpen(true)}
+                      className='size-9 rounded-full border border-blue-100 dark:border-gray-100 flex items-center justify-center bg-blue-50 dark:bg-slate-800 dark:hover:bg-dark-tertiary hover:bg-blue-100 dark:hover:opacity-85'
+                    >
+                      <FiPlus className='size-5 text-blue-600 dark:text-gray-200'/>
+                    </button>
+                  }
                 </>
                 )
               }
