@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPath';
 import { useDispatch, useSelector } from 'react-redux';
-import { addTask, removeTask, setTasks } from '../../redux/tasks/taskSlice';
+import { addTask, removeTask, setTasks, updateTask } from '../../redux/tasks/taskSlice';
 import { convertToSlug } from '../../utils/converToSlug';
 import ListProject from './ListProject';
 import TableProject from './TableProject';
@@ -84,9 +84,27 @@ const Project = () => {
       }
     });
 
+    socket.on("UPDATE_TASK_DRAG_DROP", (data) => {
+      // console.log("-------------------delete notification ---------------------")
+      if(data.relatedUserNotify.includes(currentUser._id))
+      {
+        dispatch(updateTask(data.task));
+      }
+    });
+
+    socket.on("UPDATE_TASK", (data) => {
+      // console.log("-------------------delete notification ---------------------")
+      if(data.relatedUserNotify.includes(currentUser._id))
+      {
+        dispatch(updateTask(data.task));
+      }
+    });
+
     return () => {
       socket.off("SERVER_RETURN_NEW_TASK");
       socket.off("NOTIFY_SERVER_DELETE_TASK");
+      socket.off("UPDATE_TASK_DRAG_DROP");
+      socket.off("UPDATE_TASK");
     }
   }, []);
 
