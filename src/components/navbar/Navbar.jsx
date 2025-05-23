@@ -93,6 +93,7 @@ const Navbar = () => {
       }
       if(currentUser._id == data.project.authorUserId._id)  // nguoi them vao du an
       {
+        console.log("Author update memeber");
         dispatch(updateMember(data));
       }
     })

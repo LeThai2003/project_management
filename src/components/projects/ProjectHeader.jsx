@@ -37,7 +37,7 @@ const ProjectHeader = ({activeTab, setActiveTab, setSearch, searchValue}) => {
   useEffect(() => {
     let data = projects.find(item => item._id == projectId);
     setDataProject(data);
-  }, [projectId]);
+  }, [projectId, projects]);
   // console.log(dataProject);
 
 

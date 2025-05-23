@@ -7,11 +7,12 @@ import { useParams } from 'react-router-dom';
 import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPath';
 import { useDispatch, useSelector } from 'react-redux';
-import { setTasks } from '../../redux/tasks/taskSlice';
+import { addTask, removeTask, setTasks } from '../../redux/tasks/taskSlice';
 import { convertToSlug } from '../../utils/converToSlug';
 import ListProject from './ListProject';
 import TableProject from './TableProject';
 import TimelineProject from './TimelineProject';
+import { socket } from '../../utils/socket/socket';
 
 const Project = () => {
 
@@ -22,6 +23,7 @@ const Project = () => {
   
   const dispatch = useDispatch();
   const {tasks} = useSelector(state => state.tasks);
+  const {currentUser} = useSelector(state => state.users);
 
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
@@ -64,6 +66,29 @@ const Project = () => {
       setSearchResult(filteredTasks);
     }
   }, [search, tasks]);
+
+  useEffect(() => {
+    socket.on("SERVER_RETURN_NEW_TASK", (data) => {
+      console.log("---------SERVER_RETURN_NEW_TASK----------", data);
+      if(data.relatedUserNotify.includes(currentUser._id))
+      {
+        dispatch(addTask(data.task));
+      }
+    });
+
+    socket.on("NOTIFY_SERVER_DELETE_TASK", (data) => {
+      // console.log("-------------------delete notification ---------------------")
+      if(data.userId == currentUser._id)
+      {
+        dispatch(removeTask(data.taskId));
+      }
+    });
+
+    return () => {
+      socket.off("SERVER_RETURN_NEW_TASK");
+      socket.off("NOTIFY_SERVER_DELETE_TASK");
+    }
+  }, []);
 
   return (
     <HomeLayout>

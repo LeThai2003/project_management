@@ -52,18 +52,48 @@ const Notification = ({}) => {
         setData(prev => [{...data.notification}, ...prev]);
         setCountNotificationNotSeen(prev => prev + 1);
       }
+    });
+
+    socket.on("MEMBER_ACCEPT_JOIN_PROJECT", (data) => {
+      // console.log("---------memeber----------", data);
+      if(data.notification.userId == currentUser._id)
+      {
+        setData(prev => [{...data.notification}, ...prev]);
+        setCountNotificationNotSeen(prev => prev + 1);
+      }
+    });
+
+    socket.on("NOTIFY_CREATE_NEW_TASK", (data) => {
+      console.log("---------NOTIFY_CREATE_NEW_TASK----------", data);
+      if(data.relatedUserNotify.includes(currentUser._id))
+      {
+        setData(prev => [{...data.notification}, ...prev]);
+        setCountNotificationNotSeen(prev => prev + 1);
+      }
     });  
 
-    socket.on("SERVER_DELETE_NOTIFICATION", (data) => {
-      console.log("-------------------delete notification ---------------------")
+    socket.on("NOTIFY_SERVER_DELETE_COMMENT", (data) => {
+      // console.log("-------------------delete notification ---------------------")
       if(data.userId == currentUser._id)
       {
         setData(prev => prev.filter(item => item.commentId != data.commentId));
       }
-    })
+    });
+
+    socket.on("NOTIFY_SERVER_DELETE_TASK", (data) => {
+      // console.log("-------------------delete notification ---------------------")
+      if(data.userId == currentUser._id)
+      {
+        setData(prev => prev.filter(item => item.taskId != data.taskId));
+        
+      }
+    });
 
     return() => {
       socket.off("NOTIFICATION");
+      socket.off("MEMBER_ACCEPT_JOIN_PROJECT");
+      socket.off("SERVER_DELETE_NOTIFICATION");
+      socket.off("NOTIFY_SERVER_DELETE_TASK");
     }
   }, []);
 
